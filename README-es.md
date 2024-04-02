@@ -61,39 +61,57 @@ De nuevo, se puede verficar ejecutando
 
 ### Pasos para ejecutar el proyecto
 
-Para configurar el proyecto backend en Laravel, se deben seguir los siguientes pasos:
+<details>
+<summary>Ver pasos para ejecutar el proyecto</summary>
+
+#### Backend
 
 1. Instalar las dependencias del backend:
-`composer install` 
 
-2. Crear la base de datos y todas sus tablas:
-`php artisan migrate`
+    `composer install`
 
-3. Popular la base de datos con datos de prueba:
-`php artisan db:seed`
+2. Crear un nuevo fichero en el directorio raíz, llamado `.env` y copiar en él todo el contenido del archivo `.env.example`
 
-4. Ejecutar el servidor de Laravel:
-`php artisan serve`
+3. Crear la base de datos y todas sus tablas:
 
-Para configurar el proyecto frontend en Expo, se deben seguir los siguientes pasos:
+    `php artisan migrate`
+
+4. Popular la base de datos con datos de prueba:
+
+    `php artisan db:seed`
+
+5. Ejecutar el servidor de Laravel:
+
+    `php artisan serve`
+
+#### Frontend
 
 1. Acceder al directorio del proyecto frontend: 
-`cd front-end`
+
+    `cd front-end`
 
 2. Instalar las dependencias del frontend:
-`yarn install`
 
-3. Ejecutar el frontend en el navegador:
-`yarn web`
+    `yarn install`
 
+3. Crear un nuevo fichero dentro del directorio `front-end`, llamado `.env` y copiar en él todo el contenido del archivo `front-end/.env.example`
+
+4. Ejecutar el frontend en el navegador:
+
+    `yarn web`
+
+</details>
 
 ## Principales herramientas a utilizar
+
+<details>
+    <summary>Ver herramientas</summary>
 
 ### Editor
 Mi recomendación es [PhpStorm](https://www.jetbrains.com/phpstorm/), con el plugin [Laravel Idea](https://plugins.jetbrains.com/plugin/13441-laravel-idea). Tanto
 PhpStorm como Laravel Idea tienen licencia gratuita para estudiantes. 
 
-Visual Studio Code también está bien, pero yo prefiero el otro. 
+Visual Studio Code también está bien. 
 
 ### Base de datos
 SQLite, al menos al principio.
@@ -111,4 +129,9 @@ SQLite, al menos al principio.
 - [React Native](https://reactnative.dev/docs/getting-started) - librería para desarrollo de aplicaciones multiplataforma (web, iOS y Android), basada en [React](https://react.dev/learn)
 - [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/overview) - librería para realizar consultas a la API 
 - [Axios](https://axios-http.com/docs/example) - librería para realizar consultas a la API
+  
+</details>
+
+
+
 

@@ -52,6 +52,10 @@ Una vez instalado Node, se puede instalar Yarn con el siguiente comando:
 
 `corepack enable`
 
+De nuevo, se puede verficar ejecutando 
+
+`yarn --version`
+
 </details>
 
 
@@ -74,7 +78,7 @@ Para configurar el proyecto backend en Laravel, se deben seguir los siguientes p
 Para configurar el proyecto frontend en Expo, se deben seguir los siguientes pasos:
 
 1. Acceder al directorio del proyecto frontend: 
-`cd frontend`
+`cd front-end`
 
 2. Instalar las dependencias del frontend:
 `yarn install`

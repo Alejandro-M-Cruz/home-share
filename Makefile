@@ -30,3 +30,11 @@ fresh:
 # Formatting
 format:
 	@cd front-end && yarn prettier . --write
+
+# Routes
+list-routes:
+	@php artisan route:list
+
+# Cache
+clear-cache:
+	@php artisan optimize:clear

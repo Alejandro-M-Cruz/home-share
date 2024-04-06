@@ -1,5 +1,6 @@
 import { apiClient } from '@/services/api-client'
-import { User } from '@/types/user'
+import { LoginRequest, SignupRequest, User } from '@/types/auth'
+import { isAxiosError } from 'axios'
 
 async function csrf() {
   await apiClient.get('/sanctum/csrf-cookie')
@@ -14,30 +15,35 @@ type UserResponse = {
   updated_at: string
 }
 
-export async function getUser(): Promise<User> {
-  await csrf()
-  const { data } = await apiClient.get<UserResponse>('/api/user')
-  return {
-    ...data,
-    emailVerifiedAt: data.email_verified_at,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at
+export async function getUser(): Promise<User | null> {
+  try {
+    await csrf()
+    const { data } = await apiClient.get<UserResponse>('/api/user')
+    return {
+      ...data,
+      emailVerifiedAt: data.email_verified_at,
+      createdAt: data.created_at,
+      updatedAt: data.updated_at
+    }
+  } catch (error) {
+    if (isAxiosError(error)) {
+      switch (error.response?.status) {
+        case 401:
+          return null
+        default:
+          throw error
+      }
+    }
+    throw error
   }
 }
 
-type RegisterRequest = {
-  name: string
-  email: string
-  password: string
-  passwordConfirmation: string
-}
-
-export async function register({
+export async function signup({
   name,
   email,
   password,
   passwordConfirmation
-}: RegisterRequest) {
+}: SignupRequest) {
   await csrf()
   await apiClient.post('/register', {
     name,
@@ -45,11 +51,6 @@ export async function register({
     password,
     password_confirmation: passwordConfirmation
   })
-}
-
-type LoginRequest = {
-  email: string
-  password: string
 }
 
 export async function login(credentials: LoginRequest) {

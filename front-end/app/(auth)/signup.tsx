@@ -4,11 +4,12 @@ import { SignupRequest } from '@/types/auth'
 import { z, ZodType } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Text, View } from '@/components/Themed'
-import { Button, TextInput } from 'react-native'
+import { Button, StyleSheet, TextInput } from 'react-native'
+import { useCallback } from 'react'
 
 const signupValidationSchema: ZodType<SignupRequest> = z
   .object({
-    name: z.string().min(1).max(1000),
+    name: z.string().min(1).max(255),
     email: z.string().email().min(1).max(320),
     password: z.string().min(8).max(128),
     passwordConfirmation: z.string().min(8).max(128)
@@ -36,12 +37,15 @@ export default function Signup() {
       passwordConfirmation: ''
     }
   })
-  const onSubmit = (data: SignupRequest) => {
-    signup(data)
-  }
+  const onSubmit = useCallback(
+    (data: SignupRequest) => {
+      signup(data)
+    },
+    [signup]
+  )
 
   return (
-    <View style={{ maxWidth: 300 }}>
+    <View style={styles.container}>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -55,7 +59,7 @@ export default function Signup() {
         name="name"
       />
       {formErrors.name && (
-        <Text>{formErrors.name.message}</Text>
+        <Text style={{ color: 'red' }}>{formErrors.name.message}</Text>
       )}
       <Controller
         control={control}
@@ -70,9 +74,7 @@ export default function Signup() {
         )}
         name="email"
       />
-      {formErrors.email && (
-        <Text>{formErrors.email.message}</Text>
-      )}
+      {formErrors.email && <Text>{formErrors.email.message}</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -86,9 +88,7 @@ export default function Signup() {
         )}
         name="password"
       />
-      {formErrors.password && (
-        <Text>{formErrors.password.message}</Text>
-      )}
+      {formErrors.password && <Text>{formErrors.password.message}</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -103,11 +103,23 @@ export default function Signup() {
         name="passwordConfirmation"
       />
       {formErrors.passwordConfirmation && (
-        <Text>
-          {formErrors.passwordConfirmation.message}
-        </Text>
+        <Text>{formErrors.passwordConfirmation.message}</Text>
       )}
-      <Button title="Sign up" onPress={handleSubmit(onSubmit)} />
+      <Button title="Sign up" onPress={handleSubmit(onSubmit)} disabled={signupStatus === 'pending'} />
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxWidth: 600,
+    marginHorizontal: 'auto',
+    marginVertical: 32
+  }
+})
+

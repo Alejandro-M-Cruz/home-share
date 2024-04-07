@@ -40,7 +40,14 @@ export default function TabLayout() {
           title: 'Tab One',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
-            <View style={{ display: 'flex', flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 12,
+                alignItems: 'center'
+              }}
+            >
               {user ? (
                 <Button
                   title="Log out"

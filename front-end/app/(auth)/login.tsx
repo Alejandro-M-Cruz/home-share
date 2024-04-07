@@ -40,7 +40,8 @@ export default function Login() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput style={styles.textInput}
+          <TextInput
+            style={styles.textInput}
             placeholder="Email"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -54,7 +55,8 @@ export default function Login() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput style={styles.textInput}
+          <TextInput
+            style={styles.textInput}
             placeholder="Password"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -65,7 +67,11 @@ export default function Login() {
         name="password"
       />
       {formErrors.password && <Text>{formErrors.password.message}</Text>}
-      <Button title="Log in" onPress={handleSubmit(onSubmit)} disabled={loginStatus === 'pending'}/>
+      <Button
+        title="Log in"
+        onPress={handleSubmit(onSubmit)}
+        disabled={loginStatus === 'pending'}
+      />
     </View>
   )
 }

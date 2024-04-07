@@ -47,11 +47,14 @@ export default function Signup() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Register</Text>
-      <Text style={styles.subtitle}>You are one step away from finding your new home</Text>
+      <Text style={styles.subtitle}>
+        You are one step away from finding your new home
+      </Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput style={styles.textInput}
+          <TextInput
+            style={styles.textInput}
             placeholder="Full name"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -66,7 +69,8 @@ export default function Signup() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput style={styles.textInput}
+          <TextInput
+            style={styles.textInput}
             placeholder="Email"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -80,7 +84,8 @@ export default function Signup() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput style={styles.textInput}
+          <TextInput
+            style={styles.textInput}
             placeholder="Password"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -94,7 +99,8 @@ export default function Signup() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput style={styles.textInput}
+          <TextInput
+            style={styles.textInput}
             placeholder="Password confirmation"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -107,7 +113,11 @@ export default function Signup() {
       {formErrors.passwordConfirmation && (
         <Text>{formErrors.passwordConfirmation.message}</Text>
       )}
-      <Button title="Sign up" onPress={handleSubmit(onSubmit)} disabled={signupStatus === 'pending'} />
+      <Button
+        title="Sign up"
+        onPress={handleSubmit(onSubmit)}
+        disabled={signupStatus === 'pending'}
+      />
     </View>
   )
 }
@@ -146,4 +156,3 @@ const styles = StyleSheet.create({
     paddingLeft: 20
   }
 })
-

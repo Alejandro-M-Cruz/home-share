@@ -16,9 +16,16 @@ export function useAuth() {
     status: userStatus
   } = useQuery({
     queryKey: ['user'],
-    queryFn: () => {
-      const token = tokenStorage.getToken()
-      return token !== null ? auth.getUser(token) : null
+    queryFn: async () => {
+      const token = await tokenStorage.getToken()
+      if (!token) {
+        return null
+      }
+      const user = await auth.getUser(token)
+      if (!user) {
+        await tokenStorage.removeToken()
+      }
+      return user
     }
   })
 
@@ -33,8 +40,9 @@ export function useAuth() {
   } = useMutation({
     mutationKey: ['signup'],
     mutationFn: auth.signup,
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       await invalidateUserQuery()
+      await tokenStorage.setToken(data)
       router.push('/')
     }
   })
@@ -49,7 +57,7 @@ export function useAuth() {
       return auth.createToken({ ...data, deviceName: getDeviceName() })
     },
     onSuccess: async data => {
-      tokenStorage.setToken(data)
+      await tokenStorage.setToken(data)
       await invalidateUserQuery()
       router.push('/')
     }
@@ -62,12 +70,12 @@ export function useAuth() {
   } = useMutation({
     mutationKey: ['logout'],
     mutationFn: async () => {
-      await invalidateUserQuery()
-      const token = tokenStorage.getToken()
+      const token = await tokenStorage.getToken()
       if (token) {
         await tokenStorage.removeToken()
         await auth.revokeTokens(token)
       }
+      await invalidateUserQuery()
       router.push('/')
     }
   })

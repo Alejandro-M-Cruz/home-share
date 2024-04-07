@@ -1,6 +1,6 @@
 import { apiClient } from '@/services/api-client'
 import { SignupRequest, User } from '@/types/auth'
-import { isAxiosError } from 'axios'
+import { HttpStatusCode, isAxiosError } from 'axios'
 import { getDeviceName } from '@/helpers/device-name'
 
 async function csrf() {
@@ -31,7 +31,7 @@ export async function getUser(token: string): Promise<User | null> {
   } catch (error) {
     if (isAxiosError(error)) {
       switch (error.response?.status) {
-        case 401:
+        case HttpStatusCode.Unauthorized:
           return null
         default:
           throw error
@@ -54,7 +54,7 @@ export async function signup({
     password,
     password_confirmation: passwordConfirmation
   })
-  await createToken({
+  return createToken({
     email,
     password,
     deviceName: getDeviceName()
@@ -73,15 +73,16 @@ export async function createToken({
   deviceName
 }: TokenRequest) {
   await csrf()
-  const { data } = await apiClient.post('/sanctum/token', {
+  const { data, status } = await apiClient.post<string>('/sanctum/token', {
     email,
     password,
     device_name: deviceName
   })
-  return data as string
+  return data
 }
 
 export async function revokeTokens(token: string) {
+  await csrf()
   await apiClient.delete('/sanctum/token', {
     headers: {
       Authorization: `Bearer ${token}`

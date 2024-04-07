@@ -39,8 +39,8 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 
 Route::post('/sanctum/token', [TokenController::class, 'store'])
     ->middleware('guest')
-    ->name('token');
+    ->name('token.store');
 
 Route::delete('/sanctum/token', [TokenController::class, 'destroy'])
     ->middleware('auth:sanctum')
-    ->name('token');
+    ->name('token.destroy');

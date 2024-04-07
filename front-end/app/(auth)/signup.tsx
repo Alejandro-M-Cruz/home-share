@@ -46,10 +46,12 @@ export default function Signup() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Register</Text>
+      <Text style={styles.subtitle}>You are one step away from finding your new home</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
+          <TextInput style={styles.textInput}
             placeholder="Full name"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -64,7 +66,7 @@ export default function Signup() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
+          <TextInput style={styles.textInput}
             placeholder="Email"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -78,7 +80,7 @@ export default function Signup() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
+          <TextInput style={styles.textInput}
             placeholder="Password"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -92,7 +94,7 @@ export default function Signup() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
+          <TextInput style={styles.textInput}
             placeholder="Password confirmation"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -119,7 +121,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     maxWidth: 600,
     marginHorizontal: 'auto',
-    marginVertical: 32
+    marginVertical: 32,
+    backgroundColor: '#f1f1f1'
+  },
+  title: {
+    fontSize: 60,
+    color: '#000',
+    fontWeight: 'bold',
+    marginBottom: 20
+  },
+  subtitle: {
+    fontSize: 20,
+    color: 'gray',
+    marginBottom: 40
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: 'white',
+    height: 50,
+    padding: 10,
+    borderRadius: 30,
+    backgroundColor: 'white',
+    color: 'gray',
+    paddingLeft: 20
   }
 })
 

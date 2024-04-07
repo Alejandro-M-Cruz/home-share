@@ -35,10 +35,12 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Welcome!</Text>
+      <Text style={styles.subtitle}>Log in into your account</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
+          <TextInput style={styles.textInput}
             placeholder="Email"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -52,7 +54,7 @@ export default function Login() {
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
+          <TextInput style={styles.textInput}
             placeholder="Password"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -78,5 +80,27 @@ const styles = StyleSheet.create({
     maxWidth: 600,
     marginHorizontal: 'auto',
     marginVertical: 32
+  },
+  title: {
+    fontSize: 60,
+    color: '#000',
+    fontWeight: 'bold',
+    marginBottom: 20
+  },
+  subtitle: {
+    fontSize: 20,
+    color: 'gray',
+    marginBottom: 40
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: 'white',
+    height: 50,
+    padding: 10,
+    marginBottom: 20,
+    borderRadius: 30,
+    backgroundColor: 'white',
+    color: 'gray',
+    paddingLeft: 20
   }
 })

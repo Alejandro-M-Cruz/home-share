@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import * as auth from '@/services/auth'
 import { useRouter } from 'expo-router'
-import { handleError } from '@/helpers/handle-error'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
+import { getToken, removeToken, setToken } from '@/services/token'
 
-export function useAuth({ setErrors }: { setErrors: (errors: any) => void }) {
+export function useAuth() {
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -16,15 +16,6 @@ export function useAuth({ setErrors }: { setErrors: (errors: any) => void }) {
     queryKey: ['user'],
     queryFn: auth.getUser
   })
-
-  if (userStatus === 'error') {
-    handleError({
-      error: userError,
-      setErrors,
-      defaultMessage:
-        'An error has occurred while fetching user data. Please try again later.'
-    })
-  }
 
   const invalidateUserQuery = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: ['user'] })
@@ -40,16 +31,10 @@ export function useAuth({ setErrors }: { setErrors: (errors: any) => void }) {
     onSuccess: async () => {
       await invalidateUserQuery()
       router.push('/')
-    },
-    onError: error => {
-      handleError({
-        error,
-        setErrors,
-        defaultMessage:
-          'There has been an error while registering. Please try again later.'
-      })
     }
   })
+
+  const token = getToken()
 
   const {
     mutate: login,
@@ -57,27 +42,39 @@ export function useAuth({ setErrors }: { setErrors: (errors: any) => void }) {
     status: loginStatus
   } = useMutation({
     mutationKey: ['login'],
-    mutationFn: auth.login,
+    mutationFn: auth.createToken,
+    onSuccess: async (data) => {
+      setToken(data)
+      await invalidateUserQuery()
+      router.push('/')
+    }
+  })
+
+  const {
+    mutate: logout,
+    error: logoutError,
+    status: logoutStatus
+  } = useMutation({
+    mutationKey: ['logout'],
+    mutationFn: auth.revokeTokens,
     onSuccess: async () => {
+      await removeToken()
       await invalidateUserQuery()
       router.push('/')
     },
-    onError: error => {
-      handleError({
-        error,
-        setErrors,
-        defaultMessage:
-          'An error has occurred while logging in. Please try again later'
-      })
+    onError: async () => {
+      await removeToken()
     }
   })
 
   return {
     user,
     userStatus,
+    signup,
+    signupStatus,
     login,
     loginStatus,
-    signup,
-    signupStatus
+    logout,
+    logoutStatus
   }
 }

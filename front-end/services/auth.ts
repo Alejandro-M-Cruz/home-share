@@ -1,6 +1,8 @@
 import { apiClient } from '@/services/api-client'
-import { LoginRequest, SignupRequest, User } from '@/types/auth'
+import { SignupRequest, User } from '@/types/auth'
 import { isAxiosError } from 'axios'
+import { getDeviceName } from '@/helpers/device-name'
+import { getToken } from '@/services/token'
 
 async function csrf() {
   await apiClient.get('/sanctum/csrf-cookie')
@@ -18,7 +20,9 @@ type UserResponse = {
 export async function getUser(): Promise<User | null> {
   try {
     await csrf()
-    const { data } = await apiClient.get<UserResponse>('/api/user')
+    const { data } = await apiClient.get<UserResponse>('/api/user', {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    })
     return {
       ...data,
       emailVerifiedAt: data.email_verified_at,
@@ -51,11 +55,24 @@ export async function signup({
     password,
     password_confirmation: passwordConfirmation
   })
+  await createToken({ email, password })
 }
 
-export async function login(credentials: LoginRequest) {
-  try {
-    await csrf()
-    await apiClient.post('/login', credentials)
-  } catch (error) {}
+type TokenRequest = {
+  email: string
+  password: string
+}
+
+export async function createToken({ email, password }: TokenRequest) {
+  await csrf()
+  const { data } = await apiClient.post('/sanctum/token', {
+    email,
+    password,
+    device_name: getDeviceName()
+  })
+  return data as string
+}
+
+export async function revokeTokens() {
+  await apiClient.delete('/sanctum/token')
 }

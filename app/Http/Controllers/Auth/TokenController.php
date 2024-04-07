@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class TokenController extends Controller
 {
-    function __invoke(Request $request) {
+    function store(Request $request) {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -26,5 +27,11 @@ class TokenController extends Controller
         }
 
         return $user->createToken($request->device_name)->plainTextToken;
+    }
+
+    function destroy(Request $request): Response
+    {
+        $request->user()->tokens()->delete();
+        return response()->noContent();
     }
 }

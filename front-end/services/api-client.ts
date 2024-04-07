@@ -5,8 +5,9 @@ export const apiClient = axios.create({
     process.env.EXPO_PUBLIC_ENV === 'production'
       ? process.env.EXPO_PUBLIC_API_BASE_URL_PRODUCTION
       : process.env.EXPO_PUBLIC_API_BASE_URL_LOCAL,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest'
+  },
   withCredentials: true,
   withXSRFToken: true
 })
-
-console.log(apiClient.defaults.baseURL)

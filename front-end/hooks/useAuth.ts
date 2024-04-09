@@ -16,7 +16,7 @@ export function useAuth({
     return queryClient.invalidateQueries({ queryKey: ['user'] })
   }, [queryClient])
 
-  const userQueryFn = useCallback(async () => {
+  const userQueryFn = async () => {
     const token = await tokenStorage.getToken()
     if (!token) {
       if (redirectIfNotAuthenticated) {
@@ -32,7 +32,7 @@ export function useAuth({
       }
     }
     return user
-  }, [router, redirectIfNotAuthenticated])
+  }
 
   const {
     data: user,
@@ -46,14 +46,11 @@ export function useAuth({
     staleTime: Infinity
   })
 
-  const signupMutationFn = useCallback(
-    async (data: SignupRequest) => {
-      const token = await auth.signup(data)
-      await tokenStorage.setToken(token)
-      await invalidateUserQuery()
-    },
-    [invalidateUserQuery]
-  )
+  const signupMutationFn = async (data: SignupRequest) => {
+    const token = await auth.signup(data)
+    await tokenStorage.setToken(token)
+    await invalidateUserQuery()
+  }
 
   const {
     mutate: signup,
@@ -64,17 +61,14 @@ export function useAuth({
     mutationFn: signupMutationFn
   })
 
-  const loginMutationFn = useCallback(
-    async (data: LoginRequest) => {
-      const token = await auth.createToken({
-        ...data,
-        deviceName: getDeviceName()
-      })
-      await tokenStorage.setToken(token)
-      await invalidateUserQuery()
-    },
-    [invalidateUserQuery]
-  )
+  const loginMutationFn = async (data: LoginRequest) => {
+    const token = await auth.createToken({
+      ...data,
+      deviceName: getDeviceName()
+    })
+    await tokenStorage.setToken(token)
+    await invalidateUserQuery()
+  }
 
   const {
     mutate: login,
@@ -85,14 +79,14 @@ export function useAuth({
     mutationFn: loginMutationFn
   })
 
-  const logoutMutationFn = useCallback(async () => {
+  const logoutMutationFn = async () => {
     const token = await tokenStorage.getToken()
     if (token) {
       await auth.revokeTokens(token)
       await tokenStorage.removeToken()
     }
     await invalidateUserQuery()
-  }, [invalidateUserQuery])
+  }
 
   const {
     mutate: logout,

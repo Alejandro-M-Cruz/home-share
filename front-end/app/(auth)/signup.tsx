@@ -1,11 +1,11 @@
 import { useAuth } from '@/hooks/useAuth'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { SignupRequest } from '@/types/auth'
 import { z, ZodType } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Text, View } from '@/components/Themed'
 import { Button, StyleSheet, TextInput } from 'react-native'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
 import { handleError } from '@/helpers/handle-error'
 
@@ -56,12 +56,9 @@ export default function Signup() {
     }
   }, [signupStatus, signupError, setError, router])
 
-  const onSubmit = useCallback(
-    (data: SignupRequest) => {
-      signup(data)
-    },
-    [signup]
-  )
+  const onSubmit: SubmitHandler<SignupRequest> = (data) => {
+    signup(data)
+  }
 
   return (
     <View style={styles.container}>

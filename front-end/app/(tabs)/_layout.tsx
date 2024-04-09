@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Link, Tabs } from 'expo-router'
 import { Button, Pressable, View } from 'react-native'
@@ -20,10 +20,6 @@ export default function TabLayout() {
   const colorScheme = useColorScheme()
 
   const { user, logout, logoutStatus } = useAuth()
-
-  const handleLogout = useCallback(() => {
-    logout()
-  }, [logout])
 
   return (
     <Tabs
@@ -51,7 +47,7 @@ export default function TabLayout() {
               {user ? (
                 <Button
                   title="Log out"
-                  onPress={handleLogout}
+                  onPress={() => logout()}
                   disabled={logoutStatus === 'pending'}
                 />
               ) : (

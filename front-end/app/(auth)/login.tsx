@@ -2,9 +2,9 @@ import { z } from 'zod'
 import { LoginRequest } from '@/types/auth'
 import { Button, StyleSheet, TextInput, View } from 'react-native'
 import { useAuth } from '@/hooks/useAuth'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Text } from '@/components/Themed'
 import { handleError } from '@/helpers/handle-error'
 import { useRouter } from 'expo-router'
@@ -45,12 +45,9 @@ export default function Login() {
     }
   }, [loginStatus, loginError, setError, router])
 
-  const onSubmit = useCallback(
-    (data: LoginRequest) => {
-      login(data)
-    },
-    [login]
-  )
+  const onSubmit: SubmitHandler<LoginRequest> = (credentials) => {
+    login(credentials)
+  }
 
   return (
     <View style={styles.container}>

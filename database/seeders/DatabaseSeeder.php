@@ -13,7 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Auth::factory(10)->create();
+        $this->call([
+            AmenitySeeder::class
+        ]);
 
         User::factory()->create([
             'name' => 'Test Auth',

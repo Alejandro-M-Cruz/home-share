@@ -18,10 +18,21 @@ class AmenitySeeder extends Seeder
             ['name' => 'Pets Allowed', 'icon' => 'paw'],
             ['name' => 'Smoking Allowed', 'icon' => 'smoking'],
             ['name' => 'Wi-Fi', 'icon' => 'wifi'],
-            ['name' => 'Air Conditioning', 'icon' => 'fan'],
+            ['name' => 'Air Conditioning', 'icon' => 'air-conditioner'],
             ['name' => 'Heating', 'icon' => 'fire'],
+            ['name' => 'Gym', 'icon' => 'dumbbell'],
+            ['name' => 'Pool', 'icon' => 'pool'],
+            ['name' => 'Elevator', 'icon' => 'elevator'],
+            ['name' => 'Wheelchair accessible', 'icon' => 'wheelchair-accessibility'],
+            ['name' => 'Balcony', 'icon' => 'balcony'],
+            ['name' => 'Garden', 'icon' => 'grass'],
+            ['name' => 'Dishwasher', 'icon' => 'dishwasher'],
+            ['name' => 'Oven', 'icon' => 'toaster-oven'],
+            ['name' => 'TV', 'icon' => 'television'],
         ];
 
-        Amenity::createMany($amenities);
+        foreach ($amenities as $amenity) {
+            Amenity::create($amenity);
+        }
     }
 }

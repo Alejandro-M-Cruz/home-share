@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\RentalListing;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -12,7 +13,7 @@ class RentalListingFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return array<string, RentalListing>
      */
     public function definition(): array
     {

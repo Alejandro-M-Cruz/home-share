@@ -2,7 +2,7 @@ import { apiClient } from '@/api/api-client'
 import { SignupRequest, User } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
 
-async function csrf() {
+export async function csrf() {
   await apiClient.get('/sanctum/csrf-cookie')
 }
 

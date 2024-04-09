@@ -2,8 +2,12 @@ import { StyleSheet } from 'react-native'
 
 import EditScreenInfo from '@/components/EditScreenInfo'
 import { Text, View } from '@/components/Themed'
+import { useAmenities } from '@/hooks/useAmenities'
+import { Amenity } from '@/components/Amenity'
 
 export default function TabTwoScreen() {
+  const { amenities, error, status } = useAmenities()
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
@@ -13,6 +17,15 @@ export default function TabTwoScreen() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <EditScreenInfo path="app/(tabs)/two.tsx" />
+      {status === 'pending' ? (
+        <Text>Loading...</Text>
+      ) : status === 'error' ? (
+        <Text>Error: {error?.message}</Text>
+      ) : (
+        amenities?.map(amenity => (
+          <Amenity key={amenity.id} amenity={amenity} />
+        ))
+      )}
     </View>
   )
 }

@@ -11,5 +11,6 @@
   "endOfLine": "lf",
   "jsxSingleQuote": false,
   "bracketSameLine": false,
-  "proseWrap": "preserve"
+  "proseWrap": "preserve",
+  "parser": "typescript"
 }

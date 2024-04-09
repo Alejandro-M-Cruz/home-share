@@ -3,7 +3,7 @@ import * as auth from '@/services/auth'
 import { Href, useRouter } from 'expo-router'
 import { useCallback } from 'react'
 import * as tokenStorage from '@/services/token-storage'
-import { LoginRequest } from '@/types/auth'
+import { LoginRequest, SignupRequest } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
 
 export function useAuth({
@@ -46,11 +46,14 @@ export function useAuth({
     staleTime: Infinity
   })
 
-  const signupOnSuccess = useCallback(async (data: string) => {
-    await tokenStorage.setToken(data)
-    await invalidateUserQuery()
-    router.push('/')
-  }, [router, invalidateUserQuery])
+  const signupMutationFn = useCallback(
+    async (data: SignupRequest) => {
+      const token = await auth.signup(data)
+      await tokenStorage.setToken(token)
+      await invalidateUserQuery()
+    },
+    [invalidateUserQuery]
+  )
 
   const {
     mutate: signup,
@@ -58,19 +61,20 @@ export function useAuth({
     status: signupStatus
   } = useMutation({
     mutationKey: ['signup'],
-    mutationFn: auth.signup,
-    onSuccess: signupOnSuccess
+    mutationFn: signupMutationFn
   })
 
-  const loginMutationFn = useCallback(async (data: LoginRequest) => {
-    return auth.createToken({ ...data, deviceName: getDeviceName() })
-  }, [])
-
-  const loginOnSuccess = useCallback(async (data: string) => {
-    await tokenStorage.setToken(data)
-    await invalidateUserQuery()
-    router.push('/')
-  }, [router, invalidateUserQuery])
+  const loginMutationFn = useCallback(
+    async (data: LoginRequest) => {
+      const token = await auth.createToken({
+        ...data,
+        deviceName: getDeviceName()
+      })
+      await tokenStorage.setToken(token)
+      await invalidateUserQuery()
+    },
+    [invalidateUserQuery]
+  )
 
   const {
     mutate: login,
@@ -78,8 +82,7 @@ export function useAuth({
     status: loginStatus
   } = useMutation({
     mutationKey: ['login'],
-    mutationFn: loginMutationFn,
-    onSuccess: loginOnSuccess
+    mutationFn: loginMutationFn
   })
 
   const logoutMutationFn = useCallback(async () => {
@@ -89,8 +92,7 @@ export function useAuth({
       await tokenStorage.removeToken()
     }
     await invalidateUserQuery()
-    router.push('/')
-  }, [router, invalidateUserQuery])
+  }, [invalidateUserQuery])
 
   const {
     mutate: logout,

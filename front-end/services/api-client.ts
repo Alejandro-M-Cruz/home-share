@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 export const apiClient = axios.create({
   baseURL:
@@ -11,10 +11,3 @@ export const apiClient = axios.create({
   withCredentials: true,
   withXSRFToken: true
 })
-
-const logResponse = (response: AxiosResponse) => {
-  console.log('Response:', response)
-  return response
-}
-
-apiClient.interceptors.response.use(logResponse, logResponse)

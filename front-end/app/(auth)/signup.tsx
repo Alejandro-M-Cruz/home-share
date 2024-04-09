@@ -5,7 +5,9 @@ import { z, ZodType } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Text, View } from '@/components/Themed'
 import { Button, StyleSheet, TextInput } from 'react-native'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useRouter } from 'expo-router'
+import { handleError } from '@/helpers/handle-error'
 
 const signupValidationSchema: ZodType<SignupRequest> = z
   .object({
@@ -17,17 +19,18 @@ const signupValidationSchema: ZodType<SignupRequest> = z
   .refine(
     ({ password, passwordConfirmation }) => password === passwordConfirmation,
     {
-      message: 'Passwords must match',
+      message: 'Passwords must match.',
       path: ['passwordConfirmation']
     }
   )
 
 export default function Signup() {
-  const { signup, signupStatus } = useAuth()
+  const { signup, signupError, signupStatus } = useAuth()
   const {
     control,
+    setError,
     handleSubmit,
-    formState: { errors: formErrors }
+    formState: { errors }
   } = useForm<SignupRequest>({
     resolver: zodResolver(signupValidationSchema),
     defaultValues: {
@@ -37,6 +40,22 @@ export default function Signup() {
       passwordConfirmation: ''
     }
   })
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (signupStatus === 'success') {
+      router.push('/')
+      return
+    }
+    if (signupError) {
+      handleError({
+        error: signupError,
+        setError
+      })
+    }
+  }, [signupStatus, signupError, setError, router])
+
   const onSubmit = useCallback(
     (data: SignupRequest) => {
       signup(data)
@@ -63,8 +82,8 @@ export default function Signup() {
         )}
         name="name"
       />
-      {formErrors.name && (
-        <Text style={{ color: 'red' }}>{formErrors.name.message}</Text>
+      {errors.name && (
+        <Text style={{ color: 'red' }}>{errors.name.message}</Text>
       )}
       <Controller
         control={control}
@@ -80,7 +99,7 @@ export default function Signup() {
         )}
         name="email"
       />
-      {formErrors.email && <Text>{formErrors.email.message}</Text>}
+      {errors.email && <Text>{errors.email.message}</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -95,7 +114,7 @@ export default function Signup() {
         )}
         name="password"
       />
-      {formErrors.password && <Text>{formErrors.password.message}</Text>}
+      {errors.password && <Text>{errors.password.message}</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -110,9 +129,10 @@ export default function Signup() {
         )}
         name="passwordConfirmation"
       />
-      {formErrors.passwordConfirmation && (
-        <Text>{formErrors.passwordConfirmation.message}</Text>
+      {errors.passwordConfirmation && (
+        <Text>{errors.passwordConfirmation.message}</Text>
       )}
+      {errors.root && <Text>{errors.root.message}</Text>}
       <Button
         title="Sign up"
         onPress={handleSubmit(onSubmit)}

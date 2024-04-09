@@ -4,8 +4,10 @@ import { Button, StyleSheet, TextInput, View } from 'react-native'
 import { useAuth } from '@/hooks/useAuth'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Text } from '@/components/Themed'
+import { handleError } from '@/helpers/handle-error'
+import { useRouter } from 'expo-router'
 
 const loginValidationSchema: z.ZodType<LoginRequest> = z.object({
   email: z.string().email(),
@@ -16,15 +18,32 @@ export default function Login() {
   const { login, loginError, loginStatus } = useAuth()
   const {
     control,
+    setError,
     handleSubmit,
-    formState: { errors: formErrors }
+    formState: { errors }
   } = useForm<LoginRequest>({
+    mode: 'onBlur',
     resolver: zodResolver(loginValidationSchema),
     defaultValues: {
       email: '',
       password: ''
     }
   })
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (loginStatus === 'success') {
+      router.push('/')
+      return
+    }
+    if (loginError) {
+      handleError({
+        error: loginError,
+        setError
+      })
+    }
+  }, [loginStatus, loginError, setError, router])
 
   const onSubmit = useCallback(
     (data: LoginRequest) => {
@@ -51,7 +70,7 @@ export default function Login() {
         )}
         name="email"
       />
-      {formErrors.email && <Text>{formErrors.email.message}</Text>}
+      {errors.email && <Text>{errors.email.message}</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -66,12 +85,15 @@ export default function Login() {
         )}
         name="password"
       />
-      {formErrors.password && <Text>{formErrors.password.message}</Text>}
+      {errors.password && <Text>{errors.password.message}</Text>}
       <Button
         title="Log in"
         onPress={handleSubmit(onSubmit)}
         disabled={loginStatus === 'pending'}
       />
+      {errors.root && (
+        <Text style={{ color: 'red' }}>{errors.root.message}</Text>
+      )}
     </View>
   )
 }

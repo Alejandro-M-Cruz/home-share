@@ -73,12 +73,12 @@ export async function createToken({
   deviceName
 }: TokenRequest) {
   await csrf()
-  const { data, status } = await apiClient.post<string>('/sanctum/token', {
+  const { data: token } = await apiClient.post<string>('/sanctum/token', {
     email,
     password,
     device_name: deviceName
   })
-  return data
+  return token
 }
 
 export async function revokeTokens(token: string) {

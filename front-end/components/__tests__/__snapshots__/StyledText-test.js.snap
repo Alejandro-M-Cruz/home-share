@@ -18,4 +18,4 @@ exports[`renders correctly 1`] = `
 >
   Snapshot test!
 </Text>
-`;
+`

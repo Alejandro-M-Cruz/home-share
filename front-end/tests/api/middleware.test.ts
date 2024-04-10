@@ -27,6 +27,18 @@ describe('middleware', () => {
         }
       })
     })
+
+    it('should do nothing if request has no data', () => {
+      const request: any = {
+        otherData: {
+          someOtherData: 'test'
+        }
+      }
+
+      const result = decamelizeRequest(request)
+
+      expect(result).toEqual(request)
+    })
   })
 
   describe('camelizeResponse', () => {
@@ -69,6 +81,18 @@ describe('middleware', () => {
 
       expect(result).toEqual(response)
     })
+
+    it('should do nothing if response has no data', () => {
+      const response: any = {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        }
+      }
+
+      const result = camelizeResponse(response)
+
+      expect(result).toEqual(response)
+    })
   })
 
   describe('camelizeErrorResponse', () => {
@@ -91,6 +115,16 @@ describe('middleware', () => {
             anotherExampleField: 123
           }
         }
+      })
+    })
+
+    it('should do nothing if error has no response data', () => {
+      const error: any = {
+        message: 'Error message'
+      }
+
+      expect(() => camelizeErrorResponse(error)).rejects.toEqual({
+        message: 'Error message'
       })
     })
   })

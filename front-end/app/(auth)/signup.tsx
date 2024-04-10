@@ -29,6 +29,7 @@ export default function Signup() {
   const {
     control,
     setError,
+    reset,
     handleSubmit,
     formState: { errors }
   } = useForm<SignupRequest>({
@@ -45,6 +46,7 @@ export default function Signup() {
 
   useEffect(() => {
     if (signupStatus === 'success') {
+      reset()
       router.push('/')
       return
     }

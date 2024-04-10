@@ -1,6 +1,5 @@
 import { apiClient } from '@/services/api-client'
 import { SignupRequest, User } from '@/types/auth'
-import { HttpStatusCode, isAxiosError } from 'axios'
 import { getDeviceName } from '@/helpers/device-name'
 
 async function csrf() {
@@ -16,28 +15,15 @@ type UserResponse = {
   updated_at: string
 }
 
-export async function getUser(token: string): Promise<User | null> {
-  try {
-    await csrf()
-    const { data } = await apiClient.get<UserResponse>('/api/user', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    return {
-      ...data,
-      emailVerifiedAt: data.email_verified_at,
-      createdAt: data.created_at,
-      updatedAt: data.updated_at
-    }
-  } catch (error) {
-    if (isAxiosError(error)) {
-      switch (error.response?.status) {
-        case HttpStatusCode.Unauthorized:
-          return null
-        default:
-          throw error
-      }
-    }
-    throw error
+export async function getUser(token: string): Promise<User> {
+  const { data } = await apiClient.get<UserResponse>('/api/user', {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  return {
+    ...data,
+    emailVerifiedAt: data.email_verified_at,
+    createdAt: data.created_at,
+    updatedAt: data.updated_at
   }
 }
 
@@ -82,7 +68,6 @@ export async function createToken({
 }
 
 export async function revokeTokens(token: string) {
-  await csrf()
   await apiClient.delete('/sanctum/token', {
     headers: {
       Authorization: `Bearer ${token}`

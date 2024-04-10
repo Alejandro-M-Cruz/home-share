@@ -19,6 +19,7 @@ export default function Login() {
   const {
     control,
     setError,
+    reset,
     handleSubmit,
     formState: { errors }
   } = useForm<LoginRequest>({
@@ -34,6 +35,7 @@ export default function Login() {
 
   useEffect(() => {
     if (loginStatus === 'success') {
+      reset()
       router.push('/')
       return
     }

@@ -6,9 +6,7 @@ import * as tokenStorage from '@/services/token-storage'
 import { LoginRequest, SignupRequest } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
 
-export function useAuth({
-  redirectIfNotAuthenticated
-}: { redirectIfNotAuthenticated?: Href<string> } = {}) {
+export function useAuth() {
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -19,19 +17,14 @@ export function useAuth({
   const userQueryFn = async () => {
     const token = await tokenStorage.getToken()
     if (!token) {
-      if (redirectIfNotAuthenticated) {
-        router.push(redirectIfNotAuthenticated)
-      }
       return null
     }
-    const user = await auth.getUser(token)
-    if (!user) {
+    try {
+      return auth.getUser(token)
+    } catch {
       await tokenStorage.removeToken()
-      if (redirectIfNotAuthenticated) {
-        router.push(redirectIfNotAuthenticated)
-      }
+      return null
     }
-    return user
   }
 
   const {

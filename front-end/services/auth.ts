@@ -1,4 +1,4 @@
-import { apiClient } from '@/services/api-client'
+import { apiClient } from '@/api/api-client'
 import { SignupRequest, User } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
 
@@ -6,43 +6,19 @@ async function csrf() {
   await apiClient.get('/sanctum/csrf-cookie')
 }
 
-type UserResponse = {
-  id: number
-  name: string
-  email: string
-  email_verified_at: string
-  created_at: string
-  updated_at: string
-}
-
-export async function getUser(token: string): Promise<User> {
-  const { data } = await apiClient.get<UserResponse>('/api/user', {
+async function getUser(token: string): Promise<User> {
+  const { data } = await apiClient.get<User>('/api/user', {
     headers: { Authorization: `Bearer ${token}` }
   })
-  return {
-    ...data,
-    emailVerifiedAt: data.email_verified_at,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at
-  }
+  return data
 }
 
-export async function signup({
-  name,
-  email,
-  password,
-  passwordConfirmation
-}: SignupRequest) {
+async function signup(signupData: SignupRequest) {
   await csrf()
-  await apiClient.post('/register', {
-    name,
-    email,
-    password,
-    password_confirmation: passwordConfirmation
-  })
+  await apiClient.post('/register', signupData)
   return createToken({
-    email,
-    password,
+    email: signupData.email,
+    password: signupData.password,
     deviceName: getDeviceName()
   })
 }
@@ -53,24 +29,23 @@ type TokenRequest = {
   deviceName: string
 }
 
-export async function createToken({
-  email,
-  password,
-  deviceName
-}: TokenRequest) {
+async function createToken(tokenRequest: TokenRequest) {
   await csrf()
-  const { data: token } = await apiClient.post<string>('/sanctum/token', {
-    email,
-    password,
-    device_name: deviceName
-  })
+  const { data: token } = await apiClient.post<string>('/sanctum/token', tokenRequest)
   return token
 }
 
-export async function revokeTokens(token: string) {
+async function revokeTokens(token: string) {
   await apiClient.delete('/sanctum/token', {
     headers: {
       Authorization: `Bearer ${token}`
     }
   })
+}
+
+export {
+  getUser,
+  signup,
+  createToken,
+  revokeTokens
 }

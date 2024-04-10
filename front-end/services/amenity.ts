@@ -1,5 +1,5 @@
 import { csrf } from '@/services/auth'
-import { apiClient } from '@/services/api-client'
+import { apiClient } from '@/api/api-client'
 import { Amenity } from '@/types/amenity'
 
 type AmenitiesResponse = {

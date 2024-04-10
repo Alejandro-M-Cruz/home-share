@@ -13,13 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            AmenitySeeder::class
-        ]);
-
         User::factory()->create([
             'name' => 'Test Auth',
             'email' => 'test@example.com',
+        ]);
+
+        $this->call([
+            AmenitySeeder::class,
+            RentalListingSeeder::class,
         ]);
     }
 }

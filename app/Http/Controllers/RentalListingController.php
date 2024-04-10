@@ -12,7 +12,7 @@ class RentalListingController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(RentalListing::all());
     }
 
     /**

@@ -1,5 +1,5 @@
 import { apiClient } from '@/api/api-client'
-import { SignupRequest, User } from '@/types/auth'
+import { PasswordReset, SignupRequest, User } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
 
 async function csrf() {
@@ -43,9 +43,21 @@ async function revokeTokens(token: string) {
   })
 }
 
+async function forgotPassword({ email }: { email: string }) {
+  await csrf()
+  await apiClient.post('/forgot-password', { email })
+}
+
+async function resetPassword(passwordReset: PasswordReset) {
+  await csrf()
+  await apiClient.post('/reset-password', passwordReset)
+}
+
 export {
   getUser,
   signup,
   createToken,
-  revokeTokens
+  revokeTokens,
+  forgotPassword,
+  resetPassword
 }

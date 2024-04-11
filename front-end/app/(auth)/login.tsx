@@ -7,10 +7,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { Text } from '@/components/Themed'
 import { handleError } from '@/helpers/handle-error'
-import { useRouter } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 
 const loginValidationSchema: z.ZodType<LoginRequest> = z.object({
-  email: z.string().email(),
+  email: z.string().email().min(8).max(320),
   password: z.string().min(8).max(128)
 })
 
@@ -23,12 +23,12 @@ export default function Login() {
     handleSubmit,
     formState: { errors }
   } = useForm<LoginRequest>({
-    mode: 'onBlur',
     resolver: zodResolver(loginValidationSchema),
     defaultValues: {
       email: '',
       password: ''
-    }
+    },
+    mode: 'onChange'
   })
 
   const router = useRouter()
@@ -85,14 +85,19 @@ export default function Login() {
         name="password"
       />
       {errors.password && <Text>{errors.password.message}</Text>}
+      {errors.root && (
+        <Text style={{ color: 'red' }}>{errors.root.message}</Text>
+      )}
+      <Link href="/forgot-password" style={{ marginTop: 20 }}>
+        <Text style={{ color: '#2196f3', fontWeight: 'bold', textDecorationLine: 'underline' }}>
+          Forgot your password?
+        </Text>
+      </Link>
       <Button
         title="Log in"
         onPress={handleSubmit(onSubmit)}
         disabled={loginStatus === 'pending'}
       />
-      {errors.root && (
-        <Text style={{ color: 'red' }}>{errors.root.message}</Text>
-      )}
     </View>
   )
 }

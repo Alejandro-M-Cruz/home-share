@@ -39,7 +39,8 @@ export default function Signup() {
       email: '',
       password: '',
       passwordConfirmation: ''
-    }
+    },
+    mode: 'onChange'
   })
 
   const router = useRouter()

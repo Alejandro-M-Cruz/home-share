@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import * as auth from '@/services/auth'
-import { Href, useRouter } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
 import { useCallback } from 'react'
 import * as tokenStorage from '@/services/token-storage'
 import { LoginRequest, SignupRequest } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
 
 export function useAuth() {
-  const router = useRouter()
+  const searchParams = useLocalSearchParams()
   const queryClient = useQueryClient()
 
   const invalidateUserQuery = useCallback(() => {
@@ -90,6 +90,32 @@ export function useAuth() {
     mutationFn: logoutMutationFn
   })
 
+  const {
+    mutate: forgotPassword,
+    error: forgotPasswordError,
+    status: forgotPasswordStatus
+  } = useMutation({
+    mutationKey: ['forgotPassword'],
+    mutationFn: auth.forgotPassword
+  })
+
+  const resetPasswordMutationFn = async (passwords: { password: string, passwordConfirmation: string}) => {
+    await auth.resetPassword({
+      token: searchParams.token as string || '',
+      email: searchParams.email as string || '',
+      ...passwords
+    })
+  }
+
+  const {
+    mutate: resetPassword,
+    error: resetPasswordError,
+    status: resetPasswordStatus
+  } = useMutation({
+    mutationKey: ['resetPassword'],
+    mutationFn: resetPasswordMutationFn
+  })
+
   return {
     user,
     userError,
@@ -102,6 +128,12 @@ export function useAuth() {
     loginStatus,
     logout,
     logoutError,
-    logoutStatus
+    logoutStatus,
+    forgotPassword,
+    forgotPasswordError,
+    forgotPasswordStatus,
+    resetPassword,
+    resetPasswordError,
+    resetPasswordStatus
   }
 }

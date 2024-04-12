@@ -59,7 +59,7 @@ export default function Signup() {
     }
   }, [signupStatus, signupError, setError, router])
 
-  const onSubmit: SubmitHandler<SignupRequest> = (data) => {
+  const onSubmit: SubmitHandler<SignupRequest> = data => {
     signup(data)
   }
 

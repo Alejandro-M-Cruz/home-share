@@ -1,7 +1,11 @@
-import { camelizeErrorResponse, camelizeResponse, decamelizeRequest } from '@/api/middleware'
+import {
+  camelizeErrorResponseData,
+  camelizeResponseData,
+  decamelizeRequestData
+} from '@/api/middleware'
 
 describe('middleware', () => {
-  describe('decamelizeRequest', () => {
+  describe('decamelizeRequestData', () => {
     it('should decamelize request data', () => {
       const request: any = {
         data: {
@@ -14,7 +18,7 @@ describe('middleware', () => {
         }
       }
 
-      const result = decamelizeRequest(request)
+      const result = decamelizeRequestData(request)
 
       expect(result).toEqual({
         data: {
@@ -35,13 +39,13 @@ describe('middleware', () => {
         }
       }
 
-      const result = decamelizeRequest(request)
+      const result = decamelizeRequestData(request)
 
       expect(result).toEqual(request)
     })
   })
 
-  describe('camelizeResponse', () => {
+  describe('camelizeResponseData', () => {
     it('should camelize data from json response', () => {
       const response: any = {
         data: {
@@ -49,11 +53,11 @@ describe('middleware', () => {
           anotherExampleField: 123
         },
         headers: {
-          'Content-Type': 'application/json; charset=utf-8'
+          'content-type': 'application/json; charset=utf-8'
         }
       }
 
-      const result = camelizeResponse(response)
+      const result = camelizeResponseData(response)
 
       expect(result).toEqual({
         data: {
@@ -61,23 +65,23 @@ describe('middleware', () => {
           anotherExampleField: 123
         },
         headers: {
-          'Content-Type': 'application/json; charset=utf-8'
+          'content-type': 'application/json; charset=utf-8'
         }
       })
     })
 
-    it ('should not camelize data from non-json response', () => {
+    it('should not camelize data from non-json response', () => {
       const response: any = {
         data: {
           example_field: 'test',
           anotherExampleField: 123
         },
         headers: {
-          'Content-Type': 'text/html'
+          'content-type': 'text/html'
         }
       }
 
-      const result = camelizeResponse(response)
+      const result = camelizeResponseData(response)
 
       expect(result).toEqual(response)
     })
@@ -85,47 +89,78 @@ describe('middleware', () => {
     it('should do nothing if response has no data', () => {
       const response: any = {
         headers: {
-          'Content-Type': 'application/json; charset=utf-8'
+          'content-type': 'application/json; charset=utf-8'
         }
       }
 
-      const result = camelizeResponse(response)
+      const result = camelizeResponseData(response)
 
       expect(result).toEqual(response)
     })
   })
 
-  describe('camelizeErrorResponse', () => {
-    it('should camelize error response data', () => {
-      const error: any = {
-        message: 'Error message',
+  describe('camelizeErrorResponseData', () => {
+    it('should camelize json data from error response', () => {
+      const error = {
+        example_field: 'test',
         response: {
+          headers: {
+            'content-type': 'application/json; charset=utf-8'
+          },
           data: {
-            example_field: 'test',
-            anotherExampleField: 123
+            message: 'Error message',
+            errors: {
+              example_field: ['test'],
+              another_example_field: 123
+            }
           }
         }
       }
 
-      expect(() => camelizeErrorResponse(error)).rejects.toEqual({
-        message: 'Error message',
+      expect(() => camelizeErrorResponseData(error)).rejects.toEqual({
+        example_field: 'test',
         response: {
+          headers: {
+            'content-type': 'application/json; charset=utf-8'
+          },
           data: {
-            exampleField: 'test',
-            anotherExampleField: 123
+            message: 'Error message',
+            errors: {
+              exampleField: ['test'],
+              anotherExampleField: 123
+            }
           }
         }
       })
     })
 
-    it('should do nothing if error has no response data', () => {
-      const error: any = {
-        message: 'Error message'
+    it('should not camelize data from non-json error response', () => {
+      const error = {
+        example_field: 'test',
+        response: {
+          headers: {
+            'content-type': 'text/html'
+          },
+          data: {
+            example_field: 'test'
+          }
+        }
       }
 
-      expect(() => camelizeErrorResponse(error)).rejects.toEqual({
-        message: 'Error message'
-      })
+      expect(() => camelizeErrorResponseData(error)).rejects.toEqual(error)
+    })
+
+    it('should do nothing if error has no response data', () => {
+      const error = {
+        example_field: 'test',
+        response: {
+          headers: {
+            'content-type': 'text/html'
+          }
+        }
+      }
+
+      expect(() => camelizeErrorResponseData(error)).rejects.toEqual(error)
     })
   })
 })

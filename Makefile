@@ -1,6 +1,8 @@
 # Running development server
 api:
 	@php artisan serve
+front-end:
+	@cd front-end && yarn start
 web:
 	@cd front-end && yarn expo start --web
 android:
@@ -8,22 +10,29 @@ android:
 ios:
 	@cd front-end && yarn expo start --ios
 
-#Testing
+# Repository
+diff-main:
+	@git diff --name-only main
+
+# Testing
 test-api:
 	@php artisan test
 test:
 	@cd front-end && yarn test
 
 # Dependencies
-install:
-	@composer install
+yarn-install:
 	@cd front-end && yarn install
+install: yarn-install
+	@composer install
 
 # Database
 migrate:
 	@php artisan migrate
 seed:
 	@php artisan db:seed
+seed-amenities:
+	@php artisan db:seed --class=AmenitySeeder
 fresh:
 	@php artisan migrate:fresh --seed
 
@@ -38,3 +47,7 @@ list-routes:
 # Cache
 clear-cache:
 	@php artisan optimize:clear
+
+# Storage
+link-storage:
+	@php artisan storage:link

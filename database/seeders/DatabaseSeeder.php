@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Amenity;
+use App\Models\Image;
+use App\Models\RentalListing;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +16,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Auth::factory(10)->create();
+        Storage::disk('public')->deleteDirectory('images');
 
-        User::factory()->create([
-            'name' => 'Test Auth',
-            'email' => 'test@example.com',
-        ]);
+        Storage::disk('public')->makeDirectory('images');
+
+        $this->call([AmenitySeeder::class]);
+
+        $rentalListingFactory = RentalListing::factory()
+            ->has(Image::factory()->count(3))
+            ->count(3);
+
+        User::factory()
+            ->has($rentalListingFactory)
+            ->create();
+
+        RentalListing::all()->each(function (RentalListing $rentalListing) {
+            $amenities = Amenity::inRandomOrder()->limit(3)->get();
+            $rentalListing->amenities()->attach($amenities);
+        });
     }
 }

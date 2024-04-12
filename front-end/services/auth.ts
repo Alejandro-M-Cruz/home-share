@@ -2,7 +2,7 @@ import { apiClient } from '@/api/api-client'
 import { PasswordReset, SignupRequest, User } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
 
-async function csrf() {
+export async function csrf() {
   await apiClient.get('/sanctum/csrf-cookie')
 }
 
@@ -31,7 +31,10 @@ type TokenRequest = {
 
 async function createToken(tokenRequest: TokenRequest) {
   await csrf()
-  const { data: token } = await apiClient.post<string>('/sanctum/token', tokenRequest)
+  const { data: token } = await apiClient.post<string>(
+    '/sanctum/token',
+    tokenRequest
+  )
   return token
 }
 

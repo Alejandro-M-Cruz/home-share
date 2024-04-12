@@ -35,8 +35,7 @@ export default function Login() {
 
   useEffect(() => {
     if (loginStatus === 'success') {
-      reset()
-      router.push('/')
+      router.replace('/')
       return
     }
     if (loginError) {
@@ -45,7 +44,8 @@ export default function Login() {
         setError
       })
     }
-  }, [loginStatus, loginError, setError, router])
+    return reset
+  }, [loginStatus, loginError, setError, router, reset])
 
   const onSubmit: SubmitHandler<LoginRequest> = (credentials) => {
     login(credentials)

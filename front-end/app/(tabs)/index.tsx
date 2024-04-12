@@ -1,13 +1,14 @@
-import { StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 
 import EditScreenInfo from '@/components/EditScreenInfo'
 import { Text, View } from '@/components/Themed'
 import { useAuth } from '@/hooks/useAuth'
+import { ImagePicker } from '@/components/ImagePicker'
 
 export default function TabOneScreen() {
   const { user, userError, userStatus } = useAuth()
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Tab One</Text>
       <View
         style={styles.separator}
@@ -21,7 +22,8 @@ export default function TabOneScreen() {
           <Text>{JSON.stringify(user, null, 2)}</Text>
         </>
       )}
-    </View>
+      <ImagePicker />
+    </ScrollView>
   )
 }
 

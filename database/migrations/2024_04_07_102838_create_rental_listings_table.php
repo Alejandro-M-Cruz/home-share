@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->enum('type', ['apartment', 'house']);
+            $table->enum('type', ['house', 'apartment', 'apartment_block']);
             $table->text('rules')->nullable();
             $table->text('additional_information')->nullable();
 
-            $table->decimal('monthly_rent_amount', total: 10, places: 2);
+            $table->decimal('monthly_rent', total: 10, places: 2);
             $table->unsignedInteger('year_built')->nullable();
             $table->unsignedInteger('size');
             $table->enum('size_unit', ['sq_ft', 'sq_m']);

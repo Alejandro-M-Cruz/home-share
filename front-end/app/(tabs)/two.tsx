@@ -1,15 +1,18 @@
-import { StyleSheet } from 'react-native'
+import { Button, ScrollView, StyleSheet } from 'react-native'
 
 import EditScreenInfo from '@/components/EditScreenInfo'
 import { Text, View } from '@/components/Themed'
 import { useAmenities } from '@/hooks/useAmenities'
 import { Amenity } from '@/components/Amenity'
+import { useRentalListings } from '@/hooks/useRentalListings'
+import { RentalListing } from '@/components/RentalListing'
+import { Fragment } from 'react'
 
 export default function TabTwoScreen() {
   const { amenities, error, status } = useAmenities()
-
+  const { data, fetchNextPage, hasNextPage, isFetching } = useRentalListings()
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
       <View
         style={styles.separator}
@@ -26,7 +29,22 @@ export default function TabTwoScreen() {
           <Amenity key={amenity.id} amenity={amenity} />
         ))
       )}
-    </View>
+      {data?.pages.map((page, i) => (
+        <Fragment key={i}>
+          {page.data.map(rentalListing => (
+            <RentalListing
+              key={rentalListing.id}
+              rentalListing={rentalListing}
+            />
+          ))}
+        </Fragment>
+      ))}
+      <Button
+        title="Load More"
+        onPress={() => fetchNextPage()}
+        disabled={!hasNextPage || isFetching}
+      />
+    </ScrollView>
   )
 }
 

@@ -1,5 +1,9 @@
 import axios from 'axios'
-import { camelizeErrorResponseData, camelizeResponseData, decamelizeRequestData } from '@/api/middleware'
+import {
+  camelizeErrorResponseData,
+  camelizeResponseData,
+  decamelizeRequestData
+} from '@/api/middleware'
 
 export const apiClient = axios.create({
   baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,
@@ -12,4 +16,7 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(decamelizeRequestData)
 
-apiClient.interceptors.response.use(camelizeResponseData, camelizeErrorResponseData)
+apiClient.interceptors.response.use(
+  camelizeResponseData,
+  camelizeErrorResponseData
+)

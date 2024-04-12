@@ -47,7 +47,7 @@ export default function Login() {
     }
   }, [loginStatus, loginError, setError, router])
 
-  const onSubmit: SubmitHandler<LoginRequest> = (credentials) => {
+  const onSubmit: SubmitHandler<LoginRequest> = credentials => {
     login(credentials)
   }
 

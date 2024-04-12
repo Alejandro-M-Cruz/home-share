@@ -1,1 +1,7 @@
-node_modules.expo
+node_modules
+.*
+*.lock
+*.json
+*.d.ts
+*.config.{ts,js}
+assets

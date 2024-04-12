@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RentalListingResource;
 use App\Models\RentalListing;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,11 @@ class RentalListingController extends Controller
      */
     public function index()
     {
-        return response()->json(RentalListing::all());
+        return RentalListingResource::collection(
+            RentalListing::where('status', 'active')
+                ->orderBy('created_at', 'desc')
+                ->cursorPaginate(2)
+        );
     }
 
     /**

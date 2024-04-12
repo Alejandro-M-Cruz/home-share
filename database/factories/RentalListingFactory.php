@@ -27,7 +27,7 @@ class RentalListingFactory extends Factory
             'rules' => $this->faker->paragraph,
             'additional_information' => $this->faker->paragraph,
 
-            'monthly_rent_amount' => $this->faker->randomFloat(2, 100, 10000),
+            'monthly_rent' => $this->faker->randomFloat(2, 100, 10000),
             'year_built' => $this->faker->numberBetween(1900, 2024),
             'size' => $this->faker->numberBetween(10, 1000),
             'size_unit' => $this->faker->randomElement(['sq_ft', 'sq_m']),

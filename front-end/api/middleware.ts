@@ -21,7 +21,9 @@ const camelizeResponseData = (response: AxiosResponse) => {
 const camelizeErrorResponseData = (error: any) => {
   if (
     error.response?.data &&
-    error.response.headers?.['content-type']?.toString().includes('application/json')
+    error.response.headers?.['content-type']
+      ?.toString()
+      .includes('application/json')
   ) {
     error.response.data = camelizeKeys(error.response.data)
   }

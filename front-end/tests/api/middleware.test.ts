@@ -70,7 +70,7 @@ describe('middleware', () => {
       })
     })
 
-    it ('should not camelize data from non-json response', () => {
+    it('should not camelize data from non-json response', () => {
       const response: any = {
         data: {
           example_field: 'test',

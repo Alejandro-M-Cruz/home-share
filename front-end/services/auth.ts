@@ -31,7 +31,10 @@ type TokenRequest = {
 
 async function createToken(tokenRequest: TokenRequest) {
   await csrf()
-  const { data: token } = await apiClient.post<string>('/sanctum/token', tokenRequest)
+  const { data: token } = await apiClient.post<string>(
+    '/sanctum/token',
+    tokenRequest
+  )
   return token
 }
 
@@ -43,9 +46,4 @@ async function revokeTokens(token: string) {
   })
 }
 
-export {
-  getUser,
-  signup,
-  createToken,
-  revokeTokens
-}
+export { getUser, signup, createToken, revokeTokens }

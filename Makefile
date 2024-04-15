@@ -6,6 +6,7 @@ front-end:
 web:
 	@cd front-end && yarn expo start --web
 android:
+	@adb reverse tcp:8000 tcp:8000
 	@cd front-end && yarn expo start --android
 ios:
 	@cd front-end && yarn expo start --ios

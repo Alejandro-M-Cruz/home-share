@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import * as auth from '@/services/auth'
 import { useLocalSearchParams } from 'expo-router'
-import { useCallback } from 'react'
 import * as tokenStorage from '@/services/token-storage'
 import { LoginRequest, SignupRequest } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
@@ -10,9 +9,9 @@ export function useAuth() {
   const searchParams = useLocalSearchParams()
   const queryClient = useQueryClient()
 
-  const invalidateUserQuery = useCallback(() => {
+  const invalidateUserQuery = () => {
     return queryClient.invalidateQueries({ queryKey: ['user'] })
-  }, [queryClient])
+  }
 
   const userQueryFn = async () => {
     const token = await tokenStorage.getToken()

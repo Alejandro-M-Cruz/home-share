@@ -35,8 +35,6 @@ class RentalListingFactory extends Factory
             'bathrooms' => $this->faker->numberBetween(1, 5),
             'bedrooms' => $this->faker->numberBetween(1, 5),
             'available_rooms' => $this->faker->numberBetween(1, 5),
-
-            'location_id' => Location::factory(),
         ];
     }
 }

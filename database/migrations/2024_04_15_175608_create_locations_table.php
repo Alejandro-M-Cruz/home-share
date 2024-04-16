@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('rental_listing_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
             $this->create_location_columns($table);
 
             $table->timestamps();
         });
         Schema::table('rental_listings', function (Blueprint $table) {
-            $table->foreignId('location_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
             $table->dropColumn('country');
             $table->dropColumn('state');
             $table->dropColumn('city');
@@ -44,8 +44,6 @@ return new class extends Migration
         Schema::dropIfExists('locations');
         Schema::table('rental_listings', function (Blueprint $table) {
             $this->create_location_columns($table);
-
-            $table->dropConstrainedForeignId('location_id');
         });
     }
 

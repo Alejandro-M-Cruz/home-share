@@ -4,8 +4,8 @@ import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
 import { latLng } from '@/helpers/lat-lng'
 import { Location } from '@/types/location'
 
-const INITIAL_CENTER = { lat: 0, lng: 0 }
-const INITIAL_ZOOM = 2
+const INITIAL_CENTER = { lat: 20, lng: 0 }
+const INITIAL_ZOOM = 2.4
 const FOCUS_ZOOM = 18
 const ENDED_FOCUS_ZOOM = 15
 

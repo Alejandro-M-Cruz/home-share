@@ -16,7 +16,7 @@ class RentalListingController extends Controller
         return RentalListingResource::collection(
             RentalListing::where('status', 'active')
                 ->orderBy('created_at', 'desc')
-                ->cursorPaginate(2)
+                ->cursorPaginate(15)
         );
     }
 

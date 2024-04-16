@@ -9,7 +9,9 @@ class LocationController extends Controller
     public function index()
     {
         return response()->json(
-            Location::all()
+            Location::whereHas('rentalListing', function ($query) {
+                $query->where('status', 'active');
+            })->get()
         );
     }
 }

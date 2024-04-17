@@ -1,20 +1,17 @@
-import { MapProps } from '@/components/map/index'
 import { useCallback, useState } from 'react'
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
+import { GoogleMap, Marker } from '@react-google-maps/api'
 import { latLng } from '@/helpers/lat-lng'
 import { Location } from '@/types/location'
+import { MapProps } from '@/components/AddressAutocomplete'
+import { useGoogleMaps } from '@/hooks/useGoogleMaps'
 
 const INITIAL_CENTER = { lat: 20, lng: 0 }
 const INITIAL_ZOOM = 2.4
 const FOCUS_ZOOM = 18
 const ENDED_FOCUS_ZOOM = 15
 
-export function Map({ locations }: MapProps) {
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-maps-script',
-    googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''
-  })
-
+export function Map({ locations }: MapProps){
+  const { isLoaded } = useGoogleMaps()
   const [map, setMap] = useState<google.maps.Map | null>(null)
 
   const onLoad = useCallback((map: google.maps.Map) => {
@@ -48,5 +45,5 @@ export function Map({ locations }: MapProps) {
         <Marker key={location.id} position={latLng(location)} onClick={() => handleMarkerClick(location)} />
       ))}
     </GoogleMap>
-  ) : <></>
+  ) : <p>Loading...</p>
 }

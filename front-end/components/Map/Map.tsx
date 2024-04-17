@@ -1,7 +1,7 @@
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { MapProps } from '@/components/map/index'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { Location } from '@/types/location'
+import { MapProps } from '@/components/AddressAutocomplete'
 
 const INITIAL_REGION = {
   latitude: 0,

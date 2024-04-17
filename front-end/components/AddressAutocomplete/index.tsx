@@ -4,4 +4,4 @@ export type MapProps = {
   locations: Location[]
 }
 
-export * from './map'
+export * from './AddressAutocomplete'

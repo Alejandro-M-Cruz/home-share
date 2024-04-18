@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
-import EditScreenInfo from '@/components/EditScreenInfo'
-import { Text, View } from '@/components/Themed'
 import { useAuth } from '@/hooks/useAuth'
+import { Button } from '@/components/Button'
+import { Text } from '@/components/Text'
 
 export default function TabOneScreen() {
   const { user, userError, userStatus } = useAuth()
@@ -11,16 +11,33 @@ export default function TabOneScreen() {
       <Text style={styles.title}>Tab One</Text>
       <View
         style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
       {user && (
         <>
           <Text>User data:</Text>
           <Text>{JSON.stringify(user, null, 2)}</Text>
         </>
       )}
+      <View style={{ flex: 1, flexDirection: 'row', gap: 6, marginVertical: 12, padding: 10, backgroundColor: 'white' }}>
+        <Button variant="default">
+          <Text>Default</Text>
+        </Button>
+        <Button variant="destructive">
+          <Text className="text-white">Destructive</Text>
+        </Button>
+        <Button variant="outline">
+          <Text>Outline</Text>
+        </Button>
+        <Button variant="secondary">
+          <Text>Secondary</Text>
+        </Button>
+        <Button variant="ghost">
+          <Text>Ghost</Text>
+        </Button>
+        <Button variant="link">
+          <Text>Link</Text>
+        </Button>
+      </View>
     </View>
   )
 }

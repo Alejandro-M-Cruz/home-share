@@ -11,9 +11,7 @@ export default function TabTwoScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
-      <View
-        style={styles.separator}
-      />
+      <View style={styles.separator} />
       <View style={{ flex: 1, flexDirection: 'row' }}>
         {status === 'pending' ? (
           <Text>Loading...</Text>

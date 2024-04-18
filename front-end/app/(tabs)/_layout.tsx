@@ -16,7 +16,6 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-
   const { user, logout, logoutStatus } = useAuth()
 
   return (

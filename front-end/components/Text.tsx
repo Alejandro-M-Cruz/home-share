@@ -1,4 +1,4 @@
-import * as Slot from '@/primitives/Slot'
+import * as Slot from '@/primitives/slot'
 import { SlottableTextProps, TextRef } from '@/primitives/types'
 import * as React from 'react'
 import { Text as RNText } from 'react-native'
@@ -12,7 +12,11 @@ const Text = React.forwardRef<TextRef, SlottableTextProps>(
     const Component = asChild ? Slot.Text : RNText
     return (
       <Component
-        className={cn('text-base text-foreground web:select-text', textClass, className)}
+        className={cn(
+          'text-base text-foreground web:select-text',
+          textClass,
+          className
+        )}
         ref={ref}
         {...props}
       />

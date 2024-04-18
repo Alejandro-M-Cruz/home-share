@@ -4,27 +4,26 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React, { ComponentPropsWithoutRef } from 'react'
 
 type AmenityProps = ComponentPropsWithoutRef<typeof View> & {
-  amenity: AmenityType,
+  amenity: AmenityType
   className?: string
 }
 
-const Amenity = React.forwardRef<
-  React.ElementRef<typeof View>,
-  AmenityProps
->(({ amenity, className }, ref) => {
-  return (
-    <View ref={ref} className="flex flex-row items-center gap-3">
-      <View className="rounded-full bg-indigo-600 p-1.5">
-        <MaterialCommunityIcons
-          name={amenity.icon as any}
-          size={22}
-          color="white"
-        />
+const Amenity = React.forwardRef<React.ElementRef<typeof View>, AmenityProps>(
+  ({ amenity, className }, ref) => {
+    return (
+      <View ref={ref} className="flex flex-row items-center gap-3">
+        <View className="rounded-full bg-indigo-600 p-1.5">
+          <MaterialCommunityIcons
+            name={amenity.icon as any}
+            size={22}
+            color="white"
+          />
+        </View>
+        <Text className="font-medium">{amenity.name}</Text>
       </View>
-      <Text className="font-medium">{amenity.name}</Text>
-    </View>
-  )
-})
+    )
+  }
+)
 
 Amenity.displayName = 'Amenity'
 

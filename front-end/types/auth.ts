@@ -26,9 +26,4 @@ type PasswordReset = {
   passwordConfirmation: string
 }
 
-export {
-  User,
-  SignupRequest,
-  LoginRequest,
-  PasswordReset
-}
+export { User, SignupRequest, LoginRequest, PasswordReset }

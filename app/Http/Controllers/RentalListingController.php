@@ -4,20 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\RentalListingResource;
 use App\Models\RentalListing;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class RentalListingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return RentalListingResource::collection(
-            RentalListing::where('status', 'active')
-                ->orderBy('created_at', 'desc')
-                ->cursorPaginate(2)
-        );
+        $rentalListings = QueryBuilder::for(RentalListing::class)
+            ->where('status', 'active')
+            ->allowedFilters(['city', 'country', 'monthly_rent', 'type'])
+            ->defaultSort('-created_at')
+            ->allowedSorts('created_at', 'updated_at', 'monthly_rent', 'available_rooms', 'size', 'year_built')
+            ->cursorPaginate($request->get('per_page', 12));
+
+        return RentalListingResource::collection($rentalListings);
     }
 
     /**

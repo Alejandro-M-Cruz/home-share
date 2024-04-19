@@ -7,6 +7,7 @@ use App\Models\RentalListing;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class RentalListingController extends Controller
@@ -17,8 +18,14 @@ class RentalListingController extends Controller
     public function index(Request $request)
     {
         $rentalListings = QueryBuilder::for(RentalListing::class)
-            ->where('status', 'active')
-            ->allowedFilters(['city', 'country', 'monthly_rent', 'type'])
+            ->active()
+            ->allowedFilters([
+                'type',
+                'country',
+                'city',
+                AllowedFilter::scope('monthly_rent_between', 'whereMonthlyRentBetween'),
+                AllowedFilter::scope('available_rooms_between', 'whereAvailableRoomsBetween'),
+            ])
             ->defaultSort('-created_at')
             ->allowedSorts('created_at', 'updated_at', 'monthly_rent', 'available_rooms', 'size', 'year_built')
             ->cursorPaginate($request->get('per_page', 12));

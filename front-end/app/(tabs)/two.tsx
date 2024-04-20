@@ -1,12 +1,9 @@
-import { Button, ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
-import EditScreenInfo from '@/components/EditScreenInfo'
-import { Text, View } from '@/components/Themed'
+import { Text } from '@/components/Text'
 import { useAmenities } from '@/hooks/useAmenities'
 import { Amenity } from '@/components/Amenity'
 import { useRentalListings } from '@/hooks/useRentalListings'
-import { RentalListing } from '@/components/RentalListing'
-import { Fragment } from 'react'
 
 export default function TabTwoScreen() {
   const { amenities, error, status } = useAmenities()
@@ -14,22 +11,21 @@ export default function TabTwoScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
-      {status === 'pending' ? (
-        <Text>Loading...</Text>
-      ) : status === 'error' ? (
-        <Text>Error: {error?.message}</Text>
-      ) : (
-        amenities?.map(amenity => (
-          <Amenity key={amenity.id} amenity={amenity} />
-        ))
-      )}
-      {data?.pages.map((page, i) => (
+      <View style={styles.separator} />
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        {status === 'pending' ? (
+          <Text>Loading...</Text>
+        ) : status === 'error' ? (
+          <Text>Error: {error?.message}</Text>
+        ) : (
+          <View style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
+            {amenities?.map(amenity => (
+              <Amenity key={amenity.id} amenity={amenity} />
+            ))}
+          </View>
+        )}
+      </View>
+      {/*{data?.pages.map((page, i) => (
         <Fragment key={i}>
           {page.data.map(rentalListing => (
             <RentalListing
@@ -39,11 +35,11 @@ export default function TabTwoScreen() {
           ))}
         </Fragment>
       ))}
-      <Button
+      <Button.tsx
         title="Load More"
         onPress={() => fetchNextPage()}
         disabled={!hasNextPage || isFetching}
-      />
+      />*/}
     </ScrollView>
   )
 }

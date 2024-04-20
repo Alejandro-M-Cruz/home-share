@@ -4,6 +4,7 @@ import { Link, Tabs } from 'expo-router'
 import { Button, Pressable, View } from 'react-native'
 
 import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/components/useColorScheme'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
 import { useAuth } from '@/hooks/useAuth'
 
@@ -16,12 +17,14 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const colorScheme = useColorScheme()
+
   const { user, logout, logoutStatus } = useAuth()
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.light.tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true)
@@ -63,7 +66,7 @@ export default function TabLayout() {
                     <FontAwesome
                       name="info-circle"
                       size={25}
-                      color={Colors.light.text}
+                      color={Colors[colorScheme ?? 'light'].text}
                       style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                     />
                   )}

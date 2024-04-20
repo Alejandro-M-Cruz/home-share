@@ -4,11 +4,11 @@ api:
 front-end:
 	@cd front-end && yarn start
 web:
-	@cd front-end && yarn expo start --web --clear
+	@cd front-end && yarn expo start --web
 android:
-	@cd front-end && yarn expo start --android --clear
+	@cd front-end && yarn expo start --android
 ios:
-	@cd front-end && yarn expo start --ios --clear
+	@cd front-end && yarn expo start --ios
 
 # Repository
 diff-main:

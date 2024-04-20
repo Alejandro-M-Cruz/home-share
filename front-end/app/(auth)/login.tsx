@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
-import { Text } from '@/components/Text'
+import { Text } from '@/components/Themed'
 import { handleError } from '@/helpers/handle-error'
 import { Link, useRouter } from 'expo-router'
 
@@ -89,13 +89,7 @@ export default function Login() {
         <Text style={{ color: 'red' }}>{errors.root.message}</Text>
       )}
       <Link href="/forgot-password" style={{ marginTop: 20 }}>
-        <Text
-          style={{
-            color: '#2196f3',
-            fontWeight: 'bold',
-            textDecorationLine: 'underline'
-          }}
-        >
+        <Text style={{ color: '#2196f3', fontWeight: 'bold', textDecorationLine: 'underline' }}>
           Forgot your password?
         </Text>
       </Link>

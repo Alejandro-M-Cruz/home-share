@@ -25,8 +25,7 @@ export default function ForgotPassword() {
     mode: 'onChange'
   })
 
-  const { forgotPassword, forgotPasswordError, forgotPasswordStatus } =
-    useAuth()
+  const { forgotPassword, forgotPasswordError, forgotPasswordStatus } = useAuth()
 
   useEffect(() => {
     if (forgotPasswordStatus === 'success') {
@@ -41,7 +40,7 @@ export default function ForgotPassword() {
     }
   }, [forgotPasswordStatus, forgotPasswordError, setError])
 
-  const onSubmit: SubmitHandler<{ email: string }> = data => {
+  const onSubmit: SubmitHandler<{ email: string }> = (data) => {
     forgotPassword(data)
   }
 
@@ -66,7 +65,10 @@ export default function ForgotPassword() {
         <Text style={{ color: 'red' }}>{errors.email.message}</Text>
       )}
       {errors.root && <Text>{errors.root.message}</Text>}
-      <Button title="Send reset link" onPress={handleSubmit(onSubmit)} />
+      <Button
+        title="Send reset link"
+        onPress={handleSubmit(onSubmit)}
+      />
       {forgotPasswordStatus === 'success' && (
         <Text>The password reset link has been sent to your email</Text>
       )}
@@ -108,3 +110,4 @@ const styles = StyleSheet.create({
     paddingLeft: 20
   }
 })
+

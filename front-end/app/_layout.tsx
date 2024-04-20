@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '@/services/query-client'
-import '../global.css'
+import '@/global.css'
 
 export {
   // Catch any errors thrown by the Layout component.

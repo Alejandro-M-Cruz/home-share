@@ -1,28 +1,35 @@
 import { apiClient } from '@/api/api-client'
-import { RentalListing } from '@/types/rental-listing'
+import {
+  GetRentalListingsParams,
+  RentalListingPage
+} from '@/types/rental-listing'
 
-type RentalListingsResponse = {
-  data: RentalListing[]
-  links: {
-    first: string | null
-    last: string | null
-    next: string | null
-    prev: string | null
-  }
-  meta: {
-    path: string
-    perPage: number
-    nextCursor: string | null
-    prevCursor: string | null
-  }
-}
-
-async function getRentalListings({ cursor }: { cursor: string | null }) {
-  const params = cursor ? { cursor } : {}
-  const { data } = await apiClient.get<RentalListingsResponse>(
+async function getRentalListings({
+  cursor,
+  perPage,
+  sortBy,
+  sortDirection,
+  filters
+}: GetRentalListingsParams) {
+  const { data } = await apiClient.get<RentalListingPage>(
     '/api/rental-listings',
     {
-      params
+      params: {
+        cursor,
+        per_page: perPage,
+        sort: sortBy && (sortDirection === 'desc' ? '-' : '') + sortBy,
+        filter: {
+          type: filters?.type,
+          country: filters?.country,
+          city: filters?.city,
+          monthly_rent_between: filters?.maxMonthlyRent
+            ? [filters?.minMonthlyRent, filters?.maxMonthlyRent]
+            : filters?.minMonthlyRent,
+          available_rooms_between: filters?.maxAvailableRooms
+            ? [filters?.minAvailableRooms, filters?.maxAvailableRooms]
+            : filters?.minAvailableRooms
+        }
+      }
     }
   )
   return data

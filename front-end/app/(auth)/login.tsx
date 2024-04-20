@@ -89,7 +89,13 @@ export default function Login() {
         <Text style={{ color: 'red' }}>{errors.root.message}</Text>
       )}
       <Link href="/forgot-password" style={{ marginTop: 20 }}>
-        <Text style={{ color: '#2196f3', fontWeight: 'bold', textDecorationLine: 'underline' }}>
+        <Text
+          style={{
+            color: '#2196f3',
+            fontWeight: 'bold',
+            textDecorationLine: 'underline'
+          }}
+        >
           Forgot your password?
         </Text>
       </Link>

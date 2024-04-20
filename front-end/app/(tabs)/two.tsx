@@ -1,4 +1,4 @@
-import { Button, ScrollView, StyleSheet } from 'react-native'
+import { Button, Platform, ScrollView, StyleSheet } from 'react-native'
 
 import EditScreenInfo from '@/components/EditScreenInfo'
 import { Text, View } from '@/components/Themed'
@@ -7,12 +7,19 @@ import { Amenity } from '@/components/Amenity'
 import { useRentalListings } from '@/hooks/useRentalListings'
 import { RentalListing } from '@/components/RentalListing'
 import { Fragment } from 'react'
+import { GetRentalListingsParams, RentalListingSortBy } from '@/types/rental-listing'
 
 export default function TabTwoScreen() {
   const { amenities, error, status } = useAmenities()
-  const { data, fetchNextPage, hasNextPage, isFetching } = useRentalListings()
+  const { data, fetchNextPage, fetchPreviousPage, hasNextPage, isFetching, refetch, params, setParams } =
+    useRentalListings()
+
+  const handleParamChange = async (newParams: GetRentalListingsParams) => {
+    setParams({ ...params, ...newParams })
+  }
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView>
       <Text style={styles.title}>Tab Two</Text>
       <View
         style={styles.separator}
@@ -20,6 +27,19 @@ export default function TabTwoScreen() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <EditScreenInfo path="app/(tabs)/two.tsx" />
+      {Platform.OS === 'web' && (
+        <select
+          style={{ margin: 30 }}
+          onChange={e => handleParamChange({ sortBy: e.target.value as RentalListingSortBy })}
+        >
+          <option value="created_at">Created At</option>
+          <option value="updated_at">Updated At</option>
+          <option value="monthly_rent">Monthly Rent</option>
+          <option value="available_rooms">Available Rooms</option>
+          <option value="size">Size</option>
+          <option value="year_built">Year Built</option>
+        </select>
+      )}
       {status === 'pending' ? (
         <Text>Loading...</Text>
       ) : status === 'error' ? (
@@ -44,16 +64,12 @@ export default function TabTwoScreen() {
         onPress={() => fetchNextPage()}
         disabled={!hasNextPage || isFetching}
       />
+      <Button title="Refetch" onPress={() => refetch()} />
     </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   title: {
     fontSize: 20,
     fontWeight: 'bold'

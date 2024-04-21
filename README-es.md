@@ -96,7 +96,13 @@ De nuevo, se puede verficar ejecutando
 
 3. Crear un nuevo fichero dentro del directorio `front-end`, llamado `.env` y copiar en él todo el contenido del archivo `front-end/.env.example`
 
-4. Ejecutar el frontend en el navegador:
+4. Copiar la variable de entorno `GOOGLE_MAPS_API_KEY` en el archivo `.env` y añadir la clave de la API de Google Maps, que se encuentra en el fichero `front-end/app.json`
+
+4. Generar el código fuente nativo (durante el desarrollo, no importa si hay errores al ejecutar este comando):
+
+    `yarn build`
+
+5. Ejecutar el frontend en el navegador:
 
     `yarn web`
 

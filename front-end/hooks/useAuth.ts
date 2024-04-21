@@ -98,10 +98,13 @@ export function useAuth() {
     mutationFn: auth.forgotPassword
   })
 
-  const resetPasswordMutationFn = async (passwords: { password: string, passwordConfirmation: string}) => {
+  const resetPasswordMutationFn = async (passwords: {
+    password: string
+    passwordConfirmation: string
+  }) => {
     await auth.resetPassword({
-      token: searchParams.token as string || '',
-      email: searchParams.email as string || '',
+      token: (searchParams.token as string) || '',
+      email: (searchParams.email as string) || '',
       ...passwords
     })
   }

@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
 
         $rentalListingFactory = RentalListing::factory()
             ->has(Image::factory()->count(3))
+            ->hasLocation()
             ->count(3);
 
         User::factory()

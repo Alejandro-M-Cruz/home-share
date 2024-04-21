@@ -7,16 +7,18 @@ import { useEffect } from 'react'
 import { handleError } from '@/helpers/handle-error'
 import { Link } from 'expo-router'
 
-const passwordResetValidationSchema = z.object({
-  password: z.string().min(8).max(128),
-  passwordConfirmation: z.string().min(8).max(128)
-}).refine(
-  ({ password, passwordConfirmation }) => password === passwordConfirmation,
-  {
-    message: 'Passwords must match.',
-    path: ['passwordConfirmation']
-  }
-)
+const passwordResetValidationSchema = z
+  .object({
+    password: z.string().min(8).max(128),
+    passwordConfirmation: z.string().min(8).max(128)
+  })
+  .refine(
+    ({ password, passwordConfirmation }) => password === passwordConfirmation,
+    {
+      message: 'Passwords must match.',
+      path: ['passwordConfirmation']
+    }
+  )
 
 export default function PasswordReset() {
   const {
@@ -49,7 +51,10 @@ export default function PasswordReset() {
     }
   }, [resetPasswordStatus, resetPasswordError, setError])
 
-  const onSubmit: SubmitHandler<{ password: string, passwordConfirmation: string}> = (data) => {
+  const onSubmit: SubmitHandler<{
+    password: string
+    passwordConfirmation: string
+  }> = data => {
     resetPassword(data)
   }
 
@@ -87,16 +92,21 @@ export default function PasswordReset() {
         )}
         name="passwordConfirmation"
       />
-      {errors.passwordConfirmation && <Text>{errors.passwordConfirmation.message}</Text>}
+      {errors.passwordConfirmation && (
+        <Text>{errors.passwordConfirmation.message}</Text>
+      )}
       {errors.root && <Text>{errors.root.message}</Text>}
-      <Button
-        title="Reset password"
-        onPress={handleSubmit(onSubmit)}
-      />
+      <Button title="Reset password" onPress={handleSubmit(onSubmit)} />
       {resetPasswordStatus === 'success' && (
         <>
           <Text>Your password has been reset successfully</Text>
-          <Text>You can now <Link href="/login"><Text>log in</Text></Link> with your new password.</Text>
+          <Text>
+            You can now{' '}
+            <Link href="/login">
+              <Text>log in</Text>
+            </Link>{' '}
+            with your new password.
+          </Text>
         </>
       )}
     </View>

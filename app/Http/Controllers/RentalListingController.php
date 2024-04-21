@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\RentalListingResource;
 use App\Models\RentalListing;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -21,8 +19,8 @@ class RentalListingController extends Controller
             ->active()
             ->allowedFilters([
                 'type',
-                'country',
-                'city',
+                AllowedFilter::scope('country', 'whereCountry'),
+                AllowedFilter::scope('city', 'whereCity'),
                 AllowedFilter::scope('monthly_rent_between', 'whereMonthlyRentBetween'),
                 AllowedFilter::scope('available_rooms_between', 'whereAvailableRoomsBetween'),
             ])
@@ -38,7 +36,7 @@ class RentalListingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

@@ -42,4 +42,18 @@ class RentalListing extends Model
     {
         return $query->whereBetween('available_rooms', [$min, $max]);
     }
+
+    public function scopeWhereCity(Builder $query, string $city): Builder
+    {
+        return $query->whereHas('location', function ($query) use ($city) {
+            $query->where('city', $city);
+        });
+    }
+
+    public function scopeWhereCountry(Builder $query, string $country): Builder
+    {
+        return $query->whereHas('location', function ($query) use ($country) {
+            $query->where('country', $country);
+        });
+    }
 }

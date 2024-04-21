@@ -99,10 +99,10 @@ describe('index', function () {
     });
 
     it('filters by the key and value in the filter query parameter', function () {
-        RentalListing::factory()->create(['city' => 'New York']);
-        RentalListing::factory()->create(['city' => 'Los Angeles']);
+        RentalListing::factory()->create(['type' => 'apartment']);
+        RentalListing::factory()->create(['type' => 'house']);
 
-        $response = $this->get('/api/rental-listings?filter[city]=New York');
+        $response = $this->get('/api/rental-listings?filter[type]=apartment');
         $rentalListings = $response->json('data');
 
         $response->assertSuccessful();
@@ -110,8 +110,8 @@ describe('index', function () {
     });
 
     it('applies all filters when given more than one filter', function () {
-        RentalListing::factory()->count(2)->create(['city' => 'New York', 'country' => 'United States']);
-        RentalListing::factory()->create(['city' => 'Los Angeles', 'country' => 'United States']);
+        RentalListing::factory()->hasLocation(['city' => 'New York', 'country' => 'United States'])->count(2)->create();
+        RentalListing::factory()->hasLocation(['city' => 'Los Angeles', 'country' => 'United States'])->create();
 
         $response = $this->get('/api/rental-listings?filter[city]=New York&filter[country]=United States');
         $rentalListings = $response->json('data');
@@ -145,10 +145,10 @@ describe('index', function () {
     });
 
     it('can filter and sort at the same time', function () {
-        RentalListing::factory()->create(['monthly_rent' => 1000, 'city' => 'New York']);
-        RentalListing::factory()->create(['monthly_rent' => 2000, 'city' => 'Los Angeles']);
-        RentalListing::factory()->create(['monthly_rent' => 3000, 'city' => 'New York']);
-        RentalListing::factory()->create(['monthly_rent' => 4000, 'city' => 'New York']);
+        RentalListing::factory()->hasLocation(['city' => 'New York'])->create(['monthly_rent' => 1000]);
+        RentalListing::factory()->hasLocation(['city' => 'New York'])->create(['monthly_rent' => 2000]);
+        RentalListing::factory()->hasLocation(['city' => 'New York'])->create(['monthly_rent' => 4000]);
+        RentalListing::factory()->hasLocation(['city' => 'Los Angeles'])->create(['monthly_rent' => 2000]);
 
         $response = $this->get(
             '/api/rental-listings?filter[city]=New York&filter[monthly_rent_between]=1500.00&sort=-monthly_rent'
@@ -158,7 +158,7 @@ describe('index', function () {
         $response->assertSuccessful();
         $this->assertCount(2, $rentalListings);
         $this->assertEquals(
-            [4000, 3000],
+            [4000, 2000],
             array_column($rentalListings, 'monthly_rent')
         );
     });

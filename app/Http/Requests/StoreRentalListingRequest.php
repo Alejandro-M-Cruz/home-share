@@ -44,8 +44,8 @@ class StoreRentalListingRequest extends FormRequest
             'location.longitude' => ['required', 'numeric', 'min:-180', 'max:180'],
             'amenities' => ['required', 'array'],
             'amenities.*' => ['required', 'string', 'exists:amenities,slug', 'distinct'],
-            // 'images' => ['required', 'array'],
-            // 'images.*' => ['required', 'image', 'size:4096'],
+            'images' => ['required', 'array'],
+            'images.*' => ['required', 'image', 'max:4096'],
         ];
     }
 }

@@ -3,6 +3,7 @@
 use App\Models\Amenity;
 use App\Models\Location;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 
 it('returns forbidden if user is not authenticated', function () {
     $response = $this->postJson(route('rental-listings.store'));
@@ -21,11 +22,14 @@ it('validates the request', function () {
         'type',
         'description',
         'monthly_rent',
+        'bathrooms',
+        'bedrooms',
         'available_rooms',
         'size',
         'year_built',
         'location',
         'amenities',
+        'images',
     ]);
 });
 
@@ -33,6 +37,10 @@ it('can store a rental listing', function () {
     $user = User::factory()->create();
     $amenities = Amenity::factory(3)->create();
     $location = Location::factory()->make()->toArray();
+    $images = [
+        UploadedFile::fake()->image('image1.jpg'),
+        UploadedFile::fake()->image('image2.png')
+    ];
 
     $response = $this->actingAs($user)
         ->postJson(route('rental-listings.store'), [
@@ -47,12 +55,10 @@ it('can store a rental listing', function () {
             'year_built' => 2010,
             'location' => $location,
             'amenities' => $amenities->pluck('slug')->toArray(),
+            'images' => $images,
         ]);
 
-    dump($response->content());
-
     $response->assertCreated();
-
     $this->assertDatabaseHas('rental_listings', [
         'title' => 'Beautiful house in the city center',
         'type' => 'house',
@@ -65,8 +71,7 @@ it('can store a rental listing', function () {
         'year_built' => 2010,
         'user_id' => $user->id,
     ]);
-
-    $this->assertDatabaseHas('locations', $location);
-
     $this->assertDatabaseCount('amenity_rental_listing', 3);
+    $this->assertDatabaseHas('locations', $location);
+    $this->assertDatabaseCount('images', 2);
 });

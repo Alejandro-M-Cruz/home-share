@@ -13,6 +13,20 @@ class RentalListing extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'title',
+        'type',
+        'description',
+        'monthly_rent',
+        'bathrooms',
+        'bedrooms',
+        'available_rooms',
+        'size',
+        'year_built',
+        'status',
+    ];
+
     public function location(): HasOne
     {
         return $this->hasOne(Location::class);
@@ -46,14 +60,14 @@ class RentalListing extends Model
     public function scopeWhereCity(Builder $query, string $city): Builder
     {
         return $query->whereHas('location', function ($query) use ($city) {
-            $query->where('city', $city);
+            $query->where('city', 'LIKE', "%$city%");
         });
     }
 
     public function scopeWhereCountry(Builder $query, string $country): Builder
     {
         return $query->whereHas('location', function ($query) use ($country) {
-            $query->where('country', $country);
+            $query->where('country', 'LIKE', "%$country%");
         });
     }
 }

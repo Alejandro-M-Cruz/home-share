@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRentalListingRequest;
 use App\Http\Resources\RentalListingResource;
+use App\Models\Amenity;
 use App\Models\RentalListing;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -34,9 +37,24 @@ class RentalListingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRentalListingRequest $request)
     {
+        $data = $request->validated();
+        dump($data);
+        try {
+            $rentalListing = RentalListing::create(
+                array_merge($data, ['user_id' => auth()->id()])
+            );
 
+            $rentalListing->location()->create($data['location']);
+
+            $amenities = Amenity::whereIn('slug', $data['amenities'])->get();
+            $rentalListing->amenities()->attach($amenities);
+        } catch (\Exception $e) {
+            dump($e->getMessage());
+            throw $e;
+        }
+        return response()->noContent(Response::HTTP_CREATED);
     }
 
     /**

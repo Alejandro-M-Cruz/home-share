@@ -10,6 +10,19 @@ class Location extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'country',
+        'state',
+        'city',
+        'postal_code',
+        'street',
+        'street_number',
+        'door_number',
+        'floor_number',
+        'latitude',
+        'longitude',
+    ];
+
     public function rentalListing(): BelongsTo
     {
         return $this->belongsTo(RentalListing::class);

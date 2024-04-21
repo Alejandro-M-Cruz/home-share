@@ -25,7 +25,7 @@ return new class extends Migration
             $table->decimal('monthly_rent', total: 10, places: 2);
             $table->unsignedInteger('year_built')->nullable();
             $table->unsignedInteger('size');
-            $table->enum('size_unit', ['sq_ft', 'sq_m']);
+            $table->enum('size_unit', ['sq_ft', 'sq_m'])->default('sq_ft');
             $table->unsignedSmallInteger('bathrooms');
             $table->unsignedSmallInteger('bedrooms');
             $table->unsignedSmallInteger('available_rooms');

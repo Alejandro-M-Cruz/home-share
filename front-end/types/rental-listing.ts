@@ -51,8 +51,8 @@ export type RentalListingSortBy =
 
 export type RentalListingFilters = Partial<{
   type: RentalListingType
-  country: string
   city: string
+  country: string
   minMonthlyRent: number
   maxMonthlyRent: number
   minAvailableRooms: number

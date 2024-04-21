@@ -13,17 +13,14 @@ export default function TabTwoScreen() {
   const { amenities, error, status } = useAmenities()
   const { data, fetchNextPage, fetchPreviousPage, hasNextPage, isFetching, refetch, params, setParams } =
     useRentalListings()
-  const [minMonthlyRent, setMinMonthlyRent] = useState<number>()
-  const [maxMonthlyRent, setMaxMonthlyRent] = useState<number>()
-  const [country, setCountry] = useState<string>()
-  const [city, setCity] = useState<string>()
+  const [filters, setFilters] = useState<GetRentalListingsParams['filters']>({})
 
-  const handleParamChange = (newParams: GetRentalListingsParams) => {
+  const changeParam = (newParams: GetRentalListingsParams) => {
     setParams({ ...params, ...newParams })
   }
 
-  const handleFilterChange = (newFilters: GetRentalListingsParams['filters']) => {
-    setParams({ ...params, filters: { ...params.filters, ...newFilters } })
+  const changeFilter = (newFilters: GetRentalListingsParams['filters']) => {
+    setFilters({ ...params.filters, ...newFilters })
   }
 
   const resetParams = () => {
@@ -43,7 +40,7 @@ export default function TabTwoScreen() {
         <>
           <select
             style={{ margin: 30 }}
-            onChange={e => handleParamChange({ sortBy: e.target.value as RentalListingSortBy })}
+            onChange={e => changeParam({ sortBy: e.target.value as RentalListingSortBy })}
           >
             <option value="created_at">Created At</option>
             <option value="updated_at">Updated At</option>
@@ -54,7 +51,7 @@ export default function TabTwoScreen() {
           </select>
           <select
             style={{ marginInline: 30, marginBottom: 10 }}
-            onChange={e => handleParamChange({ sortDirection: e.target.value as 'asc' | 'desc' })}
+            onChange={e => changeParam({ sortDirection: e.target.value as 'asc' | 'desc' })}
           >
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
@@ -64,25 +61,25 @@ export default function TabTwoScreen() {
             <input
               type="number"
               placeholder="Min"
-              onChange={e => setMinMonthlyRent(e.target.value ? parseFloat(e.target.value) : undefined)}
+              onChange={e => changeFilter({ minMonthlyRent: e.target.value ? parseFloat(e.target.value) : undefined})}
             />
             <span>-</span>
             <input
               type="number"
               placeholder="Max"
-              onChange={e => setMaxMonthlyRent(e.target.value ? parseFloat(e.target.value) : undefined)}
+              onChange={e => changeFilter({ maxMonthlyRent: e.target.value ? parseFloat(e.target.value) : undefined })}
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', gap: 12, justifyContent: 'center' }}>
-            <input type="text" placeholder="Country" onChange={e => setCountry(e.target.value)} />
-            <input type="text" placeholder="City" onChange={e => setCity(e.target.value)} />
+            <input type="text" placeholder="Country" onChange={e => changeFilter({ country: e.target.value })} />
+            <input type="text" placeholder="City" onChange={e => changeFilter({ city: e.target.value })} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', gap: 12, justifyContent: 'center' }}>
             <button onClick={resetParams}>
               Reset
             </button>
             <button
-              onClick={() => handleFilterChange({ minMonthlyRent, maxMonthlyRent, country, city })}
+              onClick={() => changeParam({ filters })}
             >
               Apply
             </button>

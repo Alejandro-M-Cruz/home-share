@@ -1,10 +1,14 @@
+# Nativewind fix
+nativewind-fix:
+	@php nativewind-fix.php
+
 # Running development server
 api:
 	@php artisan serve
-front-end:
-	@php nativewind-fix.php && cd front-end && yarn start
+front-end: nativewind-fix
+	@cd front-end && yarn start
 web:
-	@php nativewind-fix.php && cd front-end && yarn expo start --web --clear
+	@cd front-end && yarn expo start --web --clear
 android:
 	@cd front-end && yarn expo start --android --clear
 ios:

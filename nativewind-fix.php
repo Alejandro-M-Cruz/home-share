@@ -9,3 +9,5 @@ $replace = '`require(\'${config.nativewind.output.replace(/\\\\/g, \'\\\\\\\\\')
 $result = str_replace($search, $replace, $content);
 
 file_put_contents($filePath, $result);
+
+echo 'NativeWind fix applied successfully!';

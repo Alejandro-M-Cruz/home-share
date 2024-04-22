@@ -2,9 +2,9 @@
 api:
 	@php artisan serve
 front-end:
-	@cd front-end && yarn start
+	@php nativewind-fix.php && cd front-end && yarn start
 web:
-	@cd front-end && yarn expo start --web --clear
+	@php nativewind-fix.php && cd front-end && yarn expo start --web --clear
 android:
 	@cd front-end && yarn expo start --android --clear
 ios:
@@ -22,7 +22,7 @@ test:
 
 # Dependencies
 yarn-install:
-	@cd front-end && yarn install
+	@cd front-end && yarn install && cd .. && php nativewind-fix.php
 install: yarn-install
 	@composer install
 

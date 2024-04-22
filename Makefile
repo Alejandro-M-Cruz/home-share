@@ -7,7 +7,7 @@ api:
 	@php artisan serve
 front-end: nativewind-fix
 	@cd front-end && yarn start
-web:
+web: nativewind-fix
 	@cd front-end && yarn expo start --web --clear
 android:
 	@cd front-end && yarn expo start --android --clear

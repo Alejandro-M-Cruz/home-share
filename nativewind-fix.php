@@ -3,10 +3,16 @@
 $filePath = 'front-end/node_modules/nativewind/dist/metro/transformer.js';
 $content = file_get_contents($filePath);
 
-$search = '`require(\'${config.nativewind.output}\');`';
-$replace = '`require(\'${config.nativewind.output.replace(/\\\\/g, \'\\\\\\\\\')}\');`';
+$issue = '`require(\'${config.nativewind.output}\');`';
 
-$result = str_replace($search, $replace, $content);
+if (! str_contains($content, $issue)) {
+    echo 'NativeWind fix already applied!';
+    return;
+}
+
+$fix = '`require(\'${config.nativewind.output.replace(/\\\\/g, \'\\\\\\\\\')}\');`';
+
+$result = str_replace($issue, $fix, $content);
 
 file_put_contents($filePath, $result);
 

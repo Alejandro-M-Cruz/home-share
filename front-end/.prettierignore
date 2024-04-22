@@ -4,4 +4,8 @@ node_modules
 *.json
 *.d.ts
 *.config.{ts,js}
+*.css
 assets
+android
+ios
+

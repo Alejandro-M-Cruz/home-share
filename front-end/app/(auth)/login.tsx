@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
-import { Text } from '@/components/Themed'
+import { Text } from '@/components/Text'
 import { handleError } from '@/helpers/handle-error'
 import { Link, useRouter } from 'expo-router'
 

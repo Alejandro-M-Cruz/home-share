@@ -1,7 +1,5 @@
-import { Button, Platform, ScrollView, StyleSheet } from 'react-native'
-
-import EditScreenInfo from '@/components/EditScreenInfo'
-import { Text, View } from '@/components/Themed'
+import { Button, Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { Text } from '@/components/Text'
 import { useAmenities } from '@/hooks/useAmenities'
 import { Amenity } from '@/components/Amenity'
 import { useRentalListings } from '@/hooks/useRentalListings'
@@ -30,12 +28,7 @@ export default function TabTwoScreen() {
   return (
     <ScrollView>
       <Text style={styles.title}>Tab Two</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+      <View style={styles.separator} />
       {Platform.OS === 'web' && (
         <>
           <select
@@ -95,6 +88,20 @@ export default function TabTwoScreen() {
           <Amenity key={amenity.id} amenity={amenity} />
         ))
       )}
+      <View style={styles.separator} />
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        {status === 'pending' ? (
+          <Text>Loading...</Text>
+        ) : status === 'error' ? (
+          <Text>Error: {error?.message}</Text>
+        ) : (
+          <View style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
+            {amenities?.map(amenity => (
+              <Amenity key={amenity.id} amenity={amenity} />
+            ))}
+          </View>
+        )}
+      </View>
       {data?.pages.map((page, i) => (
         <Fragment key={i}>
           {page.data.map(rentalListing => (

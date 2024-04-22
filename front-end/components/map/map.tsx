@@ -29,7 +29,7 @@ export function Map({ locations }: MapProps) {
       region={region}
       zoomControlEnabled={true}
     >
-      {locations.map((location) => (
+      {locations.map(location => (
         <Marker
           key={location.id}
           coordinate={location}

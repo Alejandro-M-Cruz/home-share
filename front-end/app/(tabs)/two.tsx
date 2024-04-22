@@ -1,17 +1,29 @@
-import { Button, Platform, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { Text } from '@/components/Text'
-import { useAmenities } from '@/hooks/useAmenities'
-import { Amenity } from '@/components/Amenity'
 import { useRentalListings } from '@/hooks/useRentalListings'
 import { RentalListing } from '@/components/RentalListing'
-import { Fragment, useState } from 'react'
-import { GetRentalListingsParams, RentalListingSortBy } from '@/types/rental-listing'
+import React, { Fragment, useState } from 'react'
+import {
+  GetRentalListingsParams,
+  RentalListingSortBy
+} from '@/types/rental-listing'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select'
+import { Button } from '@/components/Button'
+import { Input } from '@/components/Input'
 
 export default function TabTwoScreen() {
-  const { amenities, error, status } = useAmenities()
-  const { data, fetchNextPage, fetchPreviousPage, hasNextPage, isFetching, refetch, params, setParams } =
-    useRentalListings()
+  const {
+    data,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    isFetching,
+    refetch,
+    params,
+    setParams
+  } = useRentalListings()
   const [filters, setFilters] = useState<GetRentalListingsParams['filters']>({})
+  const [value, setValue] = useState(50)
 
   const changeParam = (newParams: GetRentalListingsParams) => {
     setParams({ ...params, ...newParams })
@@ -28,80 +40,109 @@ export default function TabTwoScreen() {
   return (
     <ScrollView>
       <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} />
-      {Platform.OS === 'web' && (
-        <>
-          <select
-            style={{ margin: 30 }}
-            onChange={e => changeParam({ sortBy: e.target.value as RentalListingSortBy })}
+
+      <View className="w-[600px] mx-auto my-4 space-y-4">
+        <View className="flex flex-row items-center justify-center space-x-4">
+
+          <Text>Sort by</Text>
+          <Select
+            defaultValue={{ value: 'created_at', label: 'Creation date' }}
+            onValueChange={option => changeParam({ sortBy: option?.value as RentalListingSortBy })}
           >
-            <option value="created_at">Created At</option>
-            <option value="updated_at">Updated At</option>
-            <option value="monthly_rent">Monthly Rent</option>
-            <option value="available_rooms">Available Rooms</option>
-            <option value="size">Size</option>
-            <option value="year_built">Year Built</option>
-          </select>
-          <select
-            style={{ marginInline: 30, marginBottom: 10 }}
-            onChange={e => changeParam({ sortDirection: e.target.value as 'asc' | 'desc' })}
+            <SelectTrigger>
+              <SelectValue className="text-foreground text-sm native:text-lg" placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="created_at" label="Creation date">
+                Created At
+              </SelectItem>
+              <SelectItem value="updated_at" label="Recently updated">
+                Updated At
+              </SelectItem>
+              <SelectItem value="monthly_rent" label="Monthly rent">
+                Monthly Rent
+              </SelectItem>
+              <SelectItem value="available_rooms" label="Available rooms">
+                Available Rooms
+              </SelectItem>
+              <SelectItem value="size" label="Size">
+                Size
+              </SelectItem>
+              <SelectItem value="year_built" label="Year built">
+                Year Built
+              </SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select
+            defaultValue={{ value: 'asc', label: 'Ascending' }}
+            onValueChange={option => changeParam({ sortDirection: option?.value as 'asc' | 'desc' | undefined })}
           >
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </select>
-          <p style={{ textAlign: 'center' }}>Monthly rent</p>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: 12, justifyContent: 'center' }}>
-            <input
-              type="number"
-              placeholder="Min"
-              onChange={e => changeFilter({ minMonthlyRent: e.target.value ? parseFloat(e.target.value) : undefined})}
-            />
-            <span>-</span>
-            <input
-              type="number"
-              placeholder="Max"
-              onChange={e => changeFilter({ maxMonthlyRent: e.target.value ? parseFloat(e.target.value) : undefined })}
-            />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: 12, justifyContent: 'center' }}>
-            <input type="text" placeholder="Country" onChange={e => changeFilter({ country: e.target.value })} />
-            <input type="text" placeholder="City" onChange={e => changeFilter({ city: e.target.value })} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: 12, justifyContent: 'center' }}>
-            <button onClick={resetParams}>
-              Reset
-            </button>
-            <button
-              onClick={() => changeParam({ filters })}
-            >
-              Apply
-            </button>
-          </div>
-        </>
-      )}
-      {status === 'pending' ? (
-        <Text>Loading...</Text>
-      ) : status === 'error' ? (
-        <Text>Error: {error?.message}</Text>
-      ) : (
-        amenities?.map(amenity => (
-          <Amenity key={amenity.id} amenity={amenity} />
-        ))
-      )}
-      <View style={styles.separator} />
-      <View style={{ flex: 1, flexDirection: 'row' }}>
-        {status === 'pending' ? (
-          <Text>Loading...</Text>
-        ) : status === 'error' ? (
-          <Text>Error: {error?.message}</Text>
-        ) : (
-          <View style={{ flex: 1, flexDirection: 'column', gap: 2 }}>
-            {amenities?.map(amenity => (
-              <Amenity key={amenity.id} amenity={amenity} />
-            ))}
-          </View>
-        )}
+            <SelectTrigger>
+              <SelectValue className="text-foreground text-sm native:text-lg" placeholder="Sort direction" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc" label="Ascending">
+                Ascending
+              </SelectItem>
+              <SelectItem value="desc" label="Descending">
+                Descending
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </View>
+
+        <View className="flex flex-row items-center justify-center space-x-3">
+          <Text className="w-full text-end">Monthly rent</Text>
+          <Input
+            inputMode="numeric"
+            placeholder="0.00"
+            onChangeText={text => changeFilter({ minMonthlyRent: text ? parseFloat(text) : undefined })}
+          />
+          <Text className="font-extrabold">-</Text>
+          <Input
+            inputMode="numeric"
+            placeholder=""
+            onChangeText={text => changeFilter({ maxMonthlyRent: text ? parseFloat(text) : undefined })}
+          />
+        </View>
+
+        <View className="flex flex-row items-center justify-center space-x-3">
+          <Text className="w-full text-end">Available rooms</Text>
+          <Input
+            inputMode="numeric"
+            placeholder="0"
+            onChangeText={text => changeFilter({ minAvailableRooms: text ? parseInt(text) : undefined })}
+          />
+          <Text className="font-extrabold">-</Text>
+          <Input
+            inputMode="numeric"
+            placeholder=""
+            onChangeText={text => changeFilter({ maxAvailableRooms: text ? parseInt(text) : undefined })}
+          />
+        </View>
+
+        <View className="flex flex-row justify-center items-center space-x-10">
+          <Input
+            inputMode="text"
+            placeholder="Country"
+            onChangeText={text => changeFilter({ country: text })}
+          />
+
+          <Input
+            inputMode="text"
+            placeholder="City"
+            onChangeText={text => changeFilter({ city: text })}
+          />
+        </View>
+
+        <View className="flex flex-row space-x-4 justify-center">
+          <Button onPress={resetParams}><Text>Reset</Text></Button>
+          <Button onPress={() => changeParam({ filters })}><Text>Apply</Text></Button>
+        </View>
       </View>
+
+      <View style={styles.separator} />
       {data?.pages.map((page, i) => (
         <Fragment key={i}>
           {page.data.map(rentalListing => (
@@ -113,11 +154,14 @@ export default function TabTwoScreen() {
         </Fragment>
       ))}
       <Button
-        title="Load More"
         onPress={() => fetchNextPage()}
         disabled={!hasNextPage || isFetching}
-      />
-      <Button title="Refetch" onPress={() => refetch()} />
+      >
+        <Text>Load more</Text>
+      </Button>
+      <Button onPress={() => refetch()}>
+        <Text>Refetch</Text>
+      </Button>
     </ScrollView>
   )
 }

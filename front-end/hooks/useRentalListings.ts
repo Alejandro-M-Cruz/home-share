@@ -1,6 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { getRentalListings } from '@/services/rental-listing'
-import { GetRentalListingsParams, RentalListingPage } from '@/types/rental-listing'
+import {
+  GetRentalListingsParams,
+  RentalListingPage
+} from '@/types/rental-listing'
 import { useEffect, useState } from 'react'
 
 export function useRentalListings() {
@@ -10,15 +13,15 @@ export function useRentalListings() {
     queryKey: ['rental-listings'],
     initialPageParam: null,
     getNextPageParam: (lastPage: RentalListingPage) =>
-      lastPage.meta.nextCursor ? { ...params, cursor: lastPage.meta.nextCursor } : undefined,
-    queryFn: ({ pageParam }) =>
-      getRentalListings(pageParam ?? params),
+      lastPage.meta.nextCursor
+        ? { ...params, cursor: lastPage.meta.nextCursor }
+        : undefined,
+    queryFn: ({ pageParam }) => getRentalListings(pageParam ?? params),
     refetchOnWindowFocus: true
   })
 
   useEffect(() => {
-    if (infiniteQuery.isFetching)
-      return
+    if (infiniteQuery.isFetching) return
     infiniteQuery.refetch()
   }, [params])
 

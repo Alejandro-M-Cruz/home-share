@@ -32,8 +32,7 @@ export function Map({ locations }: MapProps) {
     map?.setZoom(FOCUS_ZOOM)
   }
 
-  const handleMapClick = () => {
-  }
+  const handleMapClick = () => {}
 
   return isLoaded ? (
     <GoogleMap
@@ -45,8 +44,14 @@ export function Map({ locations }: MapProps) {
       onClick={handleMapClick}
     >
       {locations.map(location => (
-        <Marker key={location.id} position={latLng(location)} onClick={() => handleMarkerClick(location)} />
+        <Marker
+          key={location.id}
+          position={latLng(location)}
+          onClick={() => handleMarkerClick(location)}
+        />
       ))}
     </GoogleMap>
-  ) : <></>
+  ) : (
+    <></>
+  )
 }

@@ -66,9 +66,9 @@ De nuevo, se puede verficar ejecutando
 
 #### Backend
 
-1. Instalar las dependencias del backend:
+1. Instalar las dependencias de todo el proyecto:
 
-    `composer install`
+    `make install`
 
 2. Crear un nuevo fichero en el directorio raíz, llamado `.env` y copiar en él todo el contenido del archivo `.env.example`
 
@@ -90,13 +90,9 @@ De nuevo, se puede verficar ejecutando
 
     `cd front-end`
 
-2. Instalar las dependencias del frontend:
+2. Crear un nuevo fichero dentro del directorio `front-end`, llamado `.env` y copiar en él todo el contenido del archivo `front-end/.env.example`
 
-    `yarn install`
-
-3. Crear un nuevo fichero dentro del directorio `front-end`, llamado `.env` y copiar en él todo el contenido del archivo `front-end/.env.example`
-
-4. Copiar la variable de entorno `GOOGLE_MAPS_API_KEY` en el archivo `.env` y añadir la clave de la API de Google Maps, que se encuentra en el fichero `front-end/app.json`
+3. Copiar la variable de entorno `GOOGLE_MAPS_API_KEY` en el archivo `.env` y añadir la clave de la API de Google Maps, que se encuentra en el fichero `front-end/app.json`
 
 4. Generar el código fuente nativo (durante el desarrollo, no importa si hay errores al ejecutar este comando):
 

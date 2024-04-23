@@ -56,5 +56,5 @@ export type {
   DialogOverlayProps,
   DialogPortalProps,
   DialogRootProps,
-  RootContext,
+  RootContext
 }

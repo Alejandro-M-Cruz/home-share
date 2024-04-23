@@ -7,27 +7,44 @@ import type {
   SlottableTextProps,
   SlottableViewProps,
   TextRef,
-  ViewRef,
+  ViewRef
 } from '@/primitives/types'
 import * as React from 'react'
-import { BackHandler, GestureResponderEvent, Pressable, Text, View } from 'react-native'
+import {
+  BackHandler,
+  GestureResponderEvent,
+  Pressable,
+  Text,
+  View
+} from 'react-native'
 import type {
   DialogContentProps,
   DialogOverlayProps,
   DialogPortalProps,
   DialogRootProps,
-  RootContext,
+  RootContext
 } from './types'
 
-const DialogContext = React.createContext<(RootContext & { nativeID: string }) | null>(null)
+const DialogContext = React.createContext<
+  (RootContext & { nativeID: string }) | null
+>(null)
 
 const Root = React.forwardRef<ViewRef, SlottableViewProps & DialogRootProps>(
-  ({ asChild, open: openProp, defaultOpen, onOpenChange: onOpenChangeProp, ...viewProps }, ref) => {
+  (
+    {
+      asChild,
+      open: openProp,
+      defaultOpen,
+      onOpenChange: onOpenChangeProp,
+      ...viewProps
+    },
+    ref
+  ) => {
     const nativeID = React.useId()
     const [open = false, onOpenChange] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen,
-      onChange: onOpenChangeProp,
+      onChange: onOpenChangeProp
     })
 
     const Component = asChild ? Slot.View : View
@@ -36,7 +53,7 @@ const Root = React.forwardRef<ViewRef, SlottableViewProps & DialogRootProps>(
         value={{
           open,
           onOpenChange,
-          nativeID,
+          nativeID
         }}
       >
         <Component ref={ref} {...viewProps} />
@@ -50,7 +67,9 @@ Root.displayName = 'RootNativeDialog'
 function useRootContext() {
   const context = React.useContext(DialogContext)
   if (!context) {
-    throw new Error('Dialog compound components cannot be rendered outside the Dialog component')
+    throw new Error(
+      'Dialog compound components cannot be rendered outside the Dialog component'
+    )
   }
   return context
 }
@@ -71,7 +90,7 @@ const Trigger = React.forwardRef<PressableRef, SlottablePressableProps>(
       <Component
         ref={ref}
         aria-disabled={disabled ?? undefined}
-        role='button'
+        role="button"
         onPress={onPress}
         disabled={disabled ?? undefined}
         {...props}
@@ -101,8 +120,20 @@ function Portal({ forceMount, hostName, children }: DialogPortalProps) {
   )
 }
 
-const Overlay = React.forwardRef<PressableRef, SlottablePressableProps & DialogOverlayProps>(
-  ({ asChild, forceMount, closeOnPress = true, onPress: OnPressProp, ...props }, ref) => {
+const Overlay = React.forwardRef<
+  PressableRef,
+  SlottablePressableProps & DialogOverlayProps
+>(
+  (
+    {
+      asChild,
+      forceMount,
+      closeOnPress = true,
+      onPress: OnPressProp,
+      ...props
+    },
+    ref
+  ) => {
     const { open, onOpenChange } = useRootContext()
 
     function onPress(ev: GestureResponderEvent) {
@@ -125,42 +156,46 @@ const Overlay = React.forwardRef<PressableRef, SlottablePressableProps & DialogO
 
 Overlay.displayName = 'OverlayNativeDialog'
 
-const Content = React.forwardRef<ViewRef, SlottableViewProps & DialogContentProps>(
-  ({ asChild, forceMount, ...props }, ref) => {
-    const { open, nativeID, onOpenChange } = useRootContext()
+const Content = React.forwardRef<
+  ViewRef,
+  SlottableViewProps & DialogContentProps
+>(({ asChild, forceMount, ...props }, ref) => {
+  const { open, nativeID, onOpenChange } = useRootContext()
 
-    React.useEffect(() => {
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+  React.useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
         onOpenChange(false)
         return true
-      })
-
-      return () => {
-        backHandler.remove()
       }
-    }, [])
-
-    if (!forceMount) {
-      if (!open) {
-        return null
-      }
-    }
-
-    const Component = asChild ? Slot.View : View
-    return (
-      <Component
-        ref={ref}
-        role='dialog'
-        nativeID={nativeID}
-        aria-labelledby={`${nativeID}_label`}
-        aria-describedby={`${nativeID}_desc`}
-        aria-modal={true}
-        onStartShouldSetResponder={onStartShouldSetResponder}
-        {...props}
-      />
     )
+
+    return () => {
+      backHandler.remove()
+    }
+  }, [])
+
+  if (!forceMount) {
+    if (!open) {
+      return null
+    }
   }
-)
+
+  const Component = asChild ? Slot.View : View
+  return (
+    <Component
+      ref={ref}
+      role="dialog"
+      nativeID={nativeID}
+      aria-labelledby={`${nativeID}_label`}
+      aria-describedby={`${nativeID}_desc`}
+      aria-modal={true}
+      onStartShouldSetResponder={onStartShouldSetResponder}
+      {...props}
+    />
+  )
+})
 
 Content.displayName = 'ContentNativeDialog'
 
@@ -179,7 +214,7 @@ const Close = React.forwardRef<PressableRef, SlottablePressableProps>(
       <Component
         ref={ref}
         aria-disabled={disabled ?? undefined}
-        role='button'
+        role="button"
         onPress={onPress}
         disabled={disabled ?? undefined}
         {...props}
@@ -192,19 +227,33 @@ Close.displayName = 'CloseNativeDialog'
 
 const Title = React.forwardRef<TextRef, SlottableTextProps>((props, ref) => {
   const { nativeID } = useRootContext()
-  return <Text ref={ref} role='heading' nativeID={`${nativeID}_label`} {...props} />
+  return (
+    <Text ref={ref} role="heading" nativeID={`${nativeID}_label`} {...props} />
+  )
 })
 
 Title.displayName = 'TitleNativeDialog'
 
-const Description = React.forwardRef<TextRef, SlottableTextProps>((props, ref) => {
-  const { nativeID } = useRootContext()
-  return <Text ref={ref} nativeID={`${nativeID}_desc`} {...props} />
-})
+const Description = React.forwardRef<TextRef, SlottableTextProps>(
+  (props, ref) => {
+    const { nativeID } = useRootContext()
+    return <Text ref={ref} nativeID={`${nativeID}_desc`} {...props} />
+  }
+)
 
 Description.displayName = 'DescriptionNativeDialog'
 
-export { Close, Content, Description, Overlay, Portal, Root, Title, Trigger, useRootContext }
+export {
+  Close,
+  Content,
+  Description,
+  Overlay,
+  Portal,
+  Root,
+  Title,
+  Trigger,
+  useRootContext
+}
 
 function onStartShouldSetResponder() {
   return true

@@ -23,7 +23,9 @@ const DialogOverlayWeb = React.forwardRef<
       style={StyleSheet.absoluteFill}
       className={cn(
         'z-50 bg-black/80 flex justify-center items-center p-2',
-        open ? 'web:animate-in web:fade-in-0' : 'web:animate-out web:fade-out-0',
+        open
+          ? 'web:animate-in web:fade-in-0'
+          : 'web:animate-out web:fade-out-0',
         className
       )}
       {...props}
@@ -41,11 +43,17 @@ const DialogOverlayNative = React.forwardRef<
   return (
     <DialogPrimitive.Overlay
       style={StyleSheet.absoluteFill}
-      className={cn('z-50 flex bg-black/80 justify-center items-center p-2', className)}
+      className={cn(
+        'z-50 flex bg-black/80 justify-center items-center p-2',
+        className
+      )}
       {...props}
       ref={ref}
     >
-      <Animated.View entering={FadeIn.duration(150)} exiting={FadeOut.duration(150)}>
+      <Animated.View
+        entering={FadeIn.duration(150)}
+        exiting={FadeOut.duration(150)}
+      >
         <>{children}</>
       </Animated.View>
     </DialogPrimitive.Overlay>
@@ -56,7 +64,7 @@ DialogOverlayNative.displayName = 'DialogOverlayNative'
 
 const DialogOverlay = Platform.select({
   web: DialogOverlayWeb,
-  default: DialogOverlayNative,
+  default: DialogOverlayNative
 })
 
 const DialogContent = React.forwardRef<
@@ -87,7 +95,10 @@ const DialogContent = React.forwardRef<
             <MaterialCommunityIcons
               name="close"
               size={Platform.OS === 'web' ? 16 : 18}
-              className={cn('text-muted-foreground', open && 'text-accent-foreground')}
+              className={cn(
+                'text-muted-foreground',
+                open && 'text-accent-foreground'
+              )}
             />
           </DialogPrimitive.Close>
         </DialogPrimitive.Content>
@@ -97,14 +108,26 @@ const DialogContent = React.forwardRef<
 })
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
-const DialogHeader = ({ className, ...props }: React.ComponentPropsWithoutRef<typeof View>) => (
-  <View className={cn('flex flex-col gap-1.5 text-center sm:text-left', className)} {...props} />
+const DialogHeader = ({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof View>) => (
+  <View
+    className={cn('flex flex-col gap-1.5 text-center sm:text-left', className)}
+    {...props}
+  />
 )
 DialogHeader.displayName = 'DialogHeader'
 
-const DialogFooter = ({ className, ...props }: React.ComponentPropsWithoutRef<typeof View>) => (
+const DialogFooter = ({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof View>) => (
   <View
-    className={cn('flex flex-col-reverse sm:flex-row sm:justify-end gap-2', className)}
+    className={cn(
+      'flex flex-col-reverse sm:flex-row sm:justify-end gap-2',
+      className
+    )}
     {...props}
   />
 )
@@ -147,5 +170,5 @@ export {
   DialogOverlay,
   DialogPortal,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 }

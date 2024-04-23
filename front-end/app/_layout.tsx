@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '@/services/query-client'
 import '../global.css'
+import { PortalHost } from '@/primitives/portal'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,6 +54,7 @@ function RootLayoutNav() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
         </Stack>
+        <PortalHost />
       </ThemeProvider>
     </QueryClientProvider>
   )

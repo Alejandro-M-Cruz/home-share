@@ -1,15 +1,19 @@
+# Nativewind fix
+nativewind-fix:
+	@php nativewind-fix.php
+
 # Running development server
 api:
 	@php artisan serve
-front-end:
+front-end: nativewind-fix
 	@cd front-end && yarn start
-web:
-	@cd front-end && yarn expo start --web
+web: nativewind-fix
+	@cd front-end && yarn expo start --web --clear
 android:
 	@adb reverse tcp:8000 tcp:8000
-	@cd front-end && yarn expo start --android
+	@cd front-end && yarn expo start --android --clear
 ios:
-	@cd front-end && yarn expo start --ios
+	@cd front-end && yarn expo start --ios --clear
 
 # Repository
 diff-main:
@@ -23,7 +27,7 @@ test:
 
 # Dependencies
 yarn-install:
-	@cd front-end && yarn install
+	@cd front-end && yarn install && cd .. && php nativewind-fix.php
 install: yarn-install
 	@composer install
 

@@ -4,7 +4,6 @@ import { Link, Tabs } from 'expo-router'
 import { Button, Pressable, View } from 'react-native'
 
 import Colors from '@/constants/Colors'
-import { useColorScheme } from '@/components/useColorScheme'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
 import { useAuth } from '@/hooks/useAuth'
 
@@ -17,14 +16,12 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme()
-
   const { user, logout, logoutStatus } = useAuth()
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors.light.tint,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true)
@@ -66,7 +63,7 @@ export default function TabLayout() {
                     <FontAwesome
                       name="info-circle"
                       size={25}
-                      color={Colors[colorScheme ?? 'light'].text}
+                      color={Colors.light.text}
                       style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                     />
                   )}
@@ -77,10 +74,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="rental-listings"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
+          title: 'Rental listings',
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />
         }}
       />
       <Tabs.Screen

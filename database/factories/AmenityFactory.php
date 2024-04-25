@@ -18,6 +18,7 @@ class AmenityFactory extends Factory
     public function definition(): array
     {
         return [
+            'slug' => $this->faker->unique()->slug,
             'name' => $this->faker->word,
             'icon' => $this->faker->word
         ];

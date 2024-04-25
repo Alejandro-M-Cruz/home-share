@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRentalListingRequest;
 use App\Http\Resources\RentalListingResource;
+use App\Models\Amenity;
 use App\Models\RentalListing;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -36,9 +38,33 @@ class RentalListingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRentalListingRequest $request)
     {
-        //
+        $data = $request->validated();
+        $rentalListing = RentalListing::create(
+            array_merge($data, ['user_id' => auth()->id()])
+        );
+
+        $rentalListing->location()->create($data['location']);
+
+        $amenities = Amenity::whereIn('slug', $data['amenities'])->get();
+        $rentalListing->amenities()->attach($amenities);
+
+        $images = $request->file('images');
+
+        foreach ($images as $image) {
+            $name = $image->hashName();
+            $path = "public/images/$name";
+            if ($image->storeAs('public/images', $name)) {
+                $rentalListing->images()->create([
+                    'path' => $path,
+                    'url' => Storage::url($path),
+                    'size' => $image->getSize(),
+                ]);
+            }
+        }
+
+        return response()->noContent(Response::HTTP_CREATED);
     }
 
     /**

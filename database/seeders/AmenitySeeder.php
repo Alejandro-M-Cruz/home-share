@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Amenity;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class AmenitySeeder extends Seeder
 {
@@ -31,8 +31,10 @@ class AmenitySeeder extends Seeder
             ['name' => 'TV', 'icon' => 'television'],
         ];
 
-        foreach ($amenities as $amenity) {
-            Amenity::create($amenity);
-        }
+        $amenities = array_map(function ($amenity) {
+            return array_merge($amenity, ['slug' => Str::slug($amenity['name'])]);
+        }, $amenities);
+
+        Amenity::insert($amenities);
     }
 }

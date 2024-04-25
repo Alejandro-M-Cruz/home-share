@@ -14,7 +14,7 @@ import {
 } from '@/components/Dialog'
 import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { Label } from '@/components/Label'
 import {
   Select,
@@ -48,8 +48,6 @@ export const RentalListingParamDialog = ({
       maxMonthlyRent: initialParams?.filters?.maxMonthlyRent?.toString() ?? '',
       minAvailableRooms: initialParams?.filters?.minAvailableRooms?.toString() ?? '',
       maxAvailableRooms: initialParams?.filters?.maxAvailableRooms?.toString() ?? '',
-      country: initialParams?.filters?.country ?? '',
-      city: initialParams?.filters?.city ?? ''
     }
   }), [initialParams])
 
@@ -85,8 +83,6 @@ export const RentalListingParamDialog = ({
       maxMonthlyRent,
       minAvailableRooms,
       maxAvailableRooms,
-      country,
-      city
     }
   }: any) => {
     onSubmit?.({
@@ -101,8 +97,6 @@ export const RentalListingParamDialog = ({
         maxAvailableRooms: maxAvailableRooms
           ? parseInt(maxAvailableRooms)
           : undefined,
-        country,
-        city
       }
     })
   }
@@ -139,7 +133,7 @@ export const RentalListingParamDialog = ({
                       placeholder="Sort by"
                     />
                   </SelectTrigger>
-                  <SelectContent className="z-50" withPortal={false}>
+                  <SelectContent className="z-50" withPortal={Platform.OS !== 'web'}>
                     {Object.entries(sortByLabels).map(([value, label]) => (
                       <SelectItem value={value} label={label} key={value}>
                         {label}
@@ -169,7 +163,7 @@ export const RentalListingParamDialog = ({
                       placeholder="Sort direction"
                     />
                   </SelectTrigger>
-                  <SelectContent className="z-50" withPortal={false}>
+                  <SelectContent className="z-50" withPortal={Platform.OS !== 'web'}>
                     {Object.entries(sortDirectionLabels).map(
                       ([value, label]) => (
                         <SelectItem value={value} label={label} key={value}>
@@ -233,6 +227,7 @@ export const RentalListingParamDialog = ({
                   <Input
                     nativeID="minAvailableRooms"
                     inputMode="numeric"
+                    placeholder="0"
                     value={value}
                     onChangeText={text =>
                       onChange(text ? parseInt(text) : undefined)
@@ -256,48 +251,6 @@ export const RentalListingParamDialog = ({
                   />
                 )}
                 name="filters.maxAvailableRooms"
-              />
-            </View>
-
-            <View className="flex flex-row items-center space-x-3">
-              <Label nativeID="country" className="text-end flex-grow">
-                Country
-              </Label>
-
-              <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    className="max-w-[400px]"
-                    nativeID="country"
-                    inputMode="text"
-                    onChangeText={onChange}
-                    value={value}
-                    onBlur={onBlur}
-                  />
-                )}
-                name="filters.country"
-              />
-            </View>
-
-            <View className="flex flex-row items-center space-x-3">
-              <Label nativeID="city" className="text-end flex-grow">
-                City
-              </Label>
-
-              <Controller
-                control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    className="max-w-[400px]"
-                    nativeID="city"
-                    inputMode="text"
-                    onChangeText={onChange}
-                    value={value}
-                    onBlur={onBlur}
-                  />
-                )}
-                name="filters.city"
               />
             </View>
 

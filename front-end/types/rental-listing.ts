@@ -23,13 +23,19 @@ export type RentalListing = {
   monthlyRent: number
   size: number
   sizeUnit: 'sq_ft' | 'sq_m'
+  bathrooms: number
+  bedrooms: number
+  yearBuilt: number
+  availableRooms: number
   country: string
   state: string
   city: string
   street: string
-  availableRooms: number
+  streetNumber: string
   createdAt: string
   updatedAt: string
+  username: string
+  userCreatedAt: string
   imageUrls: string[]
 }
 

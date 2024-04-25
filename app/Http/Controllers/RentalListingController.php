@@ -21,8 +21,8 @@ class RentalListingController extends Controller
             ->active()
             ->allowedFilters([
                 'type',
-                'country',
-                'city',
+                AllowedFilter::scope('country', 'whereCountry'),
+                AllowedFilter::scope('city', 'whereCity'),
                 AllowedFilter::scope('monthly_rent_between', 'whereMonthlyRentBetween'),
                 AllowedFilter::scope('available_rooms_between', 'whereAvailableRoomsBetween'),
             ])

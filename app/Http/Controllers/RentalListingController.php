@@ -19,8 +19,6 @@ class RentalListingController extends Controller
      */
     public function index(Request $request)
     {
-        // wait for a few seconds
-        sleep(3);
         $rentalListings = QueryBuilder::for(RentalListing::class)
             ->active()
             ->allowedFilters([

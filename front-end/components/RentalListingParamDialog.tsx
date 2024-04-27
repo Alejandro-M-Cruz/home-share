@@ -1,7 +1,7 @@
 import { Controller, useForm } from 'react-hook-form'
 import {
   GetRentalListingsParams,
-  RentalListingSortBy
+  RentalListingSortBy, RentalListingType
 } from '@/types/rental-listing'
 import { ReactNode, useMemo } from 'react'
 import {
@@ -76,7 +76,7 @@ export const RentalListingParamDialog = ({
     []
   )
 
-  const typeLabels: Record<'apartment' | 'house' | 'apartment_block' | 'all', string> = useMemo(
+  const typeLabels: Record<RentalListingType | 'all', string> = useMemo(
     () => ({
       all: 'All',
       apartment: 'Apartment',
@@ -203,7 +203,7 @@ export const RentalListingParamDialog = ({
                     nativeID="type"
                     value={{
                       value: value || 'all',
-                      label: typeLabels[value as 'apartment' | 'house' | 'apartment_block' | 'all' || 'all'] || typeLabels.all
+                      label: typeLabels[value as RentalListingType | 'all' || 'all'] || typeLabels.all
                     }}
                     onOpenChange={isOpen => !isOpen && onBlur()}
                     onValueChange={option => onChange(option?.value)}

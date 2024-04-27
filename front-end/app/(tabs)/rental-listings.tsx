@@ -2,7 +2,7 @@ import { ScrollView, View } from 'react-native'
 import { Text } from '@/components/Text'
 import { useRentalListings } from '@/hooks/useRentalListings'
 import { RentalListing } from '@/components/RentalListing'
-import React, { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Button } from '@/components/Button'
 import { RentalListingParamDialog } from '@/components/RentalListingParamDialog'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
@@ -58,7 +58,7 @@ export default function RentalListingsScreen() {
   }
 
   return (
-    <ScrollView className="py-4">
+    <View className="py-4 flex-1">
       <View className="flex flex-col sm:flex-row gap-2 mx-2 sm:mx-5">
         <Input
           className="rounded-full"
@@ -112,36 +112,38 @@ export default function RentalListingsScreen() {
         </View>
       )}
 
-      <View className="grid grid-cols-12 gap-1 sm:gap-5 mx-2 sm:mx-5 my-4">
-        {data?.pages.map((page, i) => (
-          <Fragment key={i}>
-            {page.data.map(rentalListing => (
-              <RentalListing
-                key={rentalListing.id}
-                className="col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3"
-                rentalListing={rentalListing}
-              />
-            ))}
-          </Fragment>
-        ))}
-      </View>
+      <ScrollView className="flex-1">
+        <View className="grid grid-cols-12 gap-1 sm:gap-5 mx-2 sm:mx-5 my-4">
+          {data?.pages.map((page, i) => (
+            <Fragment key={i}>
+              {page.data.map(rentalListing => (
+                <RentalListing
+                  key={rentalListing.id}
+                  className="col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3"
+                  rentalListing={rentalListing}
+                />
+              ))}
+            </Fragment>
+          ))}
+        </View>
 
-      {isFetching && (
-        <AntDesign
-          className={cn('my-[200px] mx-auto animate-spin', isFetchingNextPage && 'my-5')}
-          name="loading1" size={24}
-        />
-      )}
+        {isFetching && (
+          <AntDesign
+            className={cn('my-[200px] mx-auto animate-spin', isFetchingNextPage && 'my-5')}
+            name="loading1" size={24}
+          />
+        )}
 
-      <Button
-        onPress={() => fetchNextPage()}
-        disabled={!hasNextPage || isFetching}
-        className="mx-auto my-3"
-        variant="outline"
-      >
-        <Text>Load more...</Text>
-      </Button>
-    </ScrollView>
+        <Button
+          onPress={() => fetchNextPage()}
+          disabled={!hasNextPage || isFetching}
+          className="mx-auto my-3"
+          variant="outline"
+        >
+          <Text>Load more...</Text>
+        </Button>
+      </ScrollView>
+    </View>
   )
 }
 

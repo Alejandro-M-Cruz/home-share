@@ -3,7 +3,7 @@ import { Image, Text, View } from 'react-native'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/Card'
 import React from 'react'
 import { ViewRef } from '@/primitives/types'
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import { Badge } from '@/components/Badge'
 
 type RentalListingProps = {
@@ -50,17 +50,17 @@ const RentalListing = React.forwardRef<
         {rentalListing.city}, {rentalListing.state}, {rentalListing.country}
       </Text>
 
-      <View className="flex flex-row items-center justify-center gap-2 col-span-12 sm:col-span-4 md:max-lg:col-span-6">
+      <View className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-6 xl:col-span-4">
         <MaterialIcons name="shower" size={24} />
-        <Text>{rentalListing.bathrooms} bathrooms</Text>
+        <Text>{rentalListing.bathrooms} bathroom{rentalListing.bathrooms === 1 ? '' : 's'}</Text>
       </View>
 
-      <View className="flex flex-row items-center justify-center gap-2 col-span-12 sm:col-span-4 md:max-lg:col-span-6">
+      <View className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-6 xl:col-span-4">
         <MaterialCommunityIcons name="bed" size={24} />
-        <Text>{rentalListing.bedrooms} bedrooms</Text>
+        <Text>{rentalListing.bedrooms} bedroom{rentalListing.bedrooms === 1 ? '' : 's'}</Text>
       </View>
 
-      <Text className="font-semibold text-base text-center col-span-12 sm:col-span-4 md:max-lg:col-span-12">
+      <Text className="font-semibold text-base text-center col-span-12 sm:col-span-4 md:max-xl:col-span-12">
         ${rentalListing.monthlyRent.toFixed(2)}
         <Text className="font-semibold text-sm text-neutral-500"> / month</Text>
       </Text>

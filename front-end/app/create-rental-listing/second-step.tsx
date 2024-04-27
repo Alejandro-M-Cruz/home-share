@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 
-export default function CreateRentalListingScreen() {
+export default function CreateRentalListingSecondStepScreen() {
   return (
     <View>
 

@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { Text } from '@/components/Text'
 import { useRentalListings } from '@/hooks/useRentalListings'
 import { RentalListing } from '@/components/RentalListing'
@@ -8,6 +8,7 @@ import { RentalListingParamDialog } from '@/components/RentalListingParamDialog'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Input } from '@/components/Input'
+import { cn } from '@/helpers/cn'
 
 export default function RentalListingsScreen() {
   const {
@@ -15,7 +16,8 @@ export default function RentalListingsScreen() {
     fetchNextPage,
     hasNextPage,
     isFetching,
-    refetch,
+    isFetchingNextPage,
+    params,
     setParams
   } = useRentalListings()
 
@@ -25,9 +27,11 @@ export default function RentalListingsScreen() {
 
   const handleSearchButtonClick = () => {
     setParams({
+      ...params,
       filters: {
+        ...params.filters,
         country: country || undefined,
-        city: city || undefined
+        city: city || undefined,
       }
     })
     const countrySearchText = country ? `country '${country}'` : ''
@@ -43,11 +47,18 @@ export default function RentalListingsScreen() {
     setCountry('')
     setCity('')
     setSearchText(null)
-    setParams({})
+    setParams({
+      ...params,
+      filters: {
+        ...params.filters,
+        country: undefined,
+        city: undefined,
+      }
+    })
   }
 
   return (
-    <ScrollView className="mt-4">
+    <ScrollView className="py-4">
       <View className="flex flex-col sm:flex-row gap-2 mx-2 sm:mx-5">
         <Input
           className="rounded-full"
@@ -114,6 +125,13 @@ export default function RentalListingsScreen() {
           </Fragment>
         ))}
       </View>
+
+      {isFetching && (
+        <AntDesign
+          className={cn('my-[200px] mx-auto animate-spin', isFetchingNextPage && 'my-5')}
+          name="loading1" size={24}
+        />
+      )}
 
       <Button
         onPress={() => fetchNextPage()}

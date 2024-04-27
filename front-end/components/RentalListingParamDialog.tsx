@@ -44,6 +44,7 @@ export const RentalListingParamDialog = ({
     sortBy: initialParams?.sortBy,
     sortDirection: initialParams?.sortDirection,
     filters: {
+      type: initialParams?.filters?.type ?? 'all',
       minMonthlyRent: initialParams?.filters?.minMonthlyRent?.toString() ?? '',
       maxMonthlyRent: initialParams?.filters?.maxMonthlyRent?.toString() ?? '',
       minAvailableRooms: initialParams?.filters?.minAvailableRooms?.toString() ?? '',
@@ -75,10 +76,21 @@ export const RentalListingParamDialog = ({
     []
   )
 
+  const typeLabels: Record<'apartment' | 'house' | 'apartment_block' | 'all', string> = useMemo(
+    () => ({
+      all: 'All',
+      apartment: 'Apartment',
+      house: 'House',
+      apartment_block: 'Apartment block'
+    }),
+    []
+  )
+
   const submit = ({
     sortBy,
     sortDirection,
     filters: {
+      type,
       minMonthlyRent,
       maxMonthlyRent,
       minAvailableRooms,
@@ -89,6 +101,7 @@ export const RentalListingParamDialog = ({
       sortBy,
       sortDirection,
       filters: {
+        type: !type || type === 'all' ? undefined : type,
         minMonthlyRent: minMonthlyRent ? parseFloat(minMonthlyRent) : undefined,
         maxMonthlyRent: maxMonthlyRent ? parseFloat(maxMonthlyRent) : undefined,
         minAvailableRooms: minAvailableRooms
@@ -179,6 +192,42 @@ export const RentalListingParamDialog = ({
           </View>
 
           <View className="-z-10 flex flex-col space-y-6">
+            <View className="z-50 flex flex-row items-center justify-center">
+              <Label nativeID="type" className="text-end me-3">
+                Type
+              </Label>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Select
+                    nativeID="type"
+                    value={{
+                      value: value || 'all',
+                      label: typeLabels[value as 'apartment' | 'house' | 'apartment_block' | 'all' || 'all'] || typeLabels.all
+                    }}
+                    onOpenChange={isOpen => !isOpen && onBlur()}
+                    onValueChange={option => onChange(option?.value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue
+                        className="text-foreground text-sm native:text-lg"
+                        placeholder="Type"
+                      />
+                    </SelectTrigger>
+                    <SelectContent withPortal={Platform.OS !== 'web'}>
+                      {Object.entries(typeLabels).map(
+                        ([value, label]) => (
+                          <SelectItem value={value} label={label} key={value}>
+                            {label}
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectContent>
+                  </Select>
+                )}
+                name="filters.type"
+              />
+            </View>
             <View className="flex flex-row items-center justify-center">
               <Label nativeID="maxMonthlyRent" className="w-full text-end me-3">
                 Monthly rent

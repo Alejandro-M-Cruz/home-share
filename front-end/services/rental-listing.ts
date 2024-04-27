@@ -35,4 +35,34 @@ async function getRentalListings({
   return data
 }
 
-export { getRentalListings }
+type CreateRentalListingRequest = {
+  title: string
+  type: 'apartment' | 'house' | 'apartment_block'
+  description: string
+  monthly_rent: number
+  available_rooms: number
+  size: number
+  bathrooms: number
+  bedrooms: number
+  year_built: number
+  location: {
+    country: string
+    state: string
+    city: string
+    street: string
+    street_number: string
+    door_number?: string
+    floor_number?: number
+    postal_code: string
+    latitude: number
+    longitude: number
+  }
+  amenities: string[]
+  images: File[]
+}
+
+function createRentalListing() {
+
+}
+
+export { getRentalListings, createRentalListing }

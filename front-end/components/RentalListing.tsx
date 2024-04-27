@@ -3,8 +3,10 @@ import { Image, Text, View } from 'react-native'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/Card'
 import React from 'react'
 import { ViewRef } from '@/primitives/types'
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import { AntDesign, Entypo, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons'
 import { Badge } from '@/components/Badge'
+import { Button } from '@/components/Button'
+import { cn } from '@/helpers/cn'
 
 type RentalListingProps = {
   rentalListing: RentalListingType
@@ -18,55 +20,90 @@ const displayTypes = {
 
 const RentalListing = React.forwardRef<
   ViewRef, React.ComponentPropsWithoutRef<typeof View> & RentalListingProps
->(({ rentalListing, ...props }, ref) => (
-  <Card ref={ref} {...props}>
-    <CardHeader className="gap-y-1 py-3 px-5">
-      <View className="flex flex-row items-center justify-between gap-2">
-        <CardTitle className="flex-1 text-xl">{rentalListing.username}</CardTitle>
-        <Badge variant="outline" className="me-2">
-          <Text>{displayTypes[rentalListing.type]}</Text>
-        </Badge>
-        <MaterialIcons name="group-add" size={24} />
-        <Text className="font-semibold text-lg">{rentalListing.availableRooms}</Text>
-      </View>
-      <Text className="text-neutral-500">Member since {rentalListing.userCreatedAt.split('T')[0]}</Text>
-    </CardHeader>
+>(({ rentalListing, ...props }, ref) => {
+  const [imageIndex, setImageIndex] = React.useState(0)
 
-    <CardContent className="p-0">
-      {rentalListing.imageUrls && (
-        <Image
-          source={{ uri: rentalListing.imageUrls[0] }}
-          className="w-full h-[240px] object-cover"
-        />
-      )}
-    </CardContent>
+  const prevImage = () => {
+    setImageIndex((prev) => (prev - 1 + rentalListing.imageUrls.length) % rentalListing.imageUrls.length)
+  }
 
-    <CardFooter className="max-sm:mx-2 grid grid-cols-6 sm:grid-cols-12 gap-y-3 gap-x-3 py-3 px-5 flex-1">
-      <Text className="font-light max-sm:text-center text-base text-neutral-600 col-span-12 sm:col-span-6">
-        {rentalListing.street}, {rentalListing.streetNumber}
-      </Text>
+  const nextImage = () => {
+    setImageIndex((prev) => (prev + 1) % rentalListing.imageUrls.length)
+  }
 
-      <Text className="font-medium text-center sm:text-end text-neutral-500 col-span-12 sm:col-span-6">
-        {rentalListing.city}, {rentalListing.state}, {rentalListing.country}
-      </Text>
+  return (
+    <Card ref={ref} {...props}>
+      <CardHeader className="gap-y-1 py-3 px-5">
+        <View className="flex flex-row items-center justify-between gap-2">
+          <CardTitle className="flex-1 text-xl">{rentalListing.username}</CardTitle>
+          <Badge variant="outline" className="me-2">
+            <Text>{displayTypes[rentalListing.type]}</Text>
+          </Badge>
+          <MaterialIcons name="group-add" size={24} />
+          <Text className="font-semibold text-lg">{rentalListing.availableRooms}</Text>
+        </View>
+        <Text className="text-neutral-500">Member since {rentalListing.userCreatedAt.split('T')[0]}</Text>
+      </CardHeader>
 
-      <View className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-6 xl:col-span-4">
-        <MaterialIcons name="shower" size={24} />
-        <Text>{rentalListing.bathrooms} bathroom{rentalListing.bathrooms === 1 ? '' : 's'}</Text>
-      </View>
+      <CardContent className="p-0 relative group">
+        {rentalListing.imageUrls && (
+          <>
+            <Image
+              source={{ uri: rentalListing.imageUrls[imageIndex] }}
+              className="w-full h-[240px] object-cover"
+            />
 
-      <View className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-6 xl:col-span-4">
-        <MaterialCommunityIcons name="bed" size={24} />
-        <Text>{rentalListing.bedrooms} bedroom{rentalListing.bedrooms === 1 ? '' : 's'}</Text>
-      </View>
+            {imageIndex > 0 && (
+              <Button onPress={prevImage} className="hidden native:block web:group-hover:block absolute left-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7" size="icon" variant="outline">
+                <Entypo size={16} name="chevron-left" />
+              </Button>
+            )}
+            {imageIndex < rentalListing.imageUrls.length - 1 && (
+              <Button onPress={nextImage} className="hidden native:block web:group-hover:block absolute right-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7" size="icon" variant="outline">
+                <Entypo size={16} name="chevron-right" />
+              </Button>
+            )}
+            <View className="w-full flex flex-row items-center justify-center space-x-2 absolute bottom-3">
+              {rentalListing.imageUrls.map((_, i) => (
+                <Button
+                  className={cn('w-2.5 h-2.5', imageIndex === i && 'scale-150')}
+                  size="icon"
+                  variant="outline"
+                  onPress={() => setImageIndex(i)}
+                />
+              ))}
+            </View>
+          </>
+        )}
+      </CardContent>
 
-      <Text className="font-semibold text-base text-center col-span-12 sm:col-span-4 md:max-xl:col-span-12">
-        ${rentalListing.monthlyRent.toFixed(2)}
-        <Text className="font-semibold text-sm text-neutral-500"> / month</Text>
-      </Text>
-    </CardFooter>
-  </Card>
-))
+      <CardFooter className="max-sm:mx-2 grid grid-cols-6 sm:grid-cols-12 gap-y-3 gap-x-3 py-3 px-5 flex-1">
+        <Text className="font-light max-sm:text-center text-base text-neutral-600 col-span-12 sm:col-span-6">
+          {rentalListing.street}, {rentalListing.streetNumber}
+        </Text>
+
+        <Text className="font-medium text-center sm:text-end text-neutral-500 col-span-12 sm:col-span-6">
+          {rentalListing.city}, {rentalListing.state}, {rentalListing.country}
+        </Text>
+
+        <View className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-6 xl:col-span-4">
+          <MaterialIcons name="shower" size={24} />
+          <Text>{rentalListing.bathrooms} bathroom{rentalListing.bathrooms === 1 ? '' : 's'}</Text>
+        </View>
+
+        <View className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-6 xl:col-span-4">
+          <MaterialCommunityIcons name="bed" size={24} />
+          <Text>{rentalListing.bedrooms} bedroom{rentalListing.bedrooms === 1 ? '' : 's'}</Text>
+        </View>
+
+        <Text className="font-semibold text-base text-center col-span-12 sm:col-span-4 md:max-xl:col-span-12">
+          ${rentalListing.monthlyRent.toFixed(2)}
+          <Text className="font-semibold text-sm text-neutral-500"> / month</Text>
+        </Text>
+      </CardFooter>
+    </Card>
+  )
+})
 
 RentalListing.displayName = 'RentalListing'
 

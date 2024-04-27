@@ -23,8 +23,8 @@ class RentalListingController extends Controller
             ->active()
             ->allowedFilters([
                 'type',
-                AllowedFilter::scope('country', 'whereCountry'),
-                AllowedFilter::scope('city', 'whereCity'),
+                'country',
+                'city',
                 AllowedFilter::scope('monthly_rent_between', 'whereMonthlyRentBetween'),
                 AllowedFilter::scope('available_rooms_between', 'whereAvailableRoomsBetween'),
             ])
@@ -42,10 +42,8 @@ class RentalListingController extends Controller
     {
         $data = $request->validated();
         $rentalListing = RentalListing::create(
-            array_merge($data, ['user_id' => auth()->id()])
+            array_merge($data, $data['location'], ['user_id' => auth()->id()])
         );
-
-        $rentalListing->location()->create($data['location']);
 
         $amenities = Amenity::whereIn('slug', $data['amenities'])->get();
         $rentalListing->amenities()->attach($amenities);

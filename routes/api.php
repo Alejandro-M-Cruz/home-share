@@ -12,6 +12,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::get('/amenities', [AmenityController::class, 'index']);
 
-Route::get('/locations', [LocationController::class, 'index']);
+Route::get('/locations', [LocationController::class, 'index'])
+    ->name('locations.index');
 
 Route::apiResource('rental-listings', RentalListingController::class);

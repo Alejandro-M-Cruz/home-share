@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Location;
 use App\Models\RentalListing;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -35,6 +34,17 @@ class RentalListingFactory extends Factory
             'bathrooms' => $this->faker->numberBetween(1, 5),
             'bedrooms' => $this->faker->numberBetween(1, 5),
             'available_rooms' => $this->faker->numberBetween(1, 5),
+
+            'country' => $this->faker->country,
+            'state' => $this->faker->state,
+            'city' => $this->faker->city,
+            'postal_code' => $this->faker->postcode,
+            'street' => $this->faker->streetName,
+            'street_number' => $this->faker->buildingNumber,
+            'door_number' => $this->faker->buildingNumber,
+            'floor_number' => $this->faker->numberBetween(1, 10),
+            'latitude' => $this->faker->latitude,
+            'longitude' => $this->faker->longitude,
         ];
     }
 }

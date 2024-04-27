@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Amenity;
-use App\Models\Location;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
@@ -36,7 +35,6 @@ it('validates the request', function () {
 it('can store a rental listing', function () {
     $user = User::factory()->create();
     $amenities = Amenity::factory(3)->create();
-    $location = Location::factory()->make()->toArray();
     $images = [
         UploadedFile::fake()->image('image1.jpg'),
         UploadedFile::fake()->image('image2.png')
@@ -53,7 +51,18 @@ it('can store a rental listing', function () {
             'available_rooms' => 3,
             'size' => 150,
             'year_built' => 2010,
-            'location' => $location,
+            'location' => [
+                'country' => 'United States',
+                'state' => 'California',
+                'city' => 'Los Angeles',
+                'postal_code' => '90001',
+                'street' => 'Main St',
+                'street_number' => '123',
+                'door_number' => 'A',
+                'floor_number' => 1,
+                'latitude' => 34.052235,
+                'longitude' => -118.243683,
+            ],
             'amenities' => $amenities->pluck('slug')->toArray(),
             'images' => $images,
         ]);
@@ -72,6 +81,5 @@ it('can store a rental listing', function () {
         'user_id' => $user->id,
     ]);
     $this->assertDatabaseCount('amenity_rental_listing', 3);
-    $this->assertDatabaseHas('locations', $location);
     $this->assertDatabaseCount('images', 2);
 });

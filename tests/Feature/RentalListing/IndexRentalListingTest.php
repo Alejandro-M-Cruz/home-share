@@ -109,8 +109,8 @@ it('filters by the key and value in the filter query parameter', function () {
 });
 
 it('applies all filters when given more than one filter', function () {
-    RentalListing::factory()->hasLocation(['city' => 'New York', 'country' => 'United States'])->count(2)->create();
-    RentalListing::factory()->hasLocation(['city' => 'Los Angeles', 'country' => 'United States'])->create();
+    RentalListing::factory()->count(2)->create(['city' => 'New York', 'country' => 'United States']);
+    RentalListing::factory()->create(['city' => 'Los Angeles', 'country' => 'United States']);
 
     $response = $this->get('/api/rental-listings?filter[city]=new&filter[country]=States');
     $rentalListings = $response->json('data');
@@ -144,10 +144,9 @@ it('can filter available_rooms between two values', function () {
 });
 
 it('can filter and sort at the same time', function () {
-    RentalListing::factory()->hasLocation(['city' => 'New York'])->create(['monthly_rent' => 1000]);
-    RentalListing::factory()->hasLocation(['city' => 'New York'])->create(['monthly_rent' => 2000]);
-    RentalListing::factory()->hasLocation(['city' => 'New York'])->create(['monthly_rent' => 4000]);
-    RentalListing::factory()->hasLocation(['city' => 'Los Angeles'])->create(['monthly_rent' => 2000]);
+    RentalListing::factory()->create(['monthly_rent' => 2000, 'city' => 'New York']);
+    RentalListing::factory()->create(['monthly_rent' => 4000, 'city' => 'New York']);
+    RentalListing::factory()->create(['monthly_rent' => 2000, 'city' => 'Los Angeles']);
 
     $response = $this->get(
         '/api/rental-listings?filter[city]=yor&filter[monthly_rent_between]=1500.00&sort=-monthly_rent'

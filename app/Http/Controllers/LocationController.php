@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Location;
+use App\Http\Resources\LocationResource;
+use App\Models\RentalListing;
 
 class LocationController extends Controller
 {
     public function index()
     {
-        return response()->json(
-            Location::whereHas('rentalListing', function ($query) {
-                $query->where('status', 'active');
-            })->get()
+        return LocationResource::collection(
+            RentalListing::active()->get()
         );
     }
 }

@@ -39,10 +39,15 @@ export default function RentalListingsScreen() {
     )
   }
 
-  return (
-    <ScrollView>
-      <Text className="m-3 font-bold text-xl">Rental listings</Text>
+  const handleClearSearchButtonClick = () => {
+    setCountry('')
+    setCity('')
+    setSearchText(null)
+    setParams({})
+  }
 
+  return (
+    <ScrollView className="mt-4">
       <View className="flex flex-col sm:flex-row gap-2 mx-2 sm:mx-5">
         <Input
           className="rounded-full"
@@ -61,7 +66,7 @@ export default function RentalListingsScreen() {
           onChangeText={setCity}
         />
         <View className="flex flex-row gap-3 items-center justify-between max-sm:flex-row-reverse">
-          <Button onPress={handleSearchButtonClick} variant="outline" className="rounded-full">
+          <Button onPress={handleSearchButtonClick} variant="outline" size="icon" className="rounded-full">
             <Ionicons name="search" size={16} />
           </Button>
           <RentalListingParamDialog
@@ -83,7 +88,17 @@ export default function RentalListingsScreen() {
       </View>
 
       {searchText && (
-        <Text className="mx-5 mt-2">{searchText}</Text>
+        <View className="flex flex-row items-center justify-start">
+          <Button
+            onPress={handleClearSearchButtonClick}
+            variant="outline"
+            size="sm"
+            className="flex flex-row items-center gap-3 mx-5 mt-2 rounded-full"
+          >
+            <AntDesign name="close" size={16} />
+            <Text className="text-sm">{searchText}</Text>
+          </Button>
+        </View>
       )}
 
       <View className="grid grid-cols-12 gap-1 sm:gap-5 mx-2 sm:mx-5 my-4">
@@ -103,11 +118,10 @@ export default function RentalListingsScreen() {
       <Button
         onPress={() => fetchNextPage()}
         disabled={!hasNextPage || isFetching}
+        className="mx-auto my-3"
+        variant="outline"
       >
-        <Text>Load more</Text>
-      </Button>
-      <Button onPress={() => refetch()}>
-        <Text>Refetch</Text>
+        <Text>Load more...</Text>
       </Button>
     </ScrollView>
   )

@@ -1,25 +1,14 @@
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { MapProps } from '@/components/map/index'
-import { useCallback, useState } from 'react'
+import { MapProps } from './types'
+import { useState } from 'react'
 import { Location } from '@/types/location'
-
-const INITIAL_REGION = {
-  latitude: 0,
-  longitude: 0,
-  latitudeDelta: 90,
-  longitudeDelta: 90
-}
-
-const FOCUS_DELTAS = {
-  latitudeDelta: 0.01,
-  longitudeDelta: 0.01
-}
+import { NATIVE_MAP } from '@/constants/map'
 
 export function Map({ locations }: MapProps) {
-  const [region, setRegion] = useState(INITIAL_REGION)
+  const [region, setRegion] = useState(NATIVE_MAP.initialRegion)
 
   const handleMarkerPress = (markerLocation: Location) => {
-    setRegion({ ...markerLocation, ...FOCUS_DELTAS })
+    setRegion({ ...markerLocation, ...NATIVE_MAP.focusDeltas })
   }
 
   return (

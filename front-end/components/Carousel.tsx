@@ -33,20 +33,20 @@ const Carousel = React.forwardRef<
       />
 
       {imageIndex > 0 && (
-        <Button onPress={prevImage} className="hidden native:block web:group-hover:block absolute left-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7" size="icon" variant="outline">
+        <Button onPress={prevImage} size="icon" variant="outline" className="invisible native:visible web:group-hover:visible absolute left-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7">
           <Entypo size={16} name="chevron-left" />
         </Button>
       )}
       {imageIndex < imageUrls.length - 1 && (
-        <Button onPress={nextImage} className="hidden native:block web:group-hover:block absolute right-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7" size="icon" variant="outline">
+        <Button onPress={nextImage} size="icon" variant="outline" className="invisible native:visible web:group-hover:visible absolute right-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7">
           <Entypo size={16} name="chevron-right" />
         </Button>
       )}
-      <View className="w-full flex flex-row items-center justify-center space-x-2 absolute bottom-3">
+      <View className="invisible native:visible web:group-hover:visible w-full flex flex-row items-center justify-center space-x-2 absolute bottom-3">
         {imageUrls.map((_, i) => (
           <Button
             key={i}
-            className={cn('w-2.5 h-2.5', imageIndex === i && 'scale-150')}
+            className={cn('w-2.5 h-2.5', imageIndex === i && 'scale-[1.35]')}
             size="icon"
             variant="outline"
             onPress={() => setImageIndex(i)}

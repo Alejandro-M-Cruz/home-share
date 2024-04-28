@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 interface AugmentRefProps<T> {
   ref: React.Ref<T>

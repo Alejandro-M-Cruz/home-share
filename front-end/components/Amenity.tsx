@@ -2,13 +2,14 @@ import { Amenity as AmenityType } from '@/types/amenity'
 import { Text, View } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React, { ComponentPropsWithoutRef } from 'react'
+import { ViewRef } from '@/primitives/types'
 
 type AmenityProps = ComponentPropsWithoutRef<typeof View> & {
   amenity: AmenityType
   className?: string
 }
 
-const Amenity = React.forwardRef<React.ElementRef<typeof View>, AmenityProps>(
+const Amenity = React.forwardRef<ViewRef, AmenityProps>(
   ({ amenity, className }, ref) => {
     return (
       <View ref={ref} className="flex flex-row items-center gap-3">

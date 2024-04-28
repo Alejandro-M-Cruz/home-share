@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { Pressable, Text, View, ViewStyle } from 'react-native'
 
 type ComponentPropsWithAsChild<T extends React.ElementType<any>> =

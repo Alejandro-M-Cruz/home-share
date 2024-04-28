@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { GestureResponderEvent, Pressable, View } from 'react-native'
 import * as Slot from '@/primitives/slot'
-import type { ComponentPropsWithAsChild, PressableRef, SlottablePressableProps } from '@/primitives/types'
+import type { ComponentPropsWithAsChild, PressableRef, SlottablePressableProps, ViewRef } from '@/primitives/types'
 import type { CheckboxIndicator, CheckboxRootProps } from './types'
 
 interface RootContext extends CheckboxRootProps {
@@ -73,7 +73,7 @@ const Trigger = React.forwardRef<PressableRef, SlottablePressableProps>(
 Trigger.displayName = 'TriggerNativeCheckbox'
 
 const Indicator = React.forwardRef<
-  React.ElementRef<typeof View>,
+  ViewRef,
   ComponentPropsWithAsChild<typeof View> & CheckboxIndicator
 >(({ asChild, forceMount, ...props }, ref) => {
   const { checked, disabled } = useCheckboxContext()

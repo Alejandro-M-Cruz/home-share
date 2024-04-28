@@ -1,12 +1,13 @@
 import { RentalListing as RentalListingType } from '@/types/rental-listing'
 import { Image, Text, View } from 'react-native'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/Card'
-import React from 'react'
+import * as React from 'react'
 import { ViewRef } from '@/primitives/types'
 import { AntDesign, Entypo, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons'
 import { Badge } from '@/components/Badge'
 import { Button } from '@/components/Button'
 import { cn } from '@/helpers/cn'
+import { Carousel } from '@/components/Carousel'
 
 type RentalListingProps = {
   rentalListing: RentalListingType
@@ -47,33 +48,7 @@ const RentalListing = React.forwardRef<
 
       <CardContent className="p-0 relative group">
         {rentalListing.imageUrls && (
-          <>
-            <Image
-              source={{ uri: rentalListing.imageUrls[imageIndex] }}
-              className="w-full h-[240px] object-cover"
-            />
-
-            {imageIndex > 0 && (
-              <Button onPress={prevImage} className="hidden native:block web:group-hover:block absolute left-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7" size="icon" variant="outline">
-                <Entypo size={16} name="chevron-left" />
-              </Button>
-            )}
-            {imageIndex < rentalListing.imageUrls.length - 1 && (
-              <Button onPress={nextImage} className="hidden native:block web:group-hover:block absolute right-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7" size="icon" variant="outline">
-                <Entypo size={16} name="chevron-right" />
-              </Button>
-            )}
-            <View className="w-full flex flex-row items-center justify-center space-x-2 absolute bottom-3">
-              {rentalListing.imageUrls.map((_, i) => (
-                <Button
-                  className={cn('w-2.5 h-2.5', imageIndex === i && 'scale-150')}
-                  size="icon"
-                  variant="outline"
-                  onPress={() => setImageIndex(i)}
-                />
-              ))}
-            </View>
-          </>
+          <Carousel imageUrls={rentalListing.imageUrls} imageClassName="w-full h-[240px]" />
         )}
       </CardContent>
 

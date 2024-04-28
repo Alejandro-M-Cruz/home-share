@@ -3,7 +3,7 @@ import * as React from 'react'
 import { GestureResponderEvent, Pressable, View } from 'react-native'
 import { useAugmentedRef } from '@/hooks'
 import * as Slot from '@/primitives/slot'
-import type { ComponentPropsWithAsChild, PressableRef, SlottablePressableProps } from '@/primitives/types'
+import type { ComponentPropsWithAsChild, PressableRef, SlottablePressableProps, ViewRef } from '@/primitives/types'
 import type { CheckboxIndicator, CheckboxRootProps } from './types'
 
 const CheckboxContext = React.createContext<CheckboxRootProps | null>(null)
@@ -77,7 +77,7 @@ function useCheckboxContext() {
 }
 
 const Indicator = React.forwardRef<
-  React.ElementRef<typeof View>,
+  ViewRef,
   ComponentPropsWithAsChild<typeof View> & CheckboxIndicator
 >(({ asChild, forceMount, ...props }, ref) => {
   const { checked, disabled } = useCheckboxContext()

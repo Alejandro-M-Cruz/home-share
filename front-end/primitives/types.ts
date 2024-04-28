@@ -31,7 +31,7 @@ type PointerDownOutsideEvent = CustomEvent<{ originalEvent: PointerEvent }>
 type FocusOutsideEvent = CustomEvent<{ originalEvent: FocusEvent }>
 
 /**
- * Certain props are only available on the native version of the component.
+ * Certain props are only available on the native version of the checkbox.
  * @docs For the web version, see the Radix documentation https://www.radix-ui.com/primitives
  */
 interface PositionedContentProps {

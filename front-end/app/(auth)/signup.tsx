@@ -1,7 +1,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { SignupRequest } from '@/types/auth'
-import { z, ZodType } from 'zod'
+import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Text } from '@/components/Text'
 import { Button, StyleSheet, TextInput, View } from 'react-native'
@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
 import { handleError } from '@/helpers/handle-error'
 
-const signupValidationSchema: ZodType<SignupRequest> = z
+const signupValidationSchema: z.ZodSchema<SignupRequest> = z
   .object({
     name: z.string().min(1).max(255),
     email: z.string().email().min(1).max(320),

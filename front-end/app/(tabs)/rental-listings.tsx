@@ -62,7 +62,7 @@ export default function RentalListingsScreen() {
       <View className="flex flex-col sm:flex-row gap-2 mx-2 sm:mx-5">
         <Input
           className="rounded-full"
-          nativeID="country"
+          id="country"
           inputMode="text"
           placeholder="Country"
           value={country}
@@ -70,7 +70,7 @@ export default function RentalListingsScreen() {
         />
         <Input
           className="rounded-full"
-          nativeID="city"
+          id="city"
           inputMode="text"
           placeholder="City"
           value={city}
@@ -129,7 +129,7 @@ export default function RentalListingsScreen() {
 
         {isFetching && (
           <AntDesign
-            className={cn('my-[200px] mx-auto animate-spin', isFetchingNextPage && 'my-5')}
+            className={cn('my-[160px] mx-auto animate-spin', isFetchingNextPage && 'my-5')}
             name="loading1" size={24}
           />
         )}

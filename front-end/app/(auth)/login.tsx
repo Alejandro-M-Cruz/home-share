@@ -9,8 +9,8 @@ import { Text } from '@/components/Text'
 import { handleError } from '@/helpers/handle-error'
 import { Link, useRouter } from 'expo-router'
 
-const loginValidationSchema: z.ZodType<LoginRequest> = z.object({
-  email: z.string().email().min(8).max(320),
+const loginValidationSchema: z.ZodSchema<LoginRequest> = z.object({
+  email: z.string().email().min(1).max(320),
   password: z.string().min(8).max(128)
 })
 

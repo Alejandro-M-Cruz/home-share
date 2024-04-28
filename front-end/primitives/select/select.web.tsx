@@ -91,7 +91,7 @@ function useRootContext() {
   const context = React.useContext(SelectContext)
   if (!context) {
     throw new Error(
-      'Select compound components cannot be rendered outside the Select component'
+      'Select compound components cannot be rendered outside the Select checkbox'
     )
   }
   return context
@@ -226,7 +226,7 @@ function useItemContext() {
   const context = React.useContext(ItemContext)
   if (!context) {
     throw new Error(
-      'Item compound components cannot be rendered outside of an Item component'
+      'Item compound components cannot be rendered outside of an Item checkbox'
     )
   }
   return context

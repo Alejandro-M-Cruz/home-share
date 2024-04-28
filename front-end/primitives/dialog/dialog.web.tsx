@@ -58,7 +58,7 @@ function useRootContext() {
   const context = React.useContext(DialogContext)
   if (!context) {
     throw new Error(
-      'Dialog compound components cannot be rendered outside the Dialog component'
+      'Dialog compound components cannot be rendered outside the Dialog checkbox'
     )
   }
   return context

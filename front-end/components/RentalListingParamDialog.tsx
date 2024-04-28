@@ -24,6 +24,7 @@ import {
   SelectValue
 } from '@/components/Select'
 import { Input } from '@/components/Input'
+import { textToFloat, textToInt } from '@/helpers/numbers'
 
 type RentalListingParamDialogProps = {
   initialParams?: GetRentalListingsParams
@@ -102,14 +103,10 @@ export const RentalListingParamDialog = ({
       sortDirection,
       filters: {
         type: !type || type === 'all' ? undefined : type,
-        minMonthlyRent: minMonthlyRent ? parseFloat(minMonthlyRent) : undefined,
-        maxMonthlyRent: maxMonthlyRent ? parseFloat(maxMonthlyRent) : undefined,
-        minAvailableRooms: minAvailableRooms
-          ? parseInt(minAvailableRooms)
-          : undefined,
-        maxAvailableRooms: maxAvailableRooms
-          ? parseInt(maxAvailableRooms)
-          : undefined,
+        minMonthlyRent: textToFloat(minMonthlyRent),
+        maxMonthlyRent: textToFloat(maxMonthlyRent),
+        minAvailableRooms: textToInt(minAvailableRooms),
+        maxAvailableRooms: textToInt(maxAvailableRooms)
       }
     })
   }
@@ -132,7 +129,7 @@ export const RentalListingParamDialog = ({
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Select
-                  nativeID="sortBy"
+                  aria-labelledby="sortBy"
                   value={{
                     value: value ?? '',
                     label: value ? sortByLabels[value] : ''
@@ -162,7 +159,7 @@ export const RentalListingParamDialog = ({
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Select
-                  nativeID="sortDirection"
+                  aria-labelledby="sortDirection"
                   value={{
                     value: value as string,
                     label: sortDirectionLabels[value as 'asc' | 'desc']
@@ -200,7 +197,7 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Select
-                    nativeID="type"
+                    aria-labelledby="type"
                     value={{
                       value: value || 'all',
                       label: typeLabels[value as RentalListingType | 'all' || 'all'] || typeLabels.all
@@ -237,7 +234,6 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    nativeID="minMonthlyRent"
                     className="ms-0 me-3"
                     inputMode="numeric"
                     placeholder="0.00"
@@ -255,7 +251,6 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    nativeID="maxMonthlyRent"
                     inputMode="numeric"
                     value={value}
                     onChangeText={onChange}
@@ -274,7 +269,6 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    nativeID="minAvailableRooms"
                     inputMode="numeric"
                     placeholder="0"
                     value={value}
@@ -292,7 +286,6 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    nativeID="maxAvailableRooms"
                     inputMode="numeric"
                     value={value}
                     onChangeText={onChange}

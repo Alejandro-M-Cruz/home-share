@@ -6,10 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/Avatar'
 import { Input } from '@/components/Input'
 import { ImagePicker } from '@/components/ImagePicker'
 import { useState } from 'react'
+import { ImagePickerAsset } from 'expo-image-picker'
 
 export default function TabOneScreen() {
   const { user, userError, userStatus } = useAuth()
-  const [images, setImages] = useState<string[]>([])
+  const [images, setImages] = useState<ImagePickerAsset[]>([])
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Tab One</Text>

@@ -12,7 +12,7 @@ import { Text } from '@/components/Text'
 import { ViewRef } from '@/primitives/types'
 import { DEFAULT_IMAGE_SELECTION_LIMIT } from '@/constants/image-picker'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { mergeImages } from '@/helpers/image-picker'
+import { mergeAssets } from '@/helpers/image-picker'
 
 type ImagePickerProps = {
   images: ImagePickerAsset[]
@@ -41,7 +41,7 @@ const ImagePicker = React.forwardRef<
     })
     onSelectionDialogClose?.()
     if (!result.canceled) {
-      onImagesChange?.(mergeImages(images, result.assets))
+      onImagesChange?.(mergeAssets(images, result.assets))
     }
   }, [images, onImagesChange])
 
@@ -56,7 +56,7 @@ const ImagePicker = React.forwardRef<
     })
     onSelectionDialogClose?.()
     if (!result.canceled) {
-      onImagesChange?.(mergeImages(images, result.assets))
+      onImagesChange?.(mergeAssets(images, result.assets))
     }
   }, [images, onImagesChange])
 

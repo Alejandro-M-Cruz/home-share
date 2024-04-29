@@ -1,8 +1,10 @@
 import { apiClient } from '@/api/api-client'
 import {
+  CreateRentalListingRequest,
   GetRentalListingsParams,
   RentalListingPage
 } from '@/types/rental-listing'
+import { assetToBlob } from '@/helpers/image-picker'
 
 async function getRentalListings({
   cursor,
@@ -35,6 +37,12 @@ async function getRentalListings({
   return data
 }
 
-function createRentalListing() {}
+async function createRentalListing(rentalListing: CreateRentalListingRequest) {
+  const data = {
+    ...rentalListing,
+    images: await Promise.all(rentalListing.images.map(assetToBlob))
+  }
+  await apiClient.post('/api/rental-listings', data)
+}
 
 export { getRentalListings, createRentalListing }

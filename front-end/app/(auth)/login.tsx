@@ -14,7 +14,7 @@ const loginValidationSchema: z.ZodSchema<LoginRequest> = z.object({
   password: z.string().min(8).max(128)
 })
 
-export default function Login() {
+export default function LoginScreen() {
   const { login, loginError, loginStatus } = useAuth()
   const {
     control,
@@ -88,7 +88,7 @@ export default function Login() {
       {errors.root && (
         <Text style={{ color: 'red' }}>{errors.root.message}</Text>
       )}
-      <Link href="/forgot-password" style={{ marginTop: 20 }}>
+      <Link href="/ForgotPasswordScreen" style={{ marginTop: 20 }}>
         <Text
           style={{
             color: '#2196f3',

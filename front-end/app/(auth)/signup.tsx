@@ -24,7 +24,7 @@ const signupValidationSchema: z.ZodSchema<SignupRequest> = z
     }
   )
 
-export default function Signup() {
+export default function SignupScreen() {
   const { signup, signupError, signupStatus } = useAuth()
   const {
     control,

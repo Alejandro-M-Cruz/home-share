@@ -1,3 +1,5 @@
+import { ImagePickerAsset } from 'expo-image-picker'
+
 type RentalListingType = 'house' | 'apartment' | 'apartment_block'
 
 type RentalListingPage = {
@@ -90,7 +92,7 @@ type CreateRentalListingRequest = {
   yearBuilt: number
   location: CreateRentalListingLocation
   amenities: string[]
-  images: any[]
+  images: ImagePickerAsset[]
 }
 
 export {

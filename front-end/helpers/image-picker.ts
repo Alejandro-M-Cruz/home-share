@@ -1,9 +1,14 @@
 import { ImagePickerAsset } from 'expo-image-picker'
 
-function mergeImages(images: ImagePickerAsset[], newImages: ImagePickerAsset[]): ImagePickerAsset[] {
-  const newDifferentImages = newImages
-    .filter(newImage => !images.some(image => image.uri === newImage.uri))
-  return [...images, ...newDifferentImages]
+function mergeAssets(assets: ImagePickerAsset[], newAssets: ImagePickerAsset[]): ImagePickerAsset[] {
+  const newDifferentImages = newAssets
+    .filter(newImage => !assets.some(image => image.uri === newImage.uri))
+  return [...assets, ...newDifferentImages]
 }
 
-export { mergeImages }
+async function assetToBlob(asset: ImagePickerAsset): Promise<Blob> {
+  const response = await fetch(asset.uri)
+  return response.blob()
+}
+
+export { mergeAssets, assetToBlob }

@@ -19,12 +19,14 @@ const Checkbox = React.forwardRef<
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator className={cn('items-center justify-center h-full w-full')}>
+      <CheckboxPrimitive.Indicator
+        className={cn('items-center justify-center h-full w-full')}
+      >
         <MaterialCommunityIcons
           name="check"
           size={12}
           strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
-          className='text-primary-foreground'
+          className="text-primary-foreground"
         />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

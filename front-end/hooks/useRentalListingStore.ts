@@ -6,9 +6,11 @@ type RentalListingState = {
   update: (data: Partial<CreateRentalListingRequest>) => void
 }
 
-export const useRentalListingStore = create<RentalListingState>()((set, get) => ({
-  rentalListing: {},
-  update: (data: Partial<CreateRentalListingRequest>) => {
-    set(state => ({ rentalListing: { ...state.rentalListing, ...data } }))
-  }
-}))
+export const useRentalListingStore = create<RentalListingState>()(
+  (set, get) => ({
+    rentalListing: {},
+    update: (data: Partial<CreateRentalListingRequest>) => {
+      set(state => ({ rentalListing: { ...state.rentalListing, ...data } }))
+    }
+  })
+)

@@ -6,6 +6,8 @@ type LocationsResponse = {
 }
 
 export async function getLocations(): Promise<Location[]> {
-  const { data: { data: locations } } = await apiClient.get<LocationsResponse>('/api/locations')
+  const {
+    data: { data: locations }
+  } = await apiClient.get<LocationsResponse>('/api/locations')
   return locations
 }

@@ -35,10 +35,6 @@ async function getRentalListings({
   return data
 }
 
-
-
-function createRentalListing() {
-
-}
+function createRentalListing() {}
 
 export { getRentalListings, createRentalListing }

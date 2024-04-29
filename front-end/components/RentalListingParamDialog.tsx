@@ -1,7 +1,8 @@
 import { Controller, useForm } from 'react-hook-form'
 import {
   GetRentalListingsParams,
-  RentalListingSortBy, RentalListingType
+  RentalListingSortBy,
+  RentalListingType
 } from '@/types/rental-listing'
 import { ReactNode, useMemo } from 'react'
 import {
@@ -41,17 +42,24 @@ export const RentalListingParamDialog = ({
   closeOnReset = true,
   children
 }: RentalListingParamDialogProps) => {
-  const defaultValues = useMemo(() => ({
-    sortBy: initialParams?.sortBy,
-    sortDirection: initialParams?.sortDirection,
-    filters: {
-      type: initialParams?.filters?.type ?? 'all',
-      minMonthlyRent: initialParams?.filters?.minMonthlyRent?.toString() ?? '',
-      maxMonthlyRent: initialParams?.filters?.maxMonthlyRent?.toString() ?? '',
-      minAvailableRooms: initialParams?.filters?.minAvailableRooms?.toString() ?? '',
-      maxAvailableRooms: initialParams?.filters?.maxAvailableRooms?.toString() ?? '',
-    }
-  }), [initialParams])
+  const defaultValues = useMemo(
+    () => ({
+      sortBy: initialParams?.sortBy,
+      sortDirection: initialParams?.sortDirection,
+      filters: {
+        type: initialParams?.filters?.type ?? 'all',
+        minMonthlyRent:
+          initialParams?.filters?.minMonthlyRent?.toString() ?? '',
+        maxMonthlyRent:
+          initialParams?.filters?.maxMonthlyRent?.toString() ?? '',
+        minAvailableRooms:
+          initialParams?.filters?.minAvailableRooms?.toString() ?? '',
+        maxAvailableRooms:
+          initialParams?.filters?.maxAvailableRooms?.toString() ?? ''
+      }
+    }),
+    [initialParams]
+  )
 
   const { control, reset, handleSubmit } = useForm({
     defaultValues
@@ -95,7 +103,7 @@ export const RentalListingParamDialog = ({
       minMonthlyRent,
       maxMonthlyRent,
       minAvailableRooms,
-      maxAvailableRooms,
+      maxAvailableRooms
     }
   }: any) => {
     onSubmit?.({
@@ -113,9 +121,7 @@ export const RentalListingParamDialog = ({
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-center">Filters and sorting</DialogTitle>
@@ -143,7 +149,10 @@ export const RentalListingParamDialog = ({
                       placeholder="Sort by"
                     />
                   </SelectTrigger>
-                  <SelectContent className="z-50" withPortal={Platform.OS !== 'web'}>
+                  <SelectContent
+                    className="z-50"
+                    withPortal={Platform.OS !== 'web'}
+                  >
                     {Object.entries(sortByLabels).map(([value, label]) => (
                       <SelectItem value={value} label={label} key={value}>
                         {label}
@@ -173,7 +182,10 @@ export const RentalListingParamDialog = ({
                       placeholder="Sort direction"
                     />
                   </SelectTrigger>
-                  <SelectContent className="z-50" withPortal={Platform.OS !== 'web'}>
+                  <SelectContent
+                    className="z-50"
+                    withPortal={Platform.OS !== 'web'}
+                  >
                     {Object.entries(sortDirectionLabels).map(
                       ([value, label]) => (
                         <SelectItem value={value} label={label} key={value}>
@@ -200,7 +212,10 @@ export const RentalListingParamDialog = ({
                     aria-labelledby="type"
                     value={{
                       value: value || 'all',
-                      label: typeLabels[value as RentalListingType | 'all' || 'all'] || typeLabels.all
+                      label:
+                        typeLabels[
+                          (value as RentalListingType | 'all') || 'all'
+                        ] || typeLabels.all
                     }}
                     onOpenChange={isOpen => !isOpen && onBlur()}
                     onValueChange={option => onChange(option?.value)}
@@ -212,13 +227,11 @@ export const RentalListingParamDialog = ({
                       />
                     </SelectTrigger>
                     <SelectContent withPortal={Platform.OS !== 'web'}>
-                      {Object.entries(typeLabels).map(
-                        ([value, label]) => (
-                          <SelectItem value={value} label={label} key={value}>
-                            {label}
-                          </SelectItem>
-                        )
-                      )}
+                      {Object.entries(typeLabels).map(([value, label]) => (
+                        <SelectItem value={value} label={label} key={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 )}

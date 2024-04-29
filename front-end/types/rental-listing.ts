@@ -90,7 +90,7 @@ type CreateRentalListingRequest = {
   yearBuilt: number
   location: CreateRentalListingLocation
   amenities: string[]
-  images: File[]
+  images: any[]
 }
 
 export {

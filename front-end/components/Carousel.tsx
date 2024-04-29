@@ -18,11 +18,11 @@ const Carousel = React.forwardRef<
   const [imageIndex, setImageIndex] = React.useState(0)
 
   const prevImage = () => {
-    setImageIndex((prev) => (prev - 1 + imageUrls.length) % imageUrls.length)
+    setImageIndex(prev => (prev - 1 + imageUrls.length) % imageUrls.length)
   }
 
   const nextImage = () => {
-    setImageIndex((prev) => (prev + 1) % imageUrls.length)
+    setImageIndex(prev => (prev + 1) % imageUrls.length)
   }
 
   return (
@@ -33,12 +33,22 @@ const Carousel = React.forwardRef<
       />
 
       {imageIndex > 0 && (
-        <Button onPress={prevImage} size="icon" variant="outline" className="invisible native:visible web:group-hover:visible absolute left-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7">
+        <Button
+          onPress={prevImage}
+          size="icon"
+          variant="outline"
+          className="invisible native:visible web:group-hover:visible absolute left-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7"
+        >
           <Entypo size={16} name="chevron-left" />
         </Button>
       )}
       {imageIndex < imageUrls.length - 1 && (
-        <Button onPress={nextImage} size="icon" variant="outline" className="invisible native:visible web:group-hover:visible absolute right-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7">
+        <Button
+          onPress={nextImage}
+          size="icon"
+          variant="outline"
+          className="invisible native:visible web:group-hover:visible absolute right-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7"
+        >
           <Entypo size={16} name="chevron-right" />
         </Button>
       )}

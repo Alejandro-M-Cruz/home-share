@@ -3,14 +3,30 @@ import * as React from 'react'
 import { GestureResponderEvent, Pressable, View } from 'react-native'
 import { useAugmentedRef } from '@/hooks'
 import * as Slot from '@/primitives/slot'
-import type { ComponentPropsWithAsChild, PressableRef, SlottablePressableProps, ViewRef } from '@/primitives/types'
+import type {
+  ComponentPropsWithAsChild,
+  PressableRef,
+  SlottablePressableProps,
+  ViewRef
+} from '@/primitives/types'
 import type { CheckboxIndicator, CheckboxRootProps } from './types'
 
 const CheckboxContext = React.createContext<CheckboxRootProps | null>(null)
 
-const Root = React.forwardRef<PressableRef, SlottablePressableProps & CheckboxRootProps>(
+const Root = React.forwardRef<
+  PressableRef,
+  SlottablePressableProps & CheckboxRootProps
+>(
   (
-    { asChild, disabled, checked, onCheckedChange, onPress: onPressProp, role: _role, ...props },
+    {
+      asChild,
+      disabled,
+      checked,
+      onCheckedChange,
+      onPress: onPressProp,
+      role: _role,
+      ...props
+    },
     ref
   ) => {
     const augmentedRef = useAugmentedRef({ ref })
@@ -53,7 +69,7 @@ const Root = React.forwardRef<PressableRef, SlottablePressableProps & CheckboxRo
         >
           <Component
             ref={augmentedRef}
-            role='button'
+            role="button"
             onPress={onPress}
             disabled={disabled}
             {...props}

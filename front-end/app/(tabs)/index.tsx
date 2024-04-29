@@ -1,15 +1,17 @@
-import { StyleSheet, View } from 'react-native'
-
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/Avatar'
 import { Input } from '@/components/Input'
+import { ImagePicker } from '@/components/ImagePicker'
+import { useState } from 'react'
 
 export default function TabOneScreen() {
   const { user, userError, userStatus } = useAuth()
+  const [images, setImages] = useState<string[]>([])
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Tab One</Text>
       {user && (
         <>
@@ -49,7 +51,8 @@ export default function TabOneScreen() {
           </AvatarFallback>
         </Avatar>
       </View>
-    </View>
+      <ImagePicker images={images} onImagesChange={setImages} />
+    </ScrollView>
   )
 }
 

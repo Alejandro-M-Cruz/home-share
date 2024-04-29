@@ -31,15 +31,15 @@ export default function RentalListingsScreen() {
       filters: {
         ...params.filters,
         country: country || undefined,
-        city: city || undefined,
+        city: city || undefined
       }
     })
     const countrySearchText = country ? `country '${country}'` : ''
     const citySearchText = city ? `city '${city}'` : ''
     setSearchText(
-      country || city ?
-        `Searched by ${countrySearchText}${country && city ? ' and ' : ''}${citySearchText}` :
-        null
+      country || city
+        ? `Searched by ${countrySearchText}${country && city ? ' and ' : ''}${citySearchText}`
+        : null
     )
   }
 
@@ -52,7 +52,7 @@ export default function RentalListingsScreen() {
       filters: {
         ...params.filters,
         country: undefined,
-        city: undefined,
+        city: undefined
       }
     })
   }
@@ -77,7 +77,12 @@ export default function RentalListingsScreen() {
           onChangeText={setCity}
         />
         <View className="flex flex-row gap-3 items-center justify-between max-sm:flex-row-reverse">
-          <Button onPress={handleSearchButtonClick} variant="outline" size="icon" className="rounded-full">
+          <Button
+            onPress={handleSearchButtonClick}
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+          >
             <Ionicons name="search" size={16} />
           </Button>
           <RentalListingParamDialog
@@ -129,8 +134,12 @@ export default function RentalListingsScreen() {
 
         {isFetching && (
           <AntDesign
-            className={cn('my-[160px] mx-auto animate-spin', isFetchingNextPage && 'my-5')}
-            name="loading1" size={24}
+            className={cn(
+              'my-[160px] mx-auto animate-spin',
+              isFetchingNextPage && 'my-5'
+            )}
+            name="loading1"
+            size={24}
           />
         )}
 
@@ -146,4 +155,3 @@ export default function RentalListingsScreen() {
     </View>
   )
 }
-

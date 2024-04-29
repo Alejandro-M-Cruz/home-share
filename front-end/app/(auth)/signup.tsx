@@ -47,8 +47,7 @@ export default function Signup() {
 
   useEffect(() => {
     if (signupStatus === 'success') {
-      reset()
-      router.push('/')
+      router.replace('/')
       return
     }
     if (signupError) {
@@ -57,7 +56,8 @@ export default function Signup() {
         setError
       })
     }
-  }, [signupStatus, signupError, setError, router])
+    return reset
+  }, [signupStatus, signupError, setError, router, reset])
 
   const onSubmit: SubmitHandler<SignupRequest> = data => {
     signup(data)

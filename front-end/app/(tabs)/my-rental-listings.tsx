@@ -10,7 +10,9 @@ export default function MyRentalListingsScreen() {
       <Text>
         You have not created any rental listings yet, create one&nbsp;
         <Link href="/create-rental-listing/first-step">
-          <Button className="p-0 m-0 inline" variant="link">here</Button>
+          <Button className="p-0 m-0 inline" variant="link">
+            here
+          </Button>
         </Link>
       </Text>
     </View>

@@ -1,7 +1,12 @@
 import * as React from 'react'
 import { GestureResponderEvent, Pressable, View } from 'react-native'
 import * as Slot from '@/primitives/slot'
-import type { ComponentPropsWithAsChild, PressableRef, SlottablePressableProps, ViewRef } from '@/primitives/types'
+import type {
+  ComponentPropsWithAsChild,
+  PressableRef,
+  SlottablePressableProps,
+  ViewRef
+} from '@/primitives/types'
 import type { CheckboxIndicator, CheckboxRootProps } from './types'
 
 interface RootContext extends CheckboxRootProps {
@@ -10,15 +15,21 @@ interface RootContext extends CheckboxRootProps {
 
 const CheckboxContext = React.createContext<RootContext | null>(null)
 
-const Root = React.forwardRef<PressableRef, SlottablePressableProps & CheckboxRootProps>(
-  ({ asChild, disabled = false, checked, onCheckedChange, nativeID, ...props }, ref) => {
+const Root = React.forwardRef<
+  PressableRef,
+  SlottablePressableProps & CheckboxRootProps
+>(
+  (
+    { asChild, disabled = false, checked, onCheckedChange, nativeID, ...props },
+    ref
+  ) => {
     return (
       <CheckboxContext.Provider
         value={{
           disabled,
           checked,
           onCheckedChange,
-          nativeID,
+          nativeID
         }}
       >
         <Trigger ref={ref} {...props} />
@@ -41,7 +52,8 @@ function useCheckboxContext() {
 
 const Trigger = React.forwardRef<PressableRef, SlottablePressableProps>(
   ({ asChild, onPress: onPressProp, ...props }, ref) => {
-    const { disabled, checked, onCheckedChange, nativeID } = useCheckboxContext()
+    const { disabled, checked, onCheckedChange, nativeID } =
+      useCheckboxContext()
 
     function onPress(ev: GestureResponderEvent) {
       if (disabled) return
@@ -56,12 +68,12 @@ const Trigger = React.forwardRef<PressableRef, SlottablePressableProps>(
         ref={ref}
         nativeID={nativeID}
         aria-disabled={disabled}
-        role='checkbox'
+        role="checkbox"
         aria-checked={checked}
         onPress={onPress}
         accessibilityState={{
           checked,
-          disabled,
+          disabled
         }}
         disabled={disabled}
         {...props}

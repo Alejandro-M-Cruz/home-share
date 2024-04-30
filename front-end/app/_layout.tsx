@@ -10,7 +10,7 @@ import '../global.css'
 import { PortalHost } from '@/primitives/portal'
 
 export {
-  // Catch any errors thrown by the Layout component.
+  // Catch any errors thrown by the Layout checkbox.
   ErrorBoundary
 } from 'expo-router'
 

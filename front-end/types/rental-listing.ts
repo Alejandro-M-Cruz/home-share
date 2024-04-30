@@ -1,6 +1,8 @@
-export type RentalListingType = 'house' | 'apartment' | 'apartment_block'
+import { ImagePickerAsset } from 'expo-image-picker'
 
-export type RentalListingPage = {
+type RentalListingType = 'house' | 'apartment' | 'apartment_block'
+
+type RentalListingPage = {
   data: RentalListing[]
   links: {
     first: string | null
@@ -16,7 +18,7 @@ export type RentalListingPage = {
   }
 }
 
-export type RentalListing = {
+type RentalListing = {
   id: number
   title: string
   type: RentalListingType
@@ -39,7 +41,7 @@ export type RentalListing = {
   imageUrls: string[]
 }
 
-export type GetRentalListingsParams = Partial<{
+type GetRentalListingsParams = Partial<{
   cursor: string
   perPage: number
   sortBy: RentalListingSortBy
@@ -47,7 +49,7 @@ export type GetRentalListingsParams = Partial<{
   filters: RentalListingFilters
 }>
 
-export type RentalListingSortBy =
+type RentalListingSortBy =
   | 'created_at'
   | 'updated_at'
   | 'monthly_rent'
@@ -55,7 +57,7 @@ export type RentalListingSortBy =
   | 'size'
   | 'year_built'
 
-export type RentalListingFilters = Partial<{
+type RentalListingFilters = Partial<{
   type: RentalListingType
   city: string
   country: string
@@ -64,3 +66,41 @@ export type RentalListingFilters = Partial<{
   minAvailableRooms: number
   maxAvailableRooms: number
 }>
+
+type CreateRentalListingLocation = {
+  country: string
+  state: string
+  city: string
+  street: string
+  streetNumber: string
+  doorNumber?: string
+  floorNumber?: number
+  postalCode: string
+  latitude: number
+  longitude: number
+}
+
+type CreateRentalListingRequest = {
+  title: string
+  type: RentalListingType
+  description: string
+  monthlyRent: number
+  availableRooms: number
+  size: number
+  bathrooms: number
+  bedrooms: number
+  yearBuilt: number
+  location: CreateRentalListingLocation
+  amenities: string[]
+  images: ImagePickerAsset[]
+}
+
+export {
+  RentalListingType,
+  RentalListingPage,
+  RentalListing,
+  GetRentalListingsParams,
+  RentalListingSortBy,
+  RentalListingFilters,
+  CreateRentalListingRequest
+}

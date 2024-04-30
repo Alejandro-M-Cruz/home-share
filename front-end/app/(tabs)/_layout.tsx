@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Link, Tabs } from 'expo-router'
 import { Button, Pressable, View } from 'react-native'

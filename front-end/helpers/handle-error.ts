@@ -1,7 +1,5 @@
 import { isAxiosError } from 'axios'
-
-const DEFAULT_ERROR_MESSAGE =
-  'An unexpected error has occurred. Please try again later.'
+import { DEFAULT_ERROR_MESSAGE } from '@/constants/errors'
 
 export function handleError({
   error,

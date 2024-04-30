@@ -10,7 +10,7 @@ const forgotPasswordValidationSchema = z.object({
   email: z.string().email()
 })
 
-export default function ForgotPassword() {
+export default function ForgotPasswordScreen() {
   const {
     control,
     setError,

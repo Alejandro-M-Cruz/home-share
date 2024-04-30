@@ -1,7 +1,8 @@
 import { Controller, useForm } from 'react-hook-form'
 import {
   GetRentalListingsParams,
-  RentalListingSortBy
+  RentalListingSortBy,
+  RentalListingType
 } from '@/types/rental-listing'
 import { ReactNode, useMemo } from 'react'
 import {
@@ -24,6 +25,7 @@ import {
   SelectValue
 } from '@/components/Select'
 import { Input } from '@/components/Input'
+import { textToFloat, textToInt } from '@/helpers/numbers'
 
 type RentalListingParamDialogProps = {
   initialParams?: GetRentalListingsParams
@@ -40,16 +42,24 @@ export const RentalListingParamDialog = ({
   closeOnReset = true,
   children
 }: RentalListingParamDialogProps) => {
-  const defaultValues = useMemo(() => ({
-    sortBy: initialParams?.sortBy,
-    sortDirection: initialParams?.sortDirection,
-    filters: {
-      minMonthlyRent: initialParams?.filters?.minMonthlyRent?.toString() ?? '',
-      maxMonthlyRent: initialParams?.filters?.maxMonthlyRent?.toString() ?? '',
-      minAvailableRooms: initialParams?.filters?.minAvailableRooms?.toString() ?? '',
-      maxAvailableRooms: initialParams?.filters?.maxAvailableRooms?.toString() ?? '',
-    }
-  }), [initialParams])
+  const defaultValues = useMemo(
+    () => ({
+      sortBy: initialParams?.sortBy,
+      sortDirection: initialParams?.sortDirection,
+      filters: {
+        type: initialParams?.filters?.type ?? 'all',
+        minMonthlyRent:
+          initialParams?.filters?.minMonthlyRent?.toString() ?? '',
+        maxMonthlyRent:
+          initialParams?.filters?.maxMonthlyRent?.toString() ?? '',
+        minAvailableRooms:
+          initialParams?.filters?.minAvailableRooms?.toString() ?? '',
+        maxAvailableRooms:
+          initialParams?.filters?.maxAvailableRooms?.toString() ?? ''
+      }
+    }),
+    [initialParams]
+  )
 
   const { control, reset, handleSubmit } = useForm({
     defaultValues
@@ -75,37 +85,43 @@ export const RentalListingParamDialog = ({
     []
   )
 
+  const typeLabels: Record<RentalListingType | 'all', string> = useMemo(
+    () => ({
+      all: 'All',
+      apartment: 'Apartment',
+      house: 'House',
+      apartment_block: 'Apartment block'
+    }),
+    []
+  )
+
   const submit = ({
     sortBy,
     sortDirection,
     filters: {
+      type,
       minMonthlyRent,
       maxMonthlyRent,
       minAvailableRooms,
-      maxAvailableRooms,
+      maxAvailableRooms
     }
   }: any) => {
     onSubmit?.({
       sortBy,
       sortDirection,
       filters: {
-        minMonthlyRent: minMonthlyRent ? parseFloat(minMonthlyRent) : undefined,
-        maxMonthlyRent: maxMonthlyRent ? parseFloat(maxMonthlyRent) : undefined,
-        minAvailableRooms: minAvailableRooms
-          ? parseInt(minAvailableRooms)
-          : undefined,
-        maxAvailableRooms: maxAvailableRooms
-          ? parseInt(maxAvailableRooms)
-          : undefined,
+        type: !type || type === 'all' ? undefined : type,
+        minMonthlyRent: textToFloat(minMonthlyRent),
+        maxMonthlyRent: textToFloat(maxMonthlyRent),
+        minAvailableRooms: textToInt(minAvailableRooms),
+        maxAvailableRooms: textToInt(maxAvailableRooms)
       }
     })
   }
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-center">Filters and sorting</DialogTitle>
@@ -119,7 +135,7 @@ export const RentalListingParamDialog = ({
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Select
-                  nativeID="sortBy"
+                  aria-labelledby="sortBy"
                   value={{
                     value: value ?? '',
                     label: value ? sortByLabels[value] : ''
@@ -133,7 +149,10 @@ export const RentalListingParamDialog = ({
                       placeholder="Sort by"
                     />
                   </SelectTrigger>
-                  <SelectContent className="z-50" withPortal={Platform.OS !== 'web'}>
+                  <SelectContent
+                    className="z-50"
+                    withPortal={Platform.OS !== 'web'}
+                  >
                     {Object.entries(sortByLabels).map(([value, label]) => (
                       <SelectItem value={value} label={label} key={value}>
                         {label}
@@ -149,7 +168,7 @@ export const RentalListingParamDialog = ({
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Select
-                  nativeID="sortDirection"
+                  aria-labelledby="sortDirection"
                   value={{
                     value: value as string,
                     label: sortDirectionLabels[value as 'asc' | 'desc']
@@ -163,7 +182,10 @@ export const RentalListingParamDialog = ({
                       placeholder="Sort direction"
                     />
                   </SelectTrigger>
-                  <SelectContent className="z-50" withPortal={Platform.OS !== 'web'}>
+                  <SelectContent
+                    className="z-50"
+                    withPortal={Platform.OS !== 'web'}
+                  >
                     {Object.entries(sortDirectionLabels).map(
                       ([value, label]) => (
                         <SelectItem value={value} label={label} key={value}>
@@ -179,6 +201,43 @@ export const RentalListingParamDialog = ({
           </View>
 
           <View className="-z-10 flex flex-col space-y-6">
+            <View className="z-50 flex flex-row items-center justify-center">
+              <Label nativeID="type" className="text-end me-3">
+                Type
+              </Label>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Select
+                    aria-labelledby="type"
+                    value={{
+                      value: value || 'all',
+                      label:
+                        typeLabels[
+                          (value as RentalListingType | 'all') || 'all'
+                        ] || typeLabels.all
+                    }}
+                    onOpenChange={isOpen => !isOpen && onBlur()}
+                    onValueChange={option => onChange(option?.value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue
+                        className="text-foreground text-sm native:text-lg"
+                        placeholder="Type"
+                      />
+                    </SelectTrigger>
+                    <SelectContent withPortal={Platform.OS !== 'web'}>
+                      {Object.entries(typeLabels).map(([value, label]) => (
+                        <SelectItem value={value} label={label} key={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+                name="filters.type"
+              />
+            </View>
             <View className="flex flex-row items-center justify-center">
               <Label nativeID="maxMonthlyRent" className="w-full text-end me-3">
                 Monthly rent
@@ -188,7 +247,6 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    nativeID="minMonthlyRent"
                     className="ms-0 me-3"
                     inputMode="numeric"
                     placeholder="0.00"
@@ -206,7 +264,6 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    nativeID="maxMonthlyRent"
                     inputMode="numeric"
                     value={value}
                     onChangeText={onChange}
@@ -225,7 +282,6 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    nativeID="minAvailableRooms"
                     inputMode="numeric"
                     placeholder="0"
                     value={value}
@@ -243,7 +299,6 @@ export const RentalListingParamDialog = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    nativeID="maxAvailableRooms"
                     inputMode="numeric"
                     value={value}
                     onChangeText={onChange}

@@ -1,13 +1,9 @@
-import { MapProps } from '@/components/map/index'
+import { MapProps } from './types'
 import { useCallback, useState } from 'react'
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
 import { latLng } from '@/helpers/lat-lng'
 import { Location } from '@/types/location'
-
-const INITIAL_CENTER = { lat: 20, lng: 0 }
-const INITIAL_ZOOM = 2.4
-const FOCUS_ZOOM = 18
-const ENDED_FOCUS_ZOOM = 15
+import { WEB_MAP } from '@/constants/map'
 
 export function Map({ locations }: MapProps) {
   const { isLoaded } = useJsApiLoader({
@@ -29,7 +25,7 @@ export function Map({ locations }: MapProps) {
 
   const handleMarkerClick = (markerLocation: Location) => {
     map?.setCenter(latLng(markerLocation))
-    map?.setZoom(FOCUS_ZOOM)
+    map?.setZoom(WEB_MAP.focusZoom)
   }
 
   const handleMapClick = () => {}
@@ -38,8 +34,8 @@ export function Map({ locations }: MapProps) {
     <GoogleMap
       mapContainerStyle={{ width: '100%', height: '100%' }}
       onLoad={onLoad}
-      center={INITIAL_CENTER}
-      zoom={INITIAL_ZOOM}
+      center={WEB_MAP.initialCenter}
+      zoom={WEB_MAP.initialZoom}
       onUnmount={onUnmount}
       onClick={handleMapClick}
     >

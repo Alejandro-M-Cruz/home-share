@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
 
         $rentalListingFactory = RentalListing::factory()
             ->has(Image::factory()->count(3))
-            ->count(3);
+            ->count(14);
 
         User::factory()
             ->has($rentalListingFactory)

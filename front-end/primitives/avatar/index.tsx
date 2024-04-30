@@ -41,7 +41,7 @@ function useRootContext() {
   const context = React.useContext(RootContext)
   if (!context) {
     throw new Error(
-      'Avatar compound components cannot be rendered outside the Avatar component'
+      'Avatar compound components cannot be rendered outside the Avatar checkbox'
     )
   }
   return context

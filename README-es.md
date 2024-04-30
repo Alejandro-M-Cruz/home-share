@@ -2,7 +2,7 @@
 
 ## Configuración del entorno de desarrollo
 
-Mi recomendación es utilizar Ubuntu mediante WSL, que permite instalar todo bastante más fácil. 
+Mi recomendación es utilizar Ubuntu mediante WSL, que permite instalar todo bastante más fácil.
 
 ### Requisitos
 
@@ -52,7 +52,7 @@ Una vez instalado Node, se puede instalar Yarn con el siguiente comando:
 
 `corepack enable`
 
-De nuevo, se puede verficar ejecutando 
+De nuevo, se puede verficar ejecutando
 
 `yarn --version`
 
@@ -68,39 +68,46 @@ De nuevo, se puede verficar ejecutando
 
 1. Instalar las dependencias de todo el proyecto:
 
-    `make install`
+   ```
+   composer install
+   cd front-end 
+   yarn install
+   cd ..
+   php nativewind-fix.php
+   ```
+   (Es importante ejecutar `php nativewind-fix.php` cada vez que se instalen las dependencias del front-end)
 
 2. Crear un nuevo fichero en el directorio raíz, llamado `.env` y copiar en él todo el contenido del archivo `.env.example`
 
 3. Crear la base de datos y todas sus tablas:
 
-    `php artisan migrate`
+   `php artisan migrate`
 
 4. Popular la base de datos con datos de prueba:
 
-    `php artisan db:seed`
+   `php artisan db:seed`
 
 5. Ejecutar el servidor de Laravel:
 
-    `php artisan serve`
+   `php artisan serve`
 
 #### Frontend
 
-1. Acceder al directorio del proyecto frontend: 
+1. Acceder al directorio del proyecto frontend:
 
-    `cd front-end`
+   `cd front-end`
 
 2. Crear un nuevo fichero dentro del directorio `front-end`, llamado `.env` y copiar en él todo el contenido del archivo `front-end/.env.example`
 
-3. Copiar la variable de entorno `GOOGLE_MAPS_API_KEY` en el archivo `.env` y añadir la clave de la API de Google Maps, que se encuentra en el fichero `front-end/app.json`
+3. Buscar la variable de entorno `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` en el archivo `front-end/.env` y darle como valor la clave de la API de Google Maps, que se encuentra en el fichero `front-end/app.json`
 
 4. Generar el código fuente nativo (durante el desarrollo, no importa si hay errores al ejecutar este comando):
 
-    `yarn build`
+   `yarn build`
 
 5. Ejecutar el frontend en el navegador:
 
-    `yarn web`
+   `yarn web`
 
 </details>
 
@@ -111,9 +118,9 @@ De nuevo, se puede verficar ejecutando
 
 ### Editor
 Mi recomendación es [PhpStorm](https://www.jetbrains.com/phpstorm/), con el plugin [Laravel Idea](https://plugins.jetbrains.com/plugin/13441-laravel-idea). Tanto
-PhpStorm como Laravel Idea tienen licencia gratuita para estudiantes. 
+PhpStorm como Laravel Idea tienen licencia gratuita para estudiantes.
 
-Visual Studio Code también está bien. 
+Visual Studio Code también está bien.
 
 ### Base de datos
 SQLite, al menos al principio.
@@ -129,11 +136,8 @@ SQLite, al menos al principio.
 - [Yarn](https://yarnpkg.com/getting-started/install) - gestor de dependencias de JavaScript
 - [Expo](https://docs.expo.dev/guides/overview/) - framework frontend de React Native
 - [React Native](https://reactnative.dev/docs/getting-started) - librería para desarrollo de aplicaciones multiplataforma (web, iOS y Android), basada en [React](https://react.dev/learn)
-- [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/overview) - librería para realizar consultas a la API 
+- [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/overview) - librería para realizar consultas a la API
 - [Axios](https://axios-http.com/docs/example) - librería para realizar consultas a la API
-  
+
 </details>
-
-
-
 

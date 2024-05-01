@@ -102,5 +102,6 @@ export {
   GetRentalListingsParams,
   RentalListingSortBy,
   RentalListingFilters,
-  CreateRentalListingRequest
+  CreateRentalListingRequest,
+  CreateRentalListingLocation
 }

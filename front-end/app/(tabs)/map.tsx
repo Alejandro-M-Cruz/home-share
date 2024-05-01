@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native'
-import { Map } from '@/components/map'
+import { Map } from '@/components/Map'
 import { useLocations } from '@/hooks/useLocations'
 
 export default function RentalListingMap() {

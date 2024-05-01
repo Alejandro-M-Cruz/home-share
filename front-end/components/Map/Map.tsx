@@ -1,13 +1,12 @@
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
-import { MapProps } from './types'
 import { useState } from 'react'
-import { Location } from '@/types/location'
 import { NATIVE_MAP } from '@/constants/map'
+import { MapLocation, MapProps } from './types'
 
 export function Map({ locations }: MapProps) {
   const [region, setRegion] = useState(NATIVE_MAP.initialRegion)
 
-  const handleMarkerPress = (markerLocation: Location) => {
+  const handleMarkerPress = (markerLocation: MapLocation) => {
     setRegion({ ...markerLocation, ...NATIVE_MAP.focusDeltas })
   }
 
@@ -18,9 +17,9 @@ export function Map({ locations }: MapProps) {
       region={region}
       zoomControlEnabled={true}
     >
-      {locations.map(location => (
+      {locations.map((location, i) => (
         <Marker
-          key={location.id}
+          key={location.id ?? i}
           coordinate={location}
           title={location.street}
           onPress={() => handleMarkerPress(location)}

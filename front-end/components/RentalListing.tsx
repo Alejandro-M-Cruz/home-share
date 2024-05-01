@@ -52,11 +52,11 @@ const RentalListing = React.forwardRef<
   return (
     <Card ref={ref} {...props}>
       <CardHeader className="gap-y-1 py-3 px-5">
-        <View className="flex flex-row items-center justify-between gap-2">
-          <CardTitle className="flex-1 text-xl">
+        <View className="flex flex-row items-center justify-end gap-2">
+          <CardTitle className="flex-1 text-xl max-sm:hidden">
             {rentalListing.username}
           </CardTitle>
-          <Badge variant="outline" className="me-2">
+          <Badge variant="outline" className="me-2 max-sm:flex-1">
             <Text>{displayTypes[rentalListing.type]}</Text>
           </Badge>
           <MaterialIcons name="group-add" size={24} />
@@ -64,6 +64,9 @@ const RentalListing = React.forwardRef<
             {rentalListing.availableRooms}
           </Text>
         </View>
+        <CardTitle className="flex-1 text-xl sm:hidden">
+          {rentalListing.username}
+        </CardTitle>
         <Text className="text-neutral-500">
           Member since {rentalListing.userCreatedAt.split('T')[0]}
         </Text>
@@ -87,7 +90,7 @@ const RentalListing = React.forwardRef<
           {rentalListing.city}, {rentalListing.state}, {rentalListing.country}
         </Text>
 
-        <View className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-6 xl:col-span-4">
+        <View className="flex flex-row items-center justify-center gap-2 col-span-12 sm:col-span-6 xl:col-span-4">
           <MaterialIcons name="shower" size={24} />
           <Text>
             {rentalListing.bathrooms} bathroom
@@ -95,7 +98,7 @@ const RentalListing = React.forwardRef<
           </Text>
         </View>
 
-        <View className="flex flex-row items-center justify-center gap-2 col-span-12 md:col-span-6 xl:col-span-4">
+        <View className="flex flex-row items-center justify-center gap-2 col-span-12 sm:col-span-6 xl:col-span-4">
           <MaterialCommunityIcons name="bed" size={24} />
           <Text>
             {rentalListing.bedrooms} bedroom
@@ -103,7 +106,7 @@ const RentalListing = React.forwardRef<
           </Text>
         </View>
 
-        <Text className="font-semibold text-base text-center col-span-12 sm:col-span-4 md:max-xl:col-span-12">
+        <Text className="font-semibold text-base text-center col-span-12 xl:col-span-4">
           ${rentalListing.monthlyRent.toFixed(2)}
           <Text className="font-semibold text-sm text-neutral-500">
             {' '}

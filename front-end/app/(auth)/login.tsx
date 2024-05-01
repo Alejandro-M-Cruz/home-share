@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { LoginRequest } from '@/types/auth'
-import { Button, StyleSheet, TextInput, View } from 'react-native'
+import { Image, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native'
 import { useAuth } from '@/hooks/useAuth'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -51,10 +51,14 @@ export default function LoginScreen() {
     login(credentials)
   }
 
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome!</Text>
-      <Text style={styles.subtitle}>Log in into your account</Text>
+    <Image
+      source={require('../../assets/images/extendedBlueLogo.png')}
+      style={styles.image}
+    />
+      <Text style={styles.title}>LOG IN TO ACCESS YOUR ACCOUNT</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -88,10 +92,10 @@ export default function LoginScreen() {
       {errors.root && (
         <Text style={{ color: 'red' }}>{errors.root.message}</Text>
       )}
-      <Link href="/ForgotPasswordScreen" style={{ marginTop: 20 }}>
+      <Link href="/ForgotPasswordScreen" style={{ marginTop: 20}}>
         <Text
           style={{
-            color: '#2196f3',
+            color: 'gray',
             fontWeight: 'bold',
             textDecorationLine: 'underline'
           }}
@@ -99,11 +103,12 @@ export default function LoginScreen() {
           Forgot your password?
         </Text>
       </Link>
-      <Button
-        title="Log in"
+      <TouchableOpacity style={styles.button}
         onPress={handleSubmit(onSubmit)}
         disabled={loginStatus === 'pending'}
-      />
+        activeOpacity={0.6}
+        >LOG IN
+      </TouchableOpacity>
     </View>
   )
 }
@@ -117,28 +122,41 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     maxWidth: 600,
     marginHorizontal: 'auto',
-    marginVertical: 32
+    marginVertical: 'auto'
   },
   title: {
-    fontSize: 60,
+    fontSize: 100,
     color: '#000',
     fontWeight: 'bold',
     marginBottom: 20
-  },
-  subtitle: {
-    fontSize: 20,
-    color: 'gray',
-    marginBottom: 40
   },
   textInput: {
     borderWidth: 1,
     borderColor: 'white',
     height: 50,
+    width: 300,
     padding: 10,
-    marginBottom: 20,
+    marginTop: 20,
     borderRadius: 30,
     backgroundColor: 'white',
     color: 'gray',
     paddingLeft: 20
+  },
+  image: {
+    width: 300,
+    height: 300,
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#7EC8AC',
+    width: 180,
+    height: 50,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold'
   }
 })

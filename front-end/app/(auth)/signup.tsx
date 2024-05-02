@@ -4,7 +4,7 @@ import { SignupRequest } from '@/types/auth'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Text } from '@/components/Text'
-import { Button, StyleSheet, TextInput, View } from 'react-native'
+import { Image, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native'
 import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
 import { handleError } from '@/helpers/handle-error'
@@ -65,8 +65,12 @@ export default function SignupScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
-      <Text style={styles.subtitle}>
+      <Image
+      source={require('../../assets/images/extendedBlueLogo.png')}
+      style={styles.image}
+    />
+      <Text style={{ fontSize: 33, color: '#000', fontWeight: 'bold'}}>Register</Text>
+      <Text style={{fontSize: 20, color: 'gray'}}>
         You are one step away from finding your new home
       </Text>
       <Controller
@@ -133,11 +137,13 @@ export default function SignupScreen() {
         <Text>{errors.passwordConfirmation.message}</Text>
       )}
       {errors.root && <Text>{errors.root.message}</Text>}
-      <Button
-        title="Sign up"
+      
+      <TouchableOpacity style={styles.button}
         onPress={handleSubmit(onSubmit)}
         disabled={signupStatus === 'pending'}
-      />
+        activeOpacity={0.6}
+        >SIGN UP
+      </TouchableOpacity>
     </View>
   )
 }
@@ -151,28 +157,45 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     maxWidth: 600,
     marginHorizontal: 'auto',
-    marginVertical: 32,
+    marginVertical: 'auto',
     backgroundColor: '#f1f1f1'
-  },
-  title: {
-    fontSize: 60,
-    color: '#000',
-    fontWeight: 'bold',
-    marginBottom: 20
   },
   subtitle: {
     fontSize: 20,
     color: 'gray',
-    marginBottom: 40
+  },
+  image: {
+    width: 300,
+    height: 300,
+    marginBottom: 20,
   },
   textInput: {
     borderWidth: 1,
     borderColor: 'white',
     height: 50,
+    width: 300,
     padding: 10,
+    marginTop: 10,
     borderRadius: 30,
     backgroundColor: 'white',
     color: 'gray',
     paddingLeft: 20
-  }
+  },
+  button: {
+    backgroundColor: '#7EC8AC',
+    width: 180,
+    height: 50,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  title: {
+    fontSize: 33,
+    color: '#000',
+    fontWeight: 'bold',
+  },
 })

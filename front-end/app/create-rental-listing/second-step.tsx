@@ -10,15 +10,21 @@ import { useRentalListingStore } from '@/hooks/useRentalListingStore'
 import { useRouter } from 'expo-router'
 import { ImagePickerAsset } from 'expo-image-picker'
 
-const secondStepSchema: z.ZodSchema<{ images: ImagePickerAsset[] }> =
-  z.object({
-    images: z.array(z.any()).min(1).max(10)
-  }).refine(({ images }: { images: ImagePickerAsset[] }) => {
-    images.every(image => image?.fileSize ?? 0 < 4_000_000)
-  }, {
-    message: 'Every image must be smaller than 4 MB',
-    path: ['images']
+const secondStepSchema: z.ZodSchema<{ images: ImagePickerAsset[] }> = z
+  .object({
+    images: z.array(z.any())
+      .min(1, 'At least one image must be selected')
+      .max(10, 'Maximum of 10 images allowed')
   })
+  .refine(
+    ({ images }: { images: ImagePickerAsset[] }) => {
+      images.every(image => image?.fileSize ?? Infinity < 4_000_000)
+    },
+    {
+      message: 'Every image must be smaller than 4 MB',
+      path: ['images']
+    }
+  )
 
 export default function CreateRentalListingSecondStepScreen() {
   const { rentalListing, update } = useRentalListingStore()
@@ -38,9 +44,6 @@ export default function CreateRentalListingSecondStepScreen() {
   const router = useRouter()
 
   const onSubmit = async ({ images }: { images: ImagePickerAsset[] }) => {
-    if (!isValid) {
-      return
-    }
     update({ images })
     router.replace('/create-rental-listing/third-step')
   }
@@ -59,10 +62,10 @@ export default function CreateRentalListingSecondStepScreen() {
         )}
         name="images"
       />
+      {errors.images && <Text className="text-center text-red-500 mt-2 mb-8">{errors.images.message}</Text>}
       <Button disabled={!isValid} onPress={handleSubmit(onSubmit)}>
         <Text>Next</Text>
       </Button>
     </ScrollView>
   )
 }
-

@@ -70,9 +70,6 @@ export default function CreateRentalListingFirstStepScreen() {
   const { amenities, error, status } = useAmenities()
 
   const onSubmit = (data: Partial<CreateRentalListingRequest>) => {
-    if (!isValid) {
-      return
-    }
     update(data)
     router.replace('/create-rental-listing/second-step')
   }
@@ -138,6 +135,7 @@ export default function CreateRentalListingFirstStepScreen() {
             }}
             onOpenChange={isOpen => !isOpen && onBlur()}
             onValueChange={option => onChange(option?.value)}
+            className="z-50"
           >
             <SelectTrigger>
               <SelectValue
@@ -145,7 +143,7 @@ export default function CreateRentalListingFirstStepScreen() {
                 placeholder="Type of home"
               />
             </SelectTrigger>
-            <SelectContent className="z-50" withPortal={Platform.OS !== 'web'}>
+            <SelectContent withPortal={Platform.OS !== 'web'} className="z-50">
               {Object.entries(typeLabels).map(([value, label]) => (
                 <SelectItem value={value} label={label} key={value}>
                   {label}

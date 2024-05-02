@@ -92,7 +92,7 @@ export default function LoginScreen() {
       {errors.root && (
         <Text style={{ color: 'red' }}>{errors.root.message}</Text>
       )}
-      <Link href="/ForgotPasswordScreen" style={{ marginTop: 20}}>
+      <Link href="/forgot-password" style={{ marginTop: 20 }}>
         <Text
           style={{
             color: 'gray',

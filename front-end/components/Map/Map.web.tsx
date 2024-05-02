@@ -1,15 +1,12 @@
-import { MapProps } from './types'
 import { useCallback, useState } from 'react'
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
+import { GoogleMap, Marker } from '@react-google-maps/api'
 import { latLng } from '@/helpers/lat-lng'
-import { Location } from '@/types/location'
 import { WEB_MAP } from '@/constants/map'
+import { useGoogleMapsForWeb } from '@/hooks/useGoogleMapsForWeb'
+import { MapLocation, MapProps } from './types'
 
 export function Map({ locations }: MapProps) {
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-maps-script',
-    googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''
-  })
+  const { isLoaded } = useGoogleMapsForWeb()
 
   const [map, setMap] = useState<google.maps.Map | null>(null)
 
@@ -23,7 +20,7 @@ export function Map({ locations }: MapProps) {
     setMap(null)
   }, [])
 
-  const handleMarkerClick = (markerLocation: Location) => {
+  const handleMarkerClick = (markerLocation: MapLocation) => {
     map?.setCenter(latLng(markerLocation))
     map?.setZoom(WEB_MAP.focusZoom)
   }
@@ -39,9 +36,9 @@ export function Map({ locations }: MapProps) {
       onUnmount={onUnmount}
       onClick={handleMapClick}
     >
-      {locations.map(location => (
+      {locations.map((location, i) => (
         <Marker
-          key={location.id}
+          key={location.id ?? i}
           position={latLng(location)}
           onClick={() => handleMarkerClick(location)}
         />

@@ -1,8 +1,12 @@
 import { ImagePickerAsset } from 'expo-image-picker'
 
-function mergeAssets(assets: ImagePickerAsset[], newAssets: ImagePickerAsset[]): ImagePickerAsset[] {
-  const newDifferentImages = newAssets
-    .filter(newImage => !assets.some(image => image.uri === newImage.uri))
+function mergeAssets(
+  assets: ImagePickerAsset[],
+  newAssets: ImagePickerAsset[]
+): ImagePickerAsset[] {
+  const newDifferentImages = newAssets.filter(
+    newImage => !assets.some(image => image.uri === newImage.uri)
+  )
   return [...assets, ...newDifferentImages]
 }
 

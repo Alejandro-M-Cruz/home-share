@@ -1,5 +1,5 @@
 export type Location = {
-  id: number
+  id?: number
   country: string
   state: string
   city: string

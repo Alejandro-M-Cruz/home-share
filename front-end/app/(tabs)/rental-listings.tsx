@@ -58,8 +58,8 @@ export default function RentalListingsScreen() {
   }
 
   return (
-    <View className="py-4 flex-1">
-      <View className="flex flex-col sm:flex-row gap-2 mx-2 sm:mx-5">
+    <View className="sm:py-4 py-2 flex-1">
+      <View className="flex flex-col sm:flex-row gap-2 mx-2 sm:mx-5 pb-2">
         <Input
           className="rounded-full"
           id="country"

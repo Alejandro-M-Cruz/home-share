@@ -18,7 +18,7 @@ const secondStepSchema: z.ZodSchema<{ images: ImagePickerAsset[] }> = z
   })
   .refine(
     ({ images }: { images: ImagePickerAsset[] }) => {
-      images.every(image => image?.fileSize ?? Infinity < 4_000_000)
+      return images.every(image => image?.fileSize ?? 0 < 4_000_000)
     },
     {
       message: 'Every image must be smaller than 4 MB',
@@ -27,7 +27,7 @@ const secondStepSchema: z.ZodSchema<{ images: ImagePickerAsset[] }> = z
   )
 
 export default function CreateRentalListingSecondStepScreen() {
-  const { rentalListing, update } = useRentalListingStore()
+  const { rentalListing, patchRentalListing } = useRentalListingStore()
 
   const {
     control,
@@ -44,8 +44,8 @@ export default function CreateRentalListingSecondStepScreen() {
   const router = useRouter()
 
   const onSubmit = async ({ images }: { images: ImagePickerAsset[] }) => {
-    update({ images })
-    router.replace('/create-rental-listing/third-step')
+    patchRentalListing({ images })
+    router.push('/create-rental-listing/third-step')
   }
 
   return (

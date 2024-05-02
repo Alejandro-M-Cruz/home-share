@@ -49,7 +49,7 @@ describe('middleware', () => {
     it('should camelize data from json response', () => {
       const response: any = {
         data: {
-          example_field: 'test',
+          'test.example_field': 'test',
           anotherExampleField: 123
         },
         headers: {
@@ -61,7 +61,7 @@ describe('middleware', () => {
 
       expect(result).toEqual({
         data: {
-          exampleField: 'test',
+          'test.exampleField': 'test',
           anotherExampleField: 123
         },
         headers: {

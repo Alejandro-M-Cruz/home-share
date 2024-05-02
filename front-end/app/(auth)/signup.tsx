@@ -7,7 +7,7 @@ import { Text } from '@/components/Text'
 import { Button, StyleSheet, TextInput, View } from 'react-native'
 import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
-import { handleError } from '@/helpers/handle-error'
+import { handleError } from '@/helpers/errors'
 
 const signupValidationSchema: z.ZodSchema<SignupRequest> = z
   .object({
@@ -75,6 +75,7 @@ export default function SignupScreen() {
           <TextInput
             style={styles.textInput}
             placeholder="Full name"
+            autoComplete="name"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -91,6 +92,7 @@ export default function SignupScreen() {
           <TextInput
             style={styles.textInput}
             placeholder="Email"
+            autoComplete="email"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -106,6 +108,7 @@ export default function SignupScreen() {
           <TextInput
             style={styles.textInput}
             placeholder="Password"
+            autoComplete="new-password"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -121,6 +124,7 @@ export default function SignupScreen() {
           <TextInput
             style={styles.textInput}
             placeholder="Password confirmation"
+            autoComplete="new-password"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}

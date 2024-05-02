@@ -2,9 +2,14 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import { useState } from 'react'
 import { NATIVE_MAP } from '@/constants/map'
 import { MapLocation, MapProps } from './types'
+import { zoomToDeltas } from '@/helpers/lat-lng'
 
-export function Map({ locations }: MapProps) {
-  const [region, setRegion] = useState(NATIVE_MAP.initialRegion)
+export function Map({ locations, initialCenter, initialZoom }: MapProps) {
+  const [region, setRegion] = useState({
+    ...NATIVE_MAP.initialRegion,
+    ...(initialCenter ?? {}),
+    ...(initialZoom ? zoomToDeltas(initialZoom) : {})
+  })
 
   const handleMarkerPress = (markerLocation: MapLocation) => {
     setRegion({ ...markerLocation, ...NATIVE_MAP.focusDeltas })

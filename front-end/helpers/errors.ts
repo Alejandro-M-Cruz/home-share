@@ -1,7 +1,7 @@
 import { isAxiosError } from 'axios'
 import { DEFAULT_ERROR_MESSAGE } from '@/constants/errors'
 
-export function handleError({
+function handleError({
   error,
   setError
 }: {
@@ -32,3 +32,16 @@ export function handleError({
     })
   })
 }
+
+function getErrorMessages(errors: any): string[] {
+  switch (typeof errors) {
+    case 'string':
+      return [errors]
+    case 'object':
+      return errors.message ? [errors.message] : Object.values(errors).flatMap(getErrorMessages)
+    default:
+      return [DEFAULT_ERROR_MESSAGE]
+  }
+}
+
+export { handleError, getErrorMessages }

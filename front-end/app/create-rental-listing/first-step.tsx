@@ -43,7 +43,7 @@ const firstStepSchema: z.ZodSchema<Partial<CreateRentalListingRequest>> =
   })
 
 export default function CreateRentalListingFirstStepScreen() {
-  const { rentalListing, update } = useRentalListingStore()
+  const { rentalListing, patchRentalListing } = useRentalListingStore()
   const router = useRouter()
   const {
     control,
@@ -70,8 +70,8 @@ export default function CreateRentalListingFirstStepScreen() {
   const { amenities, error, status } = useAmenities()
 
   const onSubmit = (data: Partial<CreateRentalListingRequest>) => {
-    update(data)
-    router.replace('/create-rental-listing/second-step')
+    patchRentalListing(data)
+    router.push('/create-rental-listing/second-step')
   }
 
   const typeLabels: Record<RentalListingType, string> = useMemo(
@@ -88,7 +88,7 @@ export default function CreateRentalListingFirstStepScreen() {
       className="flex-1 px-2 sm:px-8 py-4"
       contentContainerClassName="flex flex-col space-y-4"
     >
-      <Label nativeID="title">Title</Label>
+      <Label nativeID="title" required>Title</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -124,7 +124,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.description.message}</Text>
       )}
 
-      <Label nativeID="type">Type of Home</Label>
+      <Label nativeID="type" required>Type of Home</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -158,7 +158,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.type.message}</Text>
       )}
 
-      <Label nativeID="monthlyRent">Monthly Rent</Label>
+      <Label nativeID="monthlyRent" required>Monthly Rent</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -180,7 +180,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.monthlyRent.message}</Text>
       )}
 
-      <Label nativeID="availableRooms">Available Rooms</Label>
+      <Label nativeID="availableRooms" required>Available Rooms</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -200,7 +200,7 @@ export default function CreateRentalListingFirstStepScreen() {
         </Text>
       )}
 
-      <Label nativeID="size">Size</Label>
+      <Label nativeID="size" required>Size</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -218,7 +218,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.size.message}</Text>
       )}
 
-      <Label nativeID="bathrooms">Bathrooms</Label>
+      <Label nativeID="bathrooms" required>Bathrooms</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -236,7 +236,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.bathrooms.message}</Text>
       )}
 
-      <Label nativeID="bedrooms">Bedrooms</Label>
+      <Label nativeID="bedrooms" required>Bedrooms</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (

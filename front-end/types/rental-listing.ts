@@ -74,7 +74,7 @@ type CreateRentalListingLocation = {
   street: string
   streetNumber: string
   doorNumber?: string
-  floorNumber?: number
+  floorNumber?: string
   postalCode: string
   latitude: number
   longitude: number

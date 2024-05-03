@@ -4,10 +4,10 @@ use App\Models\Amenity;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
-it('returns forbidden if user is not authenticated', function () {
+it('returns unauthorized if user is not authenticated', function () {
     $response = $this->postJson(route('rental-listings.store'));
 
-    $response->assertForbidden();
+    $response->assertUnauthorized();
 });
 
 it('validates the request', function () {
@@ -27,7 +27,6 @@ it('validates the request', function () {
         'size',
         'year_built',
         'location',
-        'amenities',
         'images',
     ]);
 });

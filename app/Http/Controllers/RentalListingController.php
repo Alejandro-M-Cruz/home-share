@@ -7,6 +7,7 @@ use App\Http\Resources\RentalListingResource;
 use App\Models\Amenity;
 use App\Models\RentalListing;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -32,6 +33,22 @@ class RentalListingController extends Controller
             ->allowedSorts('created_at', 'updated_at', 'monthly_rent', 'available_rooms', 'size', 'year_built')
             ->cursorPaginate($request->get('per_page', 12));
 
+        return RentalListingResource::collection($rentalListings);
+    }
+
+    /**
+     * Get the rental listings created by the authenticated user.
+     */
+    public function mine(Request $request)
+    {
+        $rentalListings = QueryBuilder::for(RentalListing::class)
+            ->where('user_id', auth()->id())
+            ->defaultSort('-created_at')
+            ->allowedFilters([
+                AllowedFilter::exact('status'),
+            ])
+            ->allowedSorts('created_at', 'updated_at', 'monthly_rent', 'available_rooms', 'size', 'year_built')
+            ->cursorPaginate($request->get('per_page', 12));
         return RentalListingResource::collection($rentalListings);
     }
 

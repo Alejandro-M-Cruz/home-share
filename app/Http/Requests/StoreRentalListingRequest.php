@@ -14,6 +14,33 @@ class StoreRentalListingRequest extends FormRequest
         return auth()->check();
     }
 
+    public function attributes()
+    {
+        return [
+            'location.country' => 'country',
+            'location.state' => 'state',
+            'location.city' => 'city',
+            'location.street' => 'street',
+            'location.street_number' => 'street number',
+            'location.door_number' => 'door number',
+            'location.floor_number' => 'floor number',
+            'location.postal_code' => 'postal code',
+            'location.latitude' => 'latitude',
+            'location.longitude' => 'longitude',
+            'amenities.*' => 'amenity',
+            'images.*' => 'image',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'images.required' => 'At least one image is required.',
+            'images.max' => 'The maximum number of images is 8.',
+            'images.*.image' => 'Every file must be an image.',
+        ];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -42,10 +69,10 @@ class StoreRentalListingRequest extends FormRequest
             'location.postal_code' => ['required', 'string'],
             'location.latitude' => ['required', 'numeric', 'min:-90', 'max:90'],
             'location.longitude' => ['required', 'numeric', 'min:-180', 'max:180'],
-            'amenities' => ['required', 'array'],
-            'amenities.*' => ['required', 'string', 'exists:amenities,slug', 'distinct'],
-            'images' => ['required', 'array'],
-            'images.*' => ['required', 'image', 'max:4096'],
+            'amenities' => ['array'],
+            'amenities.*' => ['string', 'exists:amenities,slug', 'distinct'],
+            'images' => ['required', 'array', 'min:1', 'max:8'],
+            'images.*' => ['image', 'max:4096'],
         ];
     }
 }

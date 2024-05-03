@@ -1,7 +1,7 @@
 import { Platform } from 'react-native'
 import * as SecureStore from 'expo-secure-store'
 
-export async function getToken() {
+async function getToken() {
   try {
     return Platform.OS !== 'web'
       ? await SecureStore.getItemAsync('token')
@@ -12,7 +12,7 @@ export async function getToken() {
   }
 }
 
-export async function setToken(token: string) {
+async function setToken(token: string) {
   try {
     if (Platform.OS !== 'web') {
       await SecureStore.setItemAsync('token', token)
@@ -24,7 +24,7 @@ export async function setToken(token: string) {
   }
 }
 
-export async function removeToken() {
+async function removeToken() {
   try {
     if (Platform.OS !== 'web') {
       await SecureStore.deleteItemAsync('token')
@@ -35,3 +35,5 @@ export async function removeToken() {
     console.error('Failed to remove token from storage')
   }
 }
+
+export { getToken, setToken, removeToken }

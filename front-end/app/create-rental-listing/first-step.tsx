@@ -165,11 +165,7 @@ export default function CreateRentalListingFirstStepScreen() {
           <Input
             placeholder="Monthly rent"
             onBlur={onBlur}
-            onChangeText={text =>
-              onChange(
-                text && !isNaN(parseFloat(text)) ? parseFloat(text) : undefined
-              )
-            }
+            onChangeText={text => onChange(textToFloat(text))}
             value={value?.toString() ?? ''}
             inputMode="numeric"
           />
@@ -272,25 +268,11 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.yearBuilt.message}</Text>
       )}
 
-      {status === 'pending' && (
-        <AntDesign
-          className={cn('my-4 mx-auto animate-spin')}
-          name="loading1"
-          size={24}
-        />
-      )}
-      {status === 'error' && (
-        <Text className="text-red-500">
-          There has been an unexpected error, please try again later
-        </Text>
-      )}
-
       <Label nativeID="amenities">Amenities</Label>
-
-      {status === 'success' && (
+      {status === 'success' && amenities && (
         <Controller
           control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
+          render={({ field: { onChange, value } }) => (
             <View className="mx-auto grid sm:grid-cols-2 md:grid-cols-3 sm:gap-x-5 md:gap-x-10 gap-y-4">
               {amenities?.map(amenity => (
                 <View
@@ -316,6 +298,18 @@ export default function CreateRentalListingFirstStepScreen() {
           )}
           name="amenities"
         />
+      )}
+      {status === 'pending' && (
+        <AntDesign
+          className={cn('my-4 mx-auto animate-spin')}
+          name="loading1"
+          size={24}
+        />
+      )}
+      {status === 'error' && (
+        <Text className="text-red-500">
+          There has been an unexpected error, please try again later
+        </Text>
       )}
 
       <Button

@@ -28,6 +28,11 @@ const LocationAutocomplete = React.forwardRef<
         onLocationChange(getAutocompleteLocation(place))
       })
     }
+    return () => {
+      if (inputRef.current) {
+        google.maps.event.clearInstanceListeners(inputRef.current)
+      }
+    }
   }, [inputRef.current])
 
   return (

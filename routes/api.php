@@ -15,4 +15,18 @@ Route::get('/amenities', [AmenityController::class, 'index']);
 Route::get('/locations', [LocationController::class, 'index'])
     ->name('locations.index');
 
-Route::apiResource('rental-listings', RentalListingController::class);
+Route::group(['prefix' => 'rental-listings'], function () {
+    Route::get('/', [RentalListingController::class, 'index']);
+    Route::get('{rental_listing}', [RentalListingController::class, 'show']);
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('/', [RentalListingController::class, 'store']);
+        Route::get('mine', [RentalListingController::class, 'mine']);
+    });
+
+    Route::middleware(['auth:sanctum', 'rental-listing:check-ownership'])->group(function () {
+        Route::put('{rental_listing}', [RentalListingController::class, 'update']);
+        Route::patch('{rental_listing}', [RentalListingController::class, 'update']);
+        Route::delete('{rental_listing}', [RentalListingController::class, 'destroy']);
+    });
+});

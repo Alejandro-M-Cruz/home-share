@@ -37,12 +37,17 @@ async function getRentalListings({
   return data
 }
 
-async function createRentalListing(rentalListing: CreateRentalListingRequest) {
+async function createRentalListing(rentalListing: CreateRentalListingRequest, token: string) {
   const data = {
     ...rentalListing,
     images: await Promise.all(rentalListing.images.map(assetToBlob))
   }
-  await apiClient.post('/api/rental-listings', data)
+  console.log(data)
+  await apiClient.post('/api/rental-listings', data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 }
 
 export { getRentalListings, createRentalListing }

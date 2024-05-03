@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Autocomplete } from '@react-google-maps/api'
 import { useGoogleMapsForWeb } from '@/hooks/useGoogleMapsForWeb'
-import { Location } from '@/types/location'
 import { View } from 'react-native'
 import { ViewRef } from '@/primitives/types'
 import { LocationAutocompleteProps } from '@/components/LocationAutocomplete/types'
@@ -16,29 +15,31 @@ const LocationAutocomplete = React.forwardRef<
   const inputRef = React.useRef<HTMLInputElement | null>(null)
 
   React.useEffect(() => {
-    if (inputRef.current) {
-      const autocomplete = new google.maps.places.Autocomplete(
-        inputRef.current,
-        {
-          types: ['geocode']
-        }
-      )
-      autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace()
-        onLocationChange(getAutocompleteLocation(place))
-      })
+    if (!isLoaded || !inputRef.current) {
+      return
     }
-    return () => {
-      if (inputRef.current) {
-        google.maps.event.clearInstanceListeners(inputRef.current)
+
+    const autocomplete = new google.maps.places.Autocomplete(
+      inputRef.current!,
+      {
+        types: ['geocode']
       }
+    )
+    autocomplete.addListener('place_changed', () => {
+      console.log(getAutocompleteLocation(autocomplete.getPlace()))
+      const place = autocomplete.getPlace()
+      onLocationChange(getAutocompleteLocation(place))
+    })
+
+    return () => {
+      google.maps.event.clearInstanceListeners(autocomplete)
     }
-  }, [inputRef.current])
+  }, [isLoaded, inputRef.current, onLocationChange])
 
   return (
     <View ref={ref} className={className} {...props}>
       {isLoaded ? (
-        <Autocomplete >
+        <Autocomplete>
           <input
             className="web:flex h-10 native:h-12 web:w-full rounded-md border border-input bg-background px-3 web:py-2 text-base lg:text-sm native:text-lg native:leading-[1.25] text-foreground placeholder:text-muted-foreground web:ring-offset-background file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2"
             type="text"

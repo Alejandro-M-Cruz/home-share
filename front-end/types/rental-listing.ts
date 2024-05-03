@@ -89,7 +89,7 @@ type CreateRentalListingRequest = {
   size: number
   bathrooms: number
   bedrooms: number
-  yearBuilt?: number
+  yearBuilt: number
   rules?: string
   additionalInformation?: string
   location: CreateRentalListingLocation

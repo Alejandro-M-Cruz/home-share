@@ -9,57 +9,54 @@ import { Text } from '@/components/Text'
 import { z } from 'zod'
 import { useRentalListingStore } from '@/hooks/useRentalListingStore'
 import { useCreateRentalListing } from '@/hooks/useCreateRentalListing'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRouter } from 'expo-router'
 import { handleError } from '@/helpers/errors'
 import { ErrorList } from '@/components/ErrorList'
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-const thirdStepSchema: z.ZodSchema<CreateRentalListingLocation> = z.object({
-  country: z.string(),
-  state: z.string(),
-  city: z.string(),
-  postalCode: z.string(),
-  street: z.string(),
-  streetNumber: z.string(),
-  doorNumber: z.string().optional(),
-  floorNumber: z.string().optional(),
-  longitude: z.number().min(-180).max(180),
-  latitude: z.number().min(-90).max(90)
+const thirdStepSchema: z.ZodSchema<{ location: CreateRentalListingLocation }> = z.object({
+  location: z.object({
+    country: z.string(),
+    state: z.string(),
+    city: z.string(),
+    postalCode: z.string(),
+    street: z.string(),
+    streetNumber: z.string(),
+    doorNumber: z.string().optional(),
+    floorNumber: z.string().optional(),
+    longitude: z.number().min(-180).max(180),
+    latitude: z.number().min(-90).max(90)
+  })
 })
 
 export default function CreateRentalListingThirdStepScreen() {
   const { rentalListing, patchRentalListing } = useRentalListingStore()
-  const [location, setLocation] = useState<Partial<CreateRentalListingLocation>>(rentalListing.location ?? {
-    country: '',
-    state: '',
-    city: '',
-    postalCode: '',
-    street: '',
-    streetNumber: '',
-    doorNumber: undefined,
-    floorNumber: undefined,
-    longitude: undefined,
-    latitude: undefined
-  })
-
-  const [errors, setErrors] = useState<any>({})
-  const setError = (field: string, error: any) => {
-    setErrors((prev: any) => ({
-      ...prev,
-      [field]: error
-    }))
-  }
-
-  const [isValid, setIsValid] = useState(false)
-  useEffect(() => {
-    try {
-      thirdStepSchema.parse(location)
-      setErrors(undefined)
-      setIsValid(true)
-    } catch {
-      setIsValid(false)
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+    setError,
+    watch
+  } = useForm<{ location: CreateRentalListingLocation }>({
+    resolver: zodResolver(thirdStepSchema),
+    defaultValues: {
+      location: rentalListing.location ?? {
+        country: '',
+        state: '',
+        city: '',
+        postalCode: '',
+        street: '',
+        streetNumber: '',
+        doorNumber: undefined,
+        floorNumber: undefined,
+        longitude: undefined,
+        latitude: undefined
+      }
     }
-  }, [location])
+  })
+  const location = watch('location')
 
   const { createRentalListing, status, error } = useCreateRentalListing()
   const router = useRouter()
@@ -73,13 +70,16 @@ export default function CreateRentalListingThirdStepScreen() {
     }
   }, [status, error, router, setError])
 
-  const onSubmit = (location: CreateRentalListingLocation) => {
-    console.log(location)
+  const onSubmit = ({ location }: { location: CreateRentalListingLocation }) => {
+    const data = { ...rentalListing, location }
     patchRentalListing({ location })
-    createRentalListing(rentalListing as CreateRentalListingRequest)
+    createRentalListing(data as CreateRentalListingRequest)
   }
 
   const otherErrors = useMemo(() => {
+    if (!errors.location) {
+      return errors
+    }
     const { location: _, ...otherErrors } = errors
     return otherErrors
   }, [errors])
@@ -87,11 +87,13 @@ export default function CreateRentalListingThirdStepScreen() {
   return (
     <ScrollView className="flex-1" contentContainerClassName="flex flex-col py-4 px-2 sm:px-4 space-y-6">
       <Label nativeID="location" required>Autocomplete location</Label>
-      <LocationAutocomplete onLocationChange={loc => setLocation(prev => ({
-        ...loc,
-        doorNumber: prev.doorNumber,
-        floorNumber: prev.floorNumber
-      }))} />
+      <Controller
+        control={control}
+        name="location"
+        render={({ field: { onChange } }) => (
+          <LocationAutocomplete onLocationChange={onChange} />
+        )}
+      />
 
       {location.latitude && location.longitude && (
         <View className="w-full h-96 my-5">
@@ -161,13 +163,16 @@ export default function CreateRentalListingThirdStepScreen() {
       <Label nativeID="doorNumber">
         Door number
       </Label>
-      <Input
-        placeholder="Door number"
-        value={location.doorNumber ?? ''}
-        onChangeText={text => setLocation(prev => ({
-          ...prev,
-          doorNumber: text || undefined
-        }))}
+      <Controller
+        control={control}
+        name="location.doorNumber"
+        render={({ field: { value, onChange } }) => (
+          <Input
+            placeholder="Door number"
+            value={value ?? ''}
+            onChangeText={text => onChange(text || undefined)}
+          />
+        )}
       />
       {errors.location?.doorNumber && (
         <Text className="text-red-500">{errors.location.doorNumber.message}</Text>
@@ -176,13 +181,16 @@ export default function CreateRentalListingThirdStepScreen() {
       <Label nativeID="floorNumber">
         Floor number
       </Label>
-      <Input
-        placeholder="Floor number"
-        value={location.floorNumber ?? ''}
-        onChangeText={text => setLocation(prev => ({
-          ...prev,
-          floorNumber: text || undefined
-        }))}
+      <Controller
+        control={control}
+        name="location.floorNumber"
+        render={({ field: { value, onChange } }) => (
+          <Input
+            placeholder="Floor number"
+            value={value ?? ''}
+            onChangeText={text => onChange(text || undefined)}
+          />
+        )}
       />
       {errors.location?.floorNumber && (
         <Text className="text-red-500">{errors.location.floorNumber.message}</Text>
@@ -195,7 +203,7 @@ export default function CreateRentalListingThirdStepScreen() {
       {Object.keys(otherErrors).length > 0 && (
         <ErrorList errors={otherErrors} />
       )}
-      <Button onPress={() => onSubmit(location as CreateRentalListingLocation)} disabled={!isValid}>
+      <Button onPress={handleSubmit(onSubmit)} disabled={!isValid}>
         <Text>Confirm</Text>
       </Button>
     </ScrollView>

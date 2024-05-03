@@ -36,10 +36,12 @@ const firstStepSchema: z.ZodSchema<Partial<CreateRentalListingRequest>> =
     monthlyRent: z.number().min(0),
     availableRooms: z.number().int().min(1),
     size: z.number().int().min(0),
-    bathrooms: z.number().int().min(0),
-    bedrooms: z.number().int().min(0),
-    yearBuilt: z.number().int(),
-    amenities: z.array(z.string())
+    bathrooms: z.number().int().min(0).max(255),
+    bedrooms: z.number().int().min(0).max(255),
+    amenities: z.array(z.string()),
+    yearBuilt: z.number().int().min(1000).max(new Date().getFullYear()),
+    rules: z.string().optional(),
+    additionalInformation: z.string().optional()
   })
 
 export default function CreateRentalListingFirstStepScreen() {
@@ -106,7 +108,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.title.message}</Text>
       )}
 
-      <Label nativeID="description">Description</Label>
+      <Label nativeID="description" required>Description</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -250,7 +252,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.bedrooms.message}</Text>
       )}
 
-      <Label nativeID="yearBuilt">Year Built</Label>
+      <Label nativeID="yearBuilt" required>Year Built</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -267,6 +269,36 @@ export default function CreateRentalListingFirstStepScreen() {
       {errors.yearBuilt && (
         <Text className="mb-2 text-red-500">{errors.yearBuilt.message}</Text>
       )}
+
+      <Label nativeID="rules">Rules</Label>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Textarea
+            placeholder="Rules"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            inputMode="text"
+          />
+        )}
+        name="rules"
+      />
+
+      <Label nativeID="additionalInformation">Additional Information</Label>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Textarea
+            placeholder="Additional information"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            inputMode="text"
+          />
+        )}
+        name="additionalInformation"
+      />
 
       <Label nativeID="amenities">Amenities</Label>
       {status === 'success' && amenities && (

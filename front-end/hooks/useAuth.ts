@@ -89,7 +89,6 @@ export function useAuth() {
   } = useMutation({
     mutationKey: ['logout'],
     mutationFn: logoutMutationFn,
-    retry: false
   })
 
   const {
@@ -99,7 +98,6 @@ export function useAuth() {
   } = useMutation({
     mutationKey: ['forgotPassword'],
     mutationFn: auth.forgotPassword,
-    retry: false
   })
 
   const resetPasswordMutationFn = async (passwords: {
@@ -120,7 +118,6 @@ export function useAuth() {
   } = useMutation({
     mutationKey: ['resetPassword'],
     mutationFn: resetPasswordMutationFn,
-    retry: false
   })
 
   return {

@@ -39,6 +39,7 @@ async function createToken(tokenRequest: TokenRequest) {
 }
 
 async function revokeTokens(token: string) {
+  await csrf()
   await apiClient.delete('/sanctum/token', {
     headers: {
       Authorization: `Bearer ${token}`

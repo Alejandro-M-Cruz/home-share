@@ -19,14 +19,13 @@ Route::get('/locations', [LocationController::class, 'index'])
 Route::prefix('rental-listings')->group(function () {
     Route::get('/', [RentalListingController::class, 'index'])
         ->name('rental-listings.index');
+
     Route::get('/{rental_listing}', [RentalListingController::class, 'show'])
         ->name('rental-listings.show');
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [RentalListingController::class, 'store'])
             ->name('rental-listings.store');
-        Route::get('/mine', [RentalListingController::class, 'mine'])
-            ->name('rental-listings.mine');
     });
 
     Route::middleware(['auth:sanctum', CheckRentalListingOwnership::class])->group(function () {
@@ -40,3 +39,7 @@ Route::prefix('rental-listings')->group(function () {
             ->name('rental-listings.destroy');
     });
 });
+
+Route::get('/my-rental-listings', [RentalListingController::class, 'getMyRentalListings'])
+    ->middleware('auth:sanctum')
+    ->name('rental-listings.my');

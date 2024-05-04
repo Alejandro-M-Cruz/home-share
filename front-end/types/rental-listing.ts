@@ -34,9 +34,9 @@ type RentalListing = {
   streetNumber: string
   createdAt: string
   updatedAt: string
+  imageUrls: string[]
   username: string
   userCreatedAt: string
-  imageUrls: string[]
 }
 
 type GetRentalListingsParams = Partial<{
@@ -45,6 +45,16 @@ type GetRentalListingsParams = Partial<{
   sortBy: RentalListingSortBy
   sortDirection: 'asc' | 'desc'
   filters: RentalListingFilters
+}>
+
+type MyRentalListingsParams = Partial<{
+  cursor: string
+  perPage: number
+  sortBy: RentalListingSortBy
+  sortDirection: 'asc' | 'desc'
+  filters: {
+    status?: 'active' | 'inactive'
+  }
 }>
 
 type RentalListingSortBy =
@@ -99,6 +109,7 @@ export {
   RentalListingPage,
   RentalListing,
   GetRentalListingsParams,
+  MyRentalListingsParams,
   RentalListingSortBy,
   RentalListingFilters,
   CreateRentalListingRequest,

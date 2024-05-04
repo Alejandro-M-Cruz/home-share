@@ -1,10 +1,9 @@
 import { apiClient } from '@/api/api-client'
 import {
   CreateRentalListingRequest,
-  GetRentalListingsParams,
+  GetRentalListingsParams, MyRentalListingsParams,
   RentalListingPage
 } from '@/types/rental-listing'
-import { assetToBlob } from '@/helpers/image-picker'
 
 async function getRentalListings({
   cursor,
@@ -12,7 +11,7 @@ async function getRentalListings({
   sortBy,
   sortDirection,
   filters
-}: GetRentalListingsParams) {
+}: GetRentalListingsParams): Promise<RentalListingPage> {
   const { data } = await apiClient.get<RentalListingPage>(
     '/api/rental-listings',
     {
@@ -34,6 +33,29 @@ async function getRentalListings({
       }
     }
   )
+  return data
+}
+
+async function getMyRentalListings({
+  cursor,
+  perPage,
+  sortBy,
+  sortDirection,
+  filters
+}: MyRentalListingsParams, token: string) {
+  const { data } = await apiClient.get<RentalListingPage>('/api/my-rental-listings', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      cursor,
+      per_page: perPage,
+      sort: sortBy ? (sortDirection === 'desc' ? '-' : '') + sortBy : undefined,
+      filter: {
+        status: filters?.status
+      }
+    }
+  })
   return data
 }
 
@@ -64,4 +86,9 @@ async function uploadRentalListingImages(rentalListingId: number, images: Blob[]
   )
 }
 
-export { getRentalListings, createRentalListing, uploadRentalListingImages }
+export {
+  getRentalListings,
+  getMyRentalListings,
+  createRentalListing,
+  uploadRentalListingImages
+}

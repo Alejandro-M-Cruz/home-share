@@ -28,16 +28,6 @@ class StoreRentalListingRequest extends FormRequest
             'location.latitude' => 'latitude',
             'location.longitude' => 'longitude',
             'amenities.*' => 'amenity',
-            'images.*' => 'image',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'images.required' => 'At least one image is required.',
-            'images.max' => 'The maximum number of images is 8.',
-            'images.*.image' => 'Every file must be an image.',
         ];
     }
 
@@ -73,8 +63,6 @@ class StoreRentalListingRequest extends FormRequest
             'location.longitude' => ['required', 'numeric', 'min:-180', 'max:180'],
             'amenities' => ['array'],
             'amenities.*' => ['string', 'exists:amenities,slug', 'distinct'],
-            'images' => ['required', 'array', 'min:1', 'max:8'],
-            'images.*' => ['image', 'max:4096'],
         ];
     }
 }

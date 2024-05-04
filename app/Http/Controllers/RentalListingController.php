@@ -65,6 +65,16 @@ class RentalListingController extends Controller
         $amenities = Amenity::whereIn('slug', $data['amenities'])->get();
         $rentalListing->amenities()->attach($amenities);
 
+        return response()->json(['id' => $rentalListing->id], Response::HTTP_CREATED);
+    }
+
+    public function uploadImages(Request $request, RentalListing $rentalListing)
+    {
+        $request->validate([
+            'images' => ['required', 'array', 'min:1', 'max:8'],
+            'images.*' => ['required', 'image', 'max:4096'],
+        ]);
+
         $images = $request->file('images');
 
         foreach ($images as $image) {

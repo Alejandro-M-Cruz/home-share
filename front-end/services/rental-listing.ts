@@ -38,16 +38,26 @@ async function getRentalListings({
 }
 
 async function createRentalListing(rentalListing: CreateRentalListingRequest, token: string) {
-  const data = {
-    ...rentalListing,
-    images: await Promise.all(rentalListing.images.map(assetToBlob))
-  }
-  console.log(data)
-  await apiClient.post('/api/rental-listings', data, {
+  const { data } = await apiClient.post<{ id: number }>('/api/rental-listings', rentalListing, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  return data.id
+}
+
+async function uploadRentalListingImages(rentalListingId: number, images: Blob[], token: string) {
+  const formData = new FormData()
+  images.forEach(image => {
+    formData.append('images', image)
+  })
+  await apiClient.post(`/api/rental-listings/${rentalListingId}/upload-images`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data'
     }
   })
 }
 
-export { getRentalListings, createRentalListing }
+export { getRentalListings, createRentalListing, uploadRentalListingImages }

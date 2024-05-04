@@ -3,9 +3,11 @@ import { createRentalListing } from '@/services/rental-listing'
 import { CreateRentalListingRequest } from '@/types/rental-listing'
 import * as tokenStorage from '@/services/token-storage'
 import { useRouter } from 'expo-router'
+import { useRentalListingStore } from '@/hooks/useRentalListingStore'
 
 export function useCreateRentalListing() {
   const router = useRouter()
+  const { setId } = useRentalListingStore()
 
   const { mutate, error, status } = useMutation({
     mutationKey: ['create-rental-listing'],
@@ -15,7 +17,8 @@ export function useCreateRentalListing() {
         router.push('/login')
         return
       }
-      return createRentalListing(data, token)
+      const rentalListingId = await createRentalListing(data, token)
+      setId(rentalListingId)
     }
   })
 

@@ -19,10 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
-
-        $middleware->alias([
-            'rental-listing:check-ownership' => \App\Http\Middleware\CheckRentalListingOwnership::class,
-        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

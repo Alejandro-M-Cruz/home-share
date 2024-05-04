@@ -50,7 +50,8 @@ export function useAuth() {
     status: signupStatus
   } = useMutation({
     mutationKey: ['signup'],
-    mutationFn: signupMutationFn
+    mutationFn: signupMutationFn,
+    retry: false
   })
 
   const loginMutationFn = async (data: LoginRequest) => {
@@ -68,7 +69,8 @@ export function useAuth() {
     status: loginStatus
   } = useMutation({
     mutationKey: ['login'],
-    mutationFn: loginMutationFn
+    mutationFn: loginMutationFn,
+    retry: false
   })
 
   const logoutMutationFn = async () => {
@@ -86,7 +88,8 @@ export function useAuth() {
     status: logoutStatus
   } = useMutation({
     mutationKey: ['logout'],
-    mutationFn: logoutMutationFn
+    mutationFn: logoutMutationFn,
+    retry: false
   })
 
   const {
@@ -95,7 +98,8 @@ export function useAuth() {
     status: forgotPasswordStatus
   } = useMutation({
     mutationKey: ['forgotPassword'],
-    mutationFn: auth.forgotPassword
+    mutationFn: auth.forgotPassword,
+    retry: false
   })
 
   const resetPasswordMutationFn = async (passwords: {
@@ -115,7 +119,8 @@ export function useAuth() {
     status: resetPasswordStatus
   } = useMutation({
     mutationKey: ['resetPassword'],
-    mutationFn: resetPasswordMutationFn
+    mutationFn: resetPasswordMutationFn,
+    retry: false
   })
 
   return {

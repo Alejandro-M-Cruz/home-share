@@ -1,13 +1,14 @@
 import { isAxiosError } from 'axios'
 import { DEFAULT_ERROR_MESSAGE } from '@/constants/errors'
 
-export function handleError({
+function handleError({
   error,
   setError
 }: {
   error: Error
   setError: (fieldPath: any, error: any) => void
 }) {
+  console.log(error)
   if (!isAxiosError(error) || !error.response) {
     setError('root', {
       type: 'unknown',
@@ -26,9 +27,23 @@ export function handleError({
     return
   }
   errorEntries.forEach(([fieldPath, messages]) => {
-    setError(fieldPath, {
+    const field = fieldPath.match(/^\w+\.\d+$/) ? fieldPath.split('.')[0] : fieldPath
+    setError(field, {
       type: errorType,
       message: messages.join('\n')
     })
   })
 }
+
+function getErrorMessages(errors: any): string[] {
+  switch (typeof errors) {
+    case 'string':
+      return [errors]
+    case 'object':
+      return errors.message ? [errors.message] : Object.values(errors).flatMap(getErrorMessages)
+    default:
+      return [DEFAULT_ERROR_MESSAGE]
+  }
+}
+
+export { handleError, getErrorMessages }

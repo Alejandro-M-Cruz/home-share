@@ -5,7 +5,7 @@ import { WEB_MAP } from '@/constants/map'
 import { useGoogleMapsForWeb } from '@/hooks/useGoogleMapsForWeb'
 import { MapLocation, MapProps } from './types'
 
-export function Map({ locations }: MapProps) {
+export function Map({ locations, initialCenter }: MapProps) {
   const { isLoaded } = useGoogleMapsForWeb()
 
   const [map, setMap] = useState<google.maps.Map | null>(null)
@@ -31,7 +31,7 @@ export function Map({ locations }: MapProps) {
     <GoogleMap
       mapContainerStyle={{ width: '100%', height: '100%' }}
       onLoad={onLoad}
-      center={WEB_MAP.initialCenter}
+      center={initialCenter ? latLng(initialCenter) : WEB_MAP.initialCenter}
       zoom={WEB_MAP.initialZoom}
       onUnmount={onUnmount}
       onClick={handleMapClick}

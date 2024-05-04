@@ -3,13 +3,19 @@ import { create } from 'zustand'
 
 type RentalListingState = {
   rentalListing: Partial<CreateRentalListingRequest>
-  update: (data: Partial<CreateRentalListingRequest>) => void
+  patchRentalListing: (data: Partial<CreateRentalListingRequest>) => void
+  id?: number
+  setId: (id: number) => void
+
 }
 
 export const useRentalListingStore = create<RentalListingState>()(
   (set, get) => ({
     rentalListing: {},
-    update: (data: Partial<CreateRentalListingRequest>) => {
+    setId: (id: number) => {
+      set({ id })
+    },
+    patchRentalListing: (data: Partial<CreateRentalListingRequest>) => {
       set(state => ({ rentalListing: { ...state.rentalListing, ...data } }))
     }
   })

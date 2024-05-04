@@ -8,7 +8,9 @@ use App\Models\Amenity;
 use App\Models\RentalListing;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -36,6 +38,22 @@ class RentalListingController extends Controller
     }
 
     /**
+     * Get the rental listings created by the authenticated user.
+     */
+    public function mine(Request $request)
+    {
+        $rentalListings = QueryBuilder::for(RentalListing::class)
+            ->where('user_id', auth()->id())
+            ->defaultSort('-created_at')
+            ->allowedFilters([
+                AllowedFilter::exact('status'),
+            ])
+            ->allowedSorts('created_at', 'updated_at', 'monthly_rent', 'available_rooms', 'size', 'year_built')
+            ->cursorPaginate($request->get('per_page', 12));
+        return RentalListingResource::collection($rentalListings);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreRentalListingRequest $request)
@@ -48,17 +66,38 @@ class RentalListingController extends Controller
         $amenities = Amenity::whereIn('slug', $data['amenities'])->get();
         $rentalListing->amenities()->attach($amenities);
 
+        return response()->json(['id' => $rentalListing->id], Response::HTTP_CREATED);
+    }
+
+    public function uploadImages(Request $request, RentalListing $rentalListing)
+    {
+        if (! $request->hasFile('images')) {
+            throw ValidationException::withMessages(['images' => 'The images field is required.']);
+        }
+
         $images = $request->file('images');
+        if (! is_array($images)) {
+            $images = [$images];
+        }
+        if (count($images) === 0 || count($images) > 8) {
+            throw ValidationException::withMessages(['images' => 'You should upload between 1 and 8 images.']);
+        }
 
         foreach ($images as $image) {
             $name = $image->hashName();
-            $path = "public/images/$name";
-            if ($image->storeAs('public/images', $name)) {
+            $path = $image->storeAs('public/images', $name);
+            if ($path) {
                 $rentalListing->images()->create([
                     'path' => $path,
                     'url' => Storage::url($path),
                     'size' => $image->getSize(),
                 ]);
+            } else {
+                Log::error("Failed to store image $name for rental listing $rentalListing->id");
+                return response()->json(
+                    ['message' => 'Failed to store some of the images.'],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
             }
         }
 

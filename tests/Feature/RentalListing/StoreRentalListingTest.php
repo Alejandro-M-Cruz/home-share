@@ -2,12 +2,11 @@
 
 use App\Models\Amenity;
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
 
-it('returns forbidden if user is not authenticated', function () {
+it('returns unauthorized if user is not authenticated', function () {
     $response = $this->postJson(route('rental-listings.store'));
 
-    $response->assertForbidden();
+    $response->assertUnauthorized();
 });
 
 it('validates the request', function () {
@@ -26,20 +25,13 @@ it('validates the request', function () {
         'available_rooms',
         'size',
         'year_built',
-        'location',
-        'amenities',
-        'images',
+        'location'
     ]);
 });
 
 it('can store a rental listing', function () {
     $user = User::factory()->create();
     $amenities = Amenity::factory(3)->create();
-    $images = [
-        UploadedFile::fake()->image('image1.jpg'),
-        UploadedFile::fake()->image('image2.png')
-    ];
-
     $response = $this->actingAs($user)
         ->postJson(route('rental-listings.store'), [
             'title' => 'Beautiful house in the city center',
@@ -64,7 +56,6 @@ it('can store a rental listing', function () {
                 'longitude' => -118.243683,
             ],
             'amenities' => $amenities->pluck('slug')->toArray(),
-            'images' => $images,
         ]);
 
     $response->assertCreated();
@@ -81,5 +72,4 @@ it('can store a rental listing', function () {
         'user_id' => $user->id,
     ]);
     $this->assertDatabaseCount('amenity_rental_listing', 3);
-    $this->assertDatabaseCount('images', 2);
 });

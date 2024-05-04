@@ -6,7 +6,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { Text } from '@/components/Text'
-import { handleError } from '@/helpers/handle-error'
+import { handleError } from '@/helpers/errors'
 import { Link, useRouter } from 'expo-router'
 
 const loginValidationSchema: z.ZodSchema<LoginRequest> = z.object({
@@ -65,6 +65,7 @@ export default function LoginScreen() {
           <TextInput
             style={styles.textInput}
             placeholder="Email"
+            autoComplete="email"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -80,6 +81,7 @@ export default function LoginScreen() {
           <TextInput
             style={styles.textInput}
             placeholder="Password"
+            autoComplete="password"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}

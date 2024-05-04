@@ -14,6 +14,23 @@ class StoreRentalListingRequest extends FormRequest
         return auth()->check();
     }
 
+    public function attributes()
+    {
+        return [
+            'location.country' => 'country',
+            'location.state' => 'state',
+            'location.city' => 'city',
+            'location.street' => 'street',
+            'location.street_number' => 'street number',
+            'location.door_number' => 'door number',
+            'location.floor_number' => 'floor number',
+            'location.postal_code' => 'postal code',
+            'location.latitude' => 'latitude',
+            'location.longitude' => 'longitude',
+            'amenities.*' => 'amenity',
+        ];
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,9 +45,11 @@ class StoreRentalListingRequest extends FormRequest
             'monthly_rent' => ['required', 'numeric', 'min:0'],
             'available_rooms' => ['required', 'integer', 'min:1'],
             'size' => ['required', 'numeric', 'min:0'],
-            'bathrooms' => ['required', 'integer', 'min:1'],
-            'bedrooms' => ['required', 'integer', 'min:1'],
+            'bathrooms' => ['required', 'integer', 'min:1', 'max:255'],
+            'bedrooms' => ['required', 'integer', 'min:1', 'max:255'],
             'year_built' => ['required', 'integer', 'min:1000', 'max:' . date('Y')],
+            'rules' => ['nullable', 'string', 'max:2000'],
+            'additional_information' => ['nullable', 'string', 'max:2000'],
             'location' => ['required', 'array'],
             'location.country' => ['required', 'string'],
             'location.state' => ['required', 'string'],
@@ -42,10 +61,8 @@ class StoreRentalListingRequest extends FormRequest
             'location.postal_code' => ['required', 'string'],
             'location.latitude' => ['required', 'numeric', 'min:-90', 'max:90'],
             'location.longitude' => ['required', 'numeric', 'min:-180', 'max:180'],
-            'amenities' => ['required', 'array'],
-            'amenities.*' => ['required', 'string', 'exists:amenities,slug', 'distinct'],
-            'images' => ['required', 'array'],
-            'images.*' => ['required', 'image', 'max:4096'],
+            'amenities' => ['array'],
+            'amenities.*' => ['string', 'exists:amenities,slug', 'distinct'],
         ];
     }
 }

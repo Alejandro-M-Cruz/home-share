@@ -1,4 +1,4 @@
-export function latLng({
+function latLng({
   latitude,
   longitude
 }: {
@@ -7,3 +7,12 @@ export function latLng({
 }) {
   return { lat: latitude, lng: longitude }
 }
+
+function zoomToDeltas(zoom: number) {
+  return {
+    latitudeDelta: 360 / Math.pow(2, zoom),
+    longitudeDelta: 360 / Math.pow(2, zoom)
+  }
+}
+
+export { latLng, zoomToDeltas }

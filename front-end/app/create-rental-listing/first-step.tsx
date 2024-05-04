@@ -36,14 +36,16 @@ const firstStepSchema: z.ZodSchema<Partial<CreateRentalListingRequest>> =
     monthlyRent: z.number().min(0),
     availableRooms: z.number().int().min(1),
     size: z.number().int().min(0),
-    bathrooms: z.number().int().min(0),
-    bedrooms: z.number().int().min(0),
-    yearBuilt: z.number().int(),
-    amenities: z.array(z.string())
+    bathrooms: z.number().int().min(0).max(255),
+    bedrooms: z.number().int().min(0).max(255),
+    amenities: z.array(z.string()),
+    yearBuilt: z.number().int().min(1000).max(new Date().getFullYear()),
+    rules: z.string().optional(),
+    additionalInformation: z.string().optional()
   })
 
 export default function CreateRentalListingFirstStepScreen() {
-  const { rentalListing, update } = useRentalListingStore()
+  const { rentalListing, patchRentalListing } = useRentalListingStore()
   const router = useRouter()
   const {
     control,
@@ -70,8 +72,8 @@ export default function CreateRentalListingFirstStepScreen() {
   const { amenities, error, status } = useAmenities()
 
   const onSubmit = (data: Partial<CreateRentalListingRequest>) => {
-    update(data)
-    router.replace('/create-rental-listing/second-step')
+    patchRentalListing(data)
+    router.push('/create-rental-listing/second-step')
   }
 
   const typeLabels: Record<RentalListingType, string> = useMemo(
@@ -88,7 +90,7 @@ export default function CreateRentalListingFirstStepScreen() {
       className="flex-1 px-2 sm:px-8 py-4"
       contentContainerClassName="flex flex-col space-y-4"
     >
-      <Label nativeID="title">Title</Label>
+      <Label nativeID="title" required>Title</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -106,7 +108,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.title.message}</Text>
       )}
 
-      <Label nativeID="description">Description</Label>
+      <Label nativeID="description" required>Description</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -124,7 +126,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.description.message}</Text>
       )}
 
-      <Label nativeID="type">Type of Home</Label>
+      <Label nativeID="type" required>Type of Home</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -158,18 +160,14 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.type.message}</Text>
       )}
 
-      <Label nativeID="monthlyRent">Monthly Rent</Label>
+      <Label nativeID="monthlyRent" required>Monthly Rent</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             placeholder="Monthly rent"
             onBlur={onBlur}
-            onChangeText={text =>
-              onChange(
-                text && !isNaN(parseFloat(text)) ? parseFloat(text) : undefined
-              )
-            }
+            onChangeText={text => onChange(textToFloat(text))}
             value={value?.toString() ?? ''}
             inputMode="numeric"
           />
@@ -180,7 +178,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.monthlyRent.message}</Text>
       )}
 
-      <Label nativeID="availableRooms">Available Rooms</Label>
+      <Label nativeID="availableRooms" required>Available Rooms</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -200,7 +198,7 @@ export default function CreateRentalListingFirstStepScreen() {
         </Text>
       )}
 
-      <Label nativeID="size">Size</Label>
+      <Label nativeID="size" required>Size</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -218,7 +216,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.size.message}</Text>
       )}
 
-      <Label nativeID="bathrooms">Bathrooms</Label>
+      <Label nativeID="bathrooms" required>Bathrooms</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -236,7 +234,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.bathrooms.message}</Text>
       )}
 
-      <Label nativeID="bedrooms">Bedrooms</Label>
+      <Label nativeID="bedrooms" required>Bedrooms</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -254,7 +252,7 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.bedrooms.message}</Text>
       )}
 
-      <Label nativeID="yearBuilt">Year Built</Label>
+      <Label nativeID="yearBuilt" required>Year Built</Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -272,25 +270,41 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.yearBuilt.message}</Text>
       )}
 
-      {status === 'pending' && (
-        <AntDesign
-          className={cn('my-4 mx-auto animate-spin')}
-          name="loading1"
-          size={24}
-        />
-      )}
-      {status === 'error' && (
-        <Text className="text-red-500">
-          There has been an unexpected error, please try again later
-        </Text>
-      )}
+      <Label nativeID="rules">Rules</Label>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Textarea
+            placeholder="Rules"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            inputMode="text"
+          />
+        )}
+        name="rules"
+      />
+
+      <Label nativeID="additionalInformation">Additional Information</Label>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Textarea
+            placeholder="Additional information"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            inputMode="text"
+          />
+        )}
+        name="additionalInformation"
+      />
 
       <Label nativeID="amenities">Amenities</Label>
-
-      {status === 'success' && (
+      {status === 'success' && amenities && (
         <Controller
           control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
+          render={({ field: { onChange, value } }) => (
             <View className="mx-auto grid sm:grid-cols-2 md:grid-cols-3 sm:gap-x-5 md:gap-x-10 gap-y-4">
               {amenities?.map(amenity => (
                 <View
@@ -316,6 +330,18 @@ export default function CreateRentalListingFirstStepScreen() {
           )}
           name="amenities"
         />
+      )}
+      {status === 'pending' && (
+        <AntDesign
+          className={cn('my-4 mx-auto animate-spin')}
+          name="loading1"
+          size={24}
+        />
+      )}
+      {status === 'error' && (
+        <Text className="text-red-500">
+          There has been an unexpected error, please try again later
+        </Text>
       )}
 
       <Button

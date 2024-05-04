@@ -4,7 +4,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect } from 'react'
-import { handleError } from '@/helpers/handle-error'
+import { handleError } from '@/helpers/errors'
 import { Link } from 'expo-router'
 
 const passwordResetValidationSchema = z

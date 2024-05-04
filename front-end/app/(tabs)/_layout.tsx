@@ -1,7 +1,7 @@
 import * as React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Link, Tabs } from 'expo-router'
-import { Button, Pressable, View } from 'react-native'
+import { Image, Button, Pressable, View, StyleSheet, TouchableOpacity } from 'react-native'
 
 import Colors from '@/constants/Colors'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
@@ -24,23 +24,29 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors.light.tint,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true)
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 12,
-                alignItems: 'center'
-              }}
-            >
+        headerShown: useClientOnlyValue(false, true),
+        headerStyle: {
+          backgroundColor: '#194976',
+        },
+        headerTitle: "",
+        headerRight: () => (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingRight: 20, // Agrega un espacio a los lados para separar los elementos del borde de la pantalla
+              width: '100%',
+            }}
+          >
+            <View>
+              <Image
+              source={require('../../assets/images/extendedLogo.png')}
+              style ={styles.image}
+              />
+            </View>
+            <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
               {user ? (
                 <Button
                   title="Log out"
@@ -50,10 +56,14 @@ export default function TabLayout() {
               ) : (
                 <>
                   <Link href="/login" asChild>
-                    <Button title="Log in" />
+                    <TouchableOpacity style={styles.button}>
+                      Log in 
+                    </TouchableOpacity>
                   </Link>
                   <Link href="/signup" asChild>
-                    <Button title="Sign up" />
+                    <TouchableOpacity style={styles.button}>
+                      Sign up
+                    </TouchableOpacity>
                   </Link>
                 </>
               )}
@@ -70,7 +80,16 @@ export default function TabLayout() {
                 </Pressable>
               </Link>
             </View>
-          )
+          </View>
+        )
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Tab One',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          
         }}
       />
       <Tabs.Screen
@@ -90,3 +109,22 @@ export default function TabLayout() {
     </Tabs>
   )
 }
+
+const styles = StyleSheet.create({
+  image: {
+    height: 40,
+    width: 250,
+  },
+  button: {
+    backgroundColor: "#ffffff",
+    width: 80,
+    height: 35,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    fontSize: 15,
+    color: '#194976',
+    fontWeight: 'bold'
+  }
+})

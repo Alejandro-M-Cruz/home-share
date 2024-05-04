@@ -26,7 +26,6 @@ const LocationAutocomplete = React.forwardRef<
       }
     )
     autocomplete.addListener('place_changed', () => {
-      console.log(getAutocompleteLocation(autocomplete.getPlace()))
       const place = autocomplete.getPlace()
       onLocationChange(getAutocompleteLocation(place))
     })

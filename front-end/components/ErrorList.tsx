@@ -4,7 +4,6 @@ import { Text } from '@/components/Text'
 import { getErrorMessages } from '@/helpers/errors'
 import { ViewRef } from '@/primitives/types'
 import { cn } from '@/helpers/cn'
-import { useMemo } from 'react'
 
 const ErrorList = React.forwardRef<
   ViewRef,
@@ -12,7 +11,7 @@ const ErrorList = React.forwardRef<
     errors: Record<string, any>
   }
 >(({ errors, className, ...props }, ref) => {
-  const errorMessages = useMemo(() => getErrorMessages(errors), [errors])
+  const errorMessages = Array.from(new Set(getErrorMessages(errors)))
 
   return (
     <View ref={ref} className={cn('flex flex-col space-y-3', className)} {...props}>

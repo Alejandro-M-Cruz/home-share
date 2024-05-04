@@ -23,8 +23,9 @@ export function useUploadRentalListingImages() {
         return
       }
       const images = await Promise.all(assets.map(assetToBlob))
-      return uploadRentalListingImages(id, images, token)
-    }
+      await uploadRentalListingImages(id, images, token)
+    },
+    retry: false
   })
 
   return {

@@ -5,7 +5,7 @@ import {
   ImagePickerAsset,
   launchCameraAsync,
   launchImageLibraryAsync,
-  MediaTypeOptions
+  MediaTypeOptions, requestCameraPermissionsAsync
 } from 'expo-image-picker'
 import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'
@@ -38,7 +38,6 @@ const ImagePicker = React.forwardRef<
     const pickImages = React.useCallback(async () => {
       const result = await launchImageLibraryAsync({
         mediaTypes: MediaTypeOptions.Images,
-        aspect: [4, 3],
         quality: 1,
         allowsMultipleSelection: true,
         selectionLimit
@@ -50,9 +49,9 @@ const ImagePicker = React.forwardRef<
     }, [images, onImagesChange])
 
     const takePictures = React.useCallback(async () => {
+      await requestCameraPermissionsAsync()
       const result = await launchCameraAsync({
         mediaTypes: MediaTypeOptions.Images,
-        aspect: [4, 3],
         quality: 1,
         cameraType: CameraType.back,
         allowsEditing: true,

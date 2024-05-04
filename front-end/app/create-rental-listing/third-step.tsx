@@ -10,6 +10,7 @@ import { useRouter } from 'expo-router'
 import { ImagePickerAsset } from 'expo-image-picker'
 import { useUploadRentalListingImages } from '@/hooks/useUploadImages'
 import { handleError } from '@/helpers/errors'
+import { ErrorList } from '@/components/ErrorList'
 
 const secondStepSchema: z.ZodSchema<{ images: ImagePickerAsset[] }> = z
   .object({
@@ -33,7 +34,7 @@ export default function CreateRentalListingThirdStepScreen() {
     handleSubmit,
     setError,
     formState: { errors, isValid }
-  } = useForm({
+  } = useForm<{ images: ImagePickerAsset[] }>({
     resolver: zodResolver(secondStepSchema),
     defaultValues: {
       images: []
@@ -73,7 +74,7 @@ export default function CreateRentalListingThirdStepScreen() {
         )}
         name="images"
       />
-      {errors.images && <Text className="text-center text-red-500 mt-2 mb-8">{errors.images.message}</Text>}
+      <ErrorList errors={errors} />
       <Button disabled={!isValid} onPress={handleSubmit(onSubmit)}>
         <Text>Confirm</Text>
       </Button>

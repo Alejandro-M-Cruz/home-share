@@ -27,7 +27,8 @@ function handleError({
     return
   }
   errorEntries.forEach(([fieldPath, messages]) => {
-    setError(fieldPath, {
+    const field = fieldPath.match(/^\w+\.\d+$/) ? fieldPath.split('.')[0] : fieldPath
+    setError(field, {
       type: errorType,
       message: messages.join('\n')
     })

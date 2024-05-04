@@ -48,16 +48,20 @@ async function createRentalListing(rentalListing: CreateRentalListingRequest, to
 }
 
 async function uploadRentalListingImages(rentalListingId: number, images: Blob[], token: string) {
-  const formData = new FormData()
+  const data = new FormData()
   images.forEach(image => {
-    formData.append('images', image)
+    data.append('images', image, 'image')
   })
-  await apiClient.post(`/api/rental-listings/${rentalListingId}/upload-images`, formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data'
+  await apiClient.post(
+    `/api/rental-listings/${rentalListingId}/upload-images`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
     }
-  })
+  )
 }
 
 export { getRentalListings, createRentalListing, uploadRentalListingImages }

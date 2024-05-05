@@ -45,10 +45,8 @@ class RentalListingController extends Controller
     {
         $myRentalListings = QueryBuilder::for(RentalListing::class)
             ->where('user_id', auth()->id())
+            ->allowedFilters([AllowedFilter::exact('status')])
             ->defaultSort('-created_at')
-            ->allowedFilters([
-                AllowedFilter::exact('status'),
-            ])
             ->allowedSorts('created_at', 'updated_at', 'monthly_rent', 'available_rooms', 'size', 'year_built')
             ->cursorPaginate($request->get('per_page', 12));
         return RentalListingResource::collection($myRentalListings);

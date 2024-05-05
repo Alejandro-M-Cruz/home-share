@@ -18,6 +18,7 @@ import { Carousel } from '@/components/Carousel'
 
 type RentalListingProps = {
   rentalListing: RentalListingType
+  variant?: 'default' | 'my_rental_listing'
 }
 
 const displayTypes = {
@@ -29,12 +30,12 @@ const displayTypes = {
 const RentalListing = React.forwardRef<
   ViewRef,
   React.ComponentPropsWithoutRef<typeof View> & RentalListingProps
->(({ rentalListing, ...props }, ref) => (
+>(({ rentalListing, variant = 'default', ...props }, ref) => (
   <Card ref={ref} {...props}>
     <CardHeader className="gap-y-1 py-3 px-5">
       <View className="flex flex-row items-center justify-end gap-2">
-        <CardTitle className="flex-1 text-xl max-sm:hidden">
-          {rentalListing.username}
+        <CardTitle className="flex-1 text-xl max-sm:hidden truncate">
+          {variant === 'default' ? rentalListing.username : rentalListing.title}
         </CardTitle>
         <Badge variant="outline" className="me-2 max-sm:flex-1">
           <Text>{displayTypes[rentalListing.type]}</Text>
@@ -45,10 +46,12 @@ const RentalListing = React.forwardRef<
         </Text>
       </View>
       <CardTitle className="flex-1 text-xl sm:hidden">
-        {rentalListing.username}
+        {variant === 'default' ? rentalListing.username : rentalListing.title}
       </CardTitle>
       <Text className="text-neutral-500">
-        Member since {rentalListing.userCreatedAt.split('T')[0]}
+        {variant === 'default' ?
+          `Member since ${rentalListing.userCreatedAt.split('T')[0]}` :
+          `Created on ${rentalListing.createdAt.split('T')[0]}`}
       </Text>
     </CardHeader>
 
@@ -59,7 +62,7 @@ const RentalListing = React.forwardRef<
           imageClassName="w-full h-[240px]"
         />
       ) : (
-        <View className="w-full h-[240px] bg-neutral-200 flex items-center justify-center">
+        <View className="w-full h-[240px] bg-neutral-100 flex items-center justify-center">
           <MaterialCommunityIcons name="image-broken-variant" size={64} />
         </View>
       )}
@@ -100,7 +103,6 @@ const RentalListing = React.forwardRef<
     </CardFooter>
   </Card>
 ))
-
 
 RentalListing.displayName = 'RentalListing'
 

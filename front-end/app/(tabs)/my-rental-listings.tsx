@@ -3,9 +3,9 @@ import { Text } from '@/components/Text'
 import { Link } from 'expo-router'
 import { Button } from '@/components/Button'
 import { useMyRentalListings } from '@/hooks/useMyRentalListings'
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import { RentalListing } from '@/components/RentalListing'
-import { AntDesign } from '@expo/vector-icons'
+import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import { cn } from '@/helpers/cn'
 
 export default function MyRentalListingsScreen() {
@@ -19,48 +19,64 @@ export default function MyRentalListingsScreen() {
     setParams
   } = useMyRentalListings()
 
+  const isEmpty = useMemo(() => !data?.pages.length || !data.pages[0].data.length, [data])
+
   return (
     <View className="flex-1">
-      <Text>My Rental Listings</Text>
 
-      {!data?.pages.length || !data.pages[0].data.length ? (
-        <>
-          <Text>
-            You have not created any rental listings yet, create one&nbsp;
-          </Text>
-          <Link href="/create-rental-listing/first-step">
-            <Button className="p-0 m-0 inline" variant="link">
-              <Text>here</Text>
-            </Button>
-          </Link>
-        </>
-      ) : (
-        <ScrollView className="flex-1">
-          <View className="grid grid-cols-12 gap-1 sm:gap-5 mx-2 sm:mx-5 my-4">
+      <View className="flex flex-row items-center justify-between px-2 sm:px-5 py-4">
+
+        <Link href="/create-rental-listing/first-step" asChild>
+          <Button className="flex flex-row items-center space-x-2">
+            <MaterialCommunityIcons name="home-plus" className="text-primary-foreground" size={24} />
+            <Text>Create new</Text>
+          </Button>
+        </Link>
+      </View>
+
+      <ScrollView className="flex-1 px-2 sm:px-5 pb-4">
+        {!isEmpty && (
+          <View className="grid grid-cols-12 gap-1 sm:gap-5">
             {data?.pages.map((page, i) => (
               <Fragment key={i}>
                 {page.data.map(rentalListing => (
                   <RentalListing
                     key={rentalListing.id}
                     className="col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3"
+                    variant="my_rental_listing"
                     rentalListing={rentalListing}
                   />
                 ))}
               </Fragment>
             ))}
           </View>
+        )}
 
-          {isFetching && (
-            <AntDesign
-              className={cn(
-                'my-[160px] mx-auto animate-spin',
-                isFetchingNextPage && 'my-5'
-              )}
-              name="loading1"
-              size={24}
-            />
-          )}
+        {!isFetching && isEmpty && (
+          <View className="flex flex-col items-center justify-center space-y-5">
+            <Text>
+              You have not created any rental listings yet.
+            </Text>
+            <Link href="/create-rental-listing/first-step" asChild>
+              <Button className="p-0 m-0 inline">
+                <Text>Create one here</Text>
+              </Button>
+            </Link>
+          </View>
+        )}
 
+        {isFetching && (
+          <AntDesign
+            className={cn(
+              'my-[160px] mx-auto animate-spin',
+              isFetchingNextPage && 'my-5'
+            )}
+            name="loading1"
+            size={24}
+          />
+        )}
+
+        {!isEmpty && (
           <Button
             onPress={() => fetchNextPage()}
             disabled={!hasNextPage || isFetching}
@@ -69,8 +85,8 @@ export default function MyRentalListingsScreen() {
           >
             <Text>Load more...</Text>
           </Button>
-        </ScrollView>
-      )}
+        )}
+      </ScrollView>
     </View>
   )
 }

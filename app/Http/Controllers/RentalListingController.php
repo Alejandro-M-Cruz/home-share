@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRentalListingRequest;
-use App\Http\Resources\MyRentalListingResource;
 use App\Http\Resources\RentalListingResource;
 use App\Models\Amenity;
 use App\Models\RentalListing;

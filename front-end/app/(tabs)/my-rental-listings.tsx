@@ -1,6 +1,6 @@
 import { ScrollView, View } from 'react-native'
 import { Text } from '@/components/Text'
-import { Link } from 'expo-router'
+import { Link, Redirect } from 'expo-router'
 import { Button } from '@/components/Button'
 import { useMyRentalListings } from '@/hooks/rental-listings/useMyRentalListings'
 import { Fragment, useMemo, useState } from 'react'
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { RentalListingSortBy } from '@/types/rental-listing'
 import { sortByLabels, sortDirectionLabels, statusLabels } from '@/constants/labels'
 import { Label } from '@/components/Label'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function MyRentalListingsScreen() {
   const {
@@ -41,6 +42,12 @@ export default function MyRentalListingsScreen() {
   const handleSortDirectionChange = (value: 'asc' | 'desc') => {
     setSortDirection(value)
     setParams({ ...params, sortDirection: value })
+  }
+
+  const { user, userStatus } = useAuth()
+
+  if ((!user && userStatus === 'success') || userStatus === 'error') {
+    return <Redirect href="/login" />
   }
 
   return (
@@ -118,7 +125,7 @@ export default function MyRentalListingsScreen() {
         </Link>
       </View>
 
-      {!isFetching && isEmpty ? (
+      {userStatus === 'success' && !isFetching && isEmpty ? (
         <View className="flex-grow flex flex-col items-center justify-center space-y-5 mx-5">
           <Text className="text-lg text-neutral-600 text-center font-medium text-wrap">
             You don't have any rental listings yet.

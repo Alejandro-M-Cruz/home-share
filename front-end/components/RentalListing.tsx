@@ -22,6 +22,7 @@ import { Separator } from '@/components/Separator'
 import { Button } from '@/components/Button'
 import { useDeleteRentalListing } from '@/hooks/rental-listings/useDeleteRentalListing'
 import { useToggleRentalListingStatus } from '@/hooks/rental-listings/useToggleRentalListingStatus'
+import { Link } from 'expo-router'
 
 type RentalListingProps = {
   rentalListing: RentalListingType
@@ -51,32 +52,42 @@ const RentalListing = React.forwardRef<
 
   return (
     <Card ref={ref} {...props}>
-      <CardHeader className="gap-y-1 py-3 px-5">
-        <View className="flex flex-row items-center justify-end gap-2">
-          <CardTitle className="flex-1 text-xl max-sm:hidden truncate">
+      <Link href={{
+        pathname: "/rental-listing/[id]",
+        params: { id: rentalListing.id }
+        }}
+        asChild
+      >
+        <CardHeader className="gap-y-1 py-3 px-5">
+          <View className="flex flex-row items-center justify-end gap-2">
+            
+            
+            <CardTitle className="flex-1 text-xl max-sm:hidden truncate">
+              {variant === 'default' ? rentalListing.username : rentalListing.title}
+            </CardTitle>
+            
+            <Badge variant="outline" className="me-2 max-sm:flex-1">
+              <Text>{displayTypes[rentalListing.type]}</Text>
+            </Badge>
+            <MaterialIcons name="group-add" size={24} />
+            <Text className="font-semibold text-lg">
+              {rentalListing.availableRooms}
+            </Text>
+          </View>
+          <CardTitle className="flex-1 text-xl sm:hidden">
             {variant === 'default' ? rentalListing.username : rentalListing.title}
           </CardTitle>
-          <Badge variant="outline" className="me-2 max-sm:flex-1">
-            <Text>{displayTypes[rentalListing.type]}</Text>
-          </Badge>
-          <MaterialIcons name="group-add" size={24} />
-          <Text className="font-semibold text-lg">
-            {rentalListing.availableRooms}
-          </Text>
-        </View>
-        <CardTitle className="flex-1 text-xl sm:hidden">
-          {variant === 'default' ? rentalListing.username : rentalListing.title}
-        </CardTitle>
-        {variant === 'default' ? (
-          <Text className="text-neutral-500">
-            Member since {rentalListing.userCreatedAt.split('T')[0]}
-          </Text>
-        ) : (
-          <Text className="text-neutral-500">
-            Created on {rentalListing.createdAt.split('T')[0]}
-          </Text>
-        )}
-      </CardHeader>
+          {variant === 'default' ? (
+            <Text className="text-neutral-500">
+              Member since {rentalListing.userCreatedAt.split('T')[0]}
+            </Text>
+          ) : (
+            <Text className="text-neutral-500">
+              Created on {rentalListing.createdAt.split('T')[0]}
+            </Text>
+          )}
+        </CardHeader>
+      </Link>
 
       <CardContent className="p-0 relative group">
         {rentalListing.imageUrls.length > 0 ? (
@@ -92,7 +103,14 @@ const RentalListing = React.forwardRef<
       </CardContent>
 
       <CardFooter className="flex-grow flex flex-col py-3 mx-0 px-0">
+      <Link href={{
+        pathname: "/rental-listing/[id]",
+        params: { id: rentalListing.id }
+        }}
+        asChild
+        >
         <View className="flex-grow grid grid-cols-6 sm:grid-cols-12 gap-y-3 gap-x-3 max-sm:mx-2 px-5">
+        
           <Text className="font-light max-sm:text-center text-base text-neutral-600 col-span-12 sm:col-span-6">
             {rentalListing.street}, {rentalListing.streetNumber}
           </Text>
@@ -125,6 +143,7 @@ const RentalListing = React.forwardRef<
             </Text>
           </View>
         </View>
+        </Link>
         {variant === 'my_rental_listing' && (
           <>
             <Separator orientation="horizontal" className="mt-3 mb-2" />

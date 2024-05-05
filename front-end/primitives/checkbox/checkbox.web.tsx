@@ -1,7 +1,7 @@
 import * as Checkbox from '@radix-ui/react-checkbox'
 import * as React from 'react'
 import { GestureResponderEvent, Pressable, View } from 'react-native'
-import { useAugmentedRef } from '@/hooks'
+import { useAugmentedRef } from '@/hooks/ui'
 import * as Slot from '@/primitives/slot'
 import type {
   ComponentPropsWithAsChild,

@@ -1,7 +1,6 @@
 import { Controller, useForm } from 'react-hook-form'
 import {
   GetRentalListingsParams,
-  RentalListingSortBy,
   RentalListingType
 } from '@/types/rental-listing'
 import { ReactNode, useMemo } from 'react'
@@ -26,6 +25,7 @@ import {
 } from '@/components/Select'
 import { Input } from '@/components/Input'
 import { textToFloat, textToInt } from '@/helpers/numbers'
+import { sortByLabels, sortDirectionLabels } from '@/constants/labels'
 
 type RentalListingParamDialogProps = {
   initialParams?: GetRentalListingsParams
@@ -64,26 +64,6 @@ export const RentalListingParamDialog = ({
   const { control, reset, handleSubmit } = useForm({
     defaultValues
   })
-
-  const sortByLabels: Record<RentalListingSortBy, string> = useMemo(
-    () => ({
-      created_at: 'Creation date',
-      updated_at: 'Recently updated',
-      monthly_rent: 'Monthly rent',
-      available_rooms: 'Available rooms',
-      size: 'Size',
-      year_built: 'Year built'
-    }),
-    []
-  )
-
-  const sortDirectionLabels: Record<'asc' | 'desc', string> = useMemo(
-    () => ({
-      asc: 'Ascending',
-      desc: 'Descending'
-    }),
-    []
-  )
 
   const typeLabels: Record<RentalListingType | 'all', string> = useMemo(
     () => ({

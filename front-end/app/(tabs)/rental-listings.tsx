@@ -1,6 +1,6 @@
 import { ScrollView, View } from 'react-native'
 import { Text } from '@/components/Text'
-import { useRentalListings } from '@/hooks/useRentalListings'
+import { useRentalListings } from '@/hooks/rental-listings/useRentalListings'
 import { RentalListing } from '@/components/RentalListing'
 import { Fragment, useState } from 'react'
 import { Button } from '@/components/Button'

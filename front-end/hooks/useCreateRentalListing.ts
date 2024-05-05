@@ -3,7 +3,7 @@ import { createRentalListing } from '@/services/rental-listing'
 import { CreateRentalListingRequest } from '@/types/rental-listing'
 import * as tokenStorage from '@/services/token-storage'
 import { useRouter } from 'expo-router'
-import { useRentalListingStore } from '@/hooks/useRentalListingStore'
+import { useRentalListingStore } from '@/hooks/rental-listings/useRentalListingStore'
 
 export function useCreateRentalListing() {
   const router = useRouter()

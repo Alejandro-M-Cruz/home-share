@@ -13,19 +13,20 @@ class TokenController extends Controller
 {
     function store(Request $request) {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email|exists:users,email',
             'password' => 'required',
             'device_name' => 'required',
         ]);
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
+        $user->tokens()->delete();
         return $user->createToken($request->device_name)->plainTextToken;
     }
 

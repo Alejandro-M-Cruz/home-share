@@ -19,14 +19,13 @@ Route::get('/locations', [LocationController::class, 'index'])
 Route::prefix('rental-listings')->group(function () {
     Route::get('/', [RentalListingController::class, 'index'])
         ->name('rental-listings.index');
+
     Route::get('/{rental_listing}', [RentalListingController::class, 'show'])
         ->name('rental-listings.show');
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [RentalListingController::class, 'store'])
             ->name('rental-listings.store');
-        Route::get('/mine', [RentalListingController::class, 'mine'])
-            ->name('rental-listings.mine');
     });
 
     Route::middleware(['auth:sanctum', CheckRentalListingOwnership::class])->group(function () {
@@ -34,9 +33,13 @@ Route::prefix('rental-listings')->group(function () {
             ->name('rental-listings.upload-images');
         Route::put('/{rental_listing}', [RentalListingController::class, 'update'])
             ->name('rental-listings.update');
-        Route::patch('/{rental_listing}', [RentalListingController::class, 'update'])
-            ->name('rental-listings.update');
         Route::delete('/{rental_listing}', [RentalListingController::class, 'destroy'])
             ->name('rental-listings.destroy');
+        Route::patch('/{rental_listing}/toggle-status', [RentalListingController::class, 'toggleStatus'])
+            ->name('rental-listings.toggle-status');
     });
 });
+
+Route::get('/my-rental-listings', [RentalListingController::class, 'getMyRentalListings'])
+    ->middleware('auth:sanctum')
+    ->name('rental-listings.my');

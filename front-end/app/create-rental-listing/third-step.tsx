@@ -8,7 +8,7 @@ import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'
 import { useRouter } from 'expo-router'
 import { ImagePickerAsset } from 'expo-image-picker'
-import { useUploadRentalListingImages } from '@/hooks/useUploadImages'
+import { useUploadRentalListingImages } from '@/hooks/rental-listings/useUploadRentalListingImages'
 import { handleError } from '@/helpers/errors'
 import { ErrorList } from '@/components/ErrorList'
 

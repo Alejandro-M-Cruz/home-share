@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { useAugmentedRef, useControllableState } from '@/hooks'
+import { useAugmentedRef, useControllableState } from '@/hooks/ui'
 import * as Slot from '@/primitives/slot'
 import type {
   PressableRef,

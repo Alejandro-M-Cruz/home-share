@@ -40,17 +40,15 @@ class RentalListingController extends Controller
     /**
      * Get the rental listings created by the authenticated user.
      */
-    public function mine(Request $request)
+    public function getMyRentalListings(Request $request)
     {
-        $rentalListings = QueryBuilder::for(RentalListing::class)
+        $myRentalListings = QueryBuilder::for(RentalListing::class)
             ->where('user_id', auth()->id())
+            ->allowedFilters([AllowedFilter::exact('status')])
             ->defaultSort('-created_at')
-            ->allowedFilters([
-                AllowedFilter::exact('status'),
-            ])
             ->allowedSorts('created_at', 'updated_at', 'monthly_rent', 'available_rooms', 'size', 'year_built')
             ->cursorPaginate($request->get('per_page', 12));
-        return RentalListingResource::collection($rentalListings);
+        return RentalListingResource::collection($myRentalListings);
     }
 
     /**
@@ -125,6 +123,13 @@ class RentalListingController extends Controller
      */
     public function destroy(RentalListing $rentalListing)
     {
-        //
+        $rentalListing->delete();
+        return response()->noContent();
+    }
+
+    public function toggleStatus(RentalListing $rentalListing)
+    {
+        $rentalListing->toggleStatus();
+        return response()->noContent();
     }
 }

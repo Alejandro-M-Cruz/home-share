@@ -40,6 +40,19 @@ type RentalListing = {
   status: 'active' | 'inactive'
 }
 
+type RentalListingDetails = {
+  userId: number,
+  description: string,
+  rules: string,
+  additionalInformation: string,
+  postalCode: number,
+  door_number?: string,
+  floor_number?: string,
+  latitude: number
+  longitude: number
+  amenities: string[]
+} & RentalListing
+
 type GetRentalListingsParams = Partial<{
   cursor: string
   perPage: number
@@ -109,6 +122,7 @@ export {
   RentalListingType,
   RentalListingPage,
   RentalListing,
+  RentalListingDetails,
   GetRentalListingsParams,
   MyRentalListingsParams,
   RentalListingSortBy,

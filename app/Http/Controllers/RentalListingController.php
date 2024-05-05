@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRentalListingRequest;
 use App\Http\Resources\RentalListingResource;
+use App\Http\Resources\RentalListingDetailsResource;
 use App\Models\Amenity;
 use App\Models\RentalListing;
 use Illuminate\Http\Request;
@@ -107,7 +108,10 @@ class RentalListingController extends Controller
      */
     public function show(RentalListing $rentalListing)
     {
-        //
+        if ($rentalListing->status !== 'active' && $rentalListing->user_id !== auth()->id()) {
+            return response()->noContent(Response::HTTP_FORBIDDEN);
+        }
+        return new RentalListingDetailsResource($rentalListing);
     }
 
     /**

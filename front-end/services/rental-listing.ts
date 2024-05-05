@@ -2,7 +2,7 @@ import { apiClient } from '@/api/api-client'
 import {
   CreateRentalListingRequest,
   GetRentalListingsParams, MyRentalListingsParams, RentalListing,
-  RentalListingPage
+  RentalListingPage, RentalListingDetails
 } from '@/types/rental-listing'
 
 async function getRentalListings({
@@ -94,6 +94,16 @@ async function deleteRentalListing(rentalListing: RentalListing, token: string) 
   })
 }
 
+async function getRentalListingDetails(id: number, token: string | null) {
+  const config = token ? {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  } : undefined
+  const { data } = await apiClient.get<RentalListingDetails>(`/api/rental-listings/${id}`, config)
+  return data
+}
+
 async function toggleRentalListingStatus(rentalListing: RentalListing, token: string) {
   await apiClient.patch(`/api/rental-listings/${rentalListing.id}/toggle-status`, undefined, {
     headers: {
@@ -108,5 +118,6 @@ export {
   createRentalListing,
   uploadRentalListingImages,
   deleteRentalListing,
+  getRentalListingDetails,
   toggleRentalListingStatus
 }

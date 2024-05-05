@@ -1,3 +1,9 @@
+const statusLabels = {
+  all: 'All',
+  active: 'Published',
+  inactive: 'Private'
+}
+
 const sortByLabels = {
   created_at: 'Creation date',
   updated_at: 'Recently updated',
@@ -13,6 +19,7 @@ const sortDirectionLabels = {
 }
 
 export {
+  statusLabels,
   sortByLabels,
   sortDirectionLabels
 }

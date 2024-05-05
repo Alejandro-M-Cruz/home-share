@@ -22,7 +22,7 @@ import type {
   SelectSeparatorProps,
   SelectValueProps
 } from './types'
-import { useAugmentedRef, useControllableState } from '@/hooks'
+import { useAugmentedRef, useControllableState } from '@/hooks/ui'
 
 const SelectContext = React.createContext<RootContext | null>(null)
 

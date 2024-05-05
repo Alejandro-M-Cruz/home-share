@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router'
 import { useMutation } from '@tanstack/react-query'
 import * as tokenStorage from '@/services/token-storage'
 import { uploadRentalListingImages } from '@/services/rental-listing'
-import { useRentalListingStore } from '@/hooks/useRentalListingStore'
+import { useRentalListingStore } from '@/hooks/rental-listings/useRentalListingStore'
 import { ImagePickerAsset } from 'expo-image-picker'
 import { assetToBlob } from '@/helpers/image-picker'
 
@@ -11,7 +11,7 @@ export function useUploadRentalListingImages() {
   const { id } = useRentalListingStore()
 
   const { mutate, error, status } = useMutation({
-    mutationKey: ['create-rental-listing'],
+    mutationKey: ['upload-rental-listing-images'],
     mutationFn: async (assets: ImagePickerAsset[]) => {
       const token = await tokenStorage.getToken()
       if (!token) {

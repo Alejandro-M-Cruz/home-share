@@ -13,7 +13,7 @@ export function useMyRentalListings() {
   const [params, setParams] = useState<MyRentalListingsParams>({})
 
   const infiniteQuery = useInfiniteQuery({
-    queryKey: ['rental-listings'],
+    queryKey: ['my-rental-listings'],
     initialPageParam: null,
     getNextPageParam: (lastPage: RentalListingPage) =>
       lastPage.meta.nextCursor

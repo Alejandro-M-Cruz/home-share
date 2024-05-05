@@ -1,7 +1,7 @@
 import { apiClient } from '@/api/api-client'
 import {
   CreateRentalListingRequest,
-  GetRentalListingsParams, MyRentalListingsParams,
+  GetRentalListingsParams, MyRentalListingsParams, RentalListing,
   RentalListingPage
 } from '@/types/rental-listing'
 
@@ -86,9 +86,27 @@ async function uploadRentalListingImages(rentalListingId: number, images: Blob[]
   )
 }
 
+async function deleteRentalListing(rentalListing: RentalListing, token: string) {
+  await apiClient.delete(`/api/rental-listings/${rentalListing.id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
+async function toggleRentalListingStatus(rentalListing: RentalListing, token: string) {
+  await apiClient.patch(`/api/rental-listings/${rentalListing.id}/toggle-status`, undefined, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
 export {
   getRentalListings,
   getMyRentalListings,
   createRentalListing,
-  uploadRentalListingImages
+  uploadRentalListingImages,
+  deleteRentalListing,
+  toggleRentalListingStatus
 }

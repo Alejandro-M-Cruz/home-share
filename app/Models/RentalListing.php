@@ -39,6 +39,12 @@ class RentalListing extends Model
         'longitude',
     ];
 
+    public function toggleStatus(): void
+    {
+        $this->status = $this->status === 'active' ? 'inactive' : 'active';
+        $this->save();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

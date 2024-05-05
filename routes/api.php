@@ -33,10 +33,10 @@ Route::prefix('rental-listings')->group(function () {
             ->name('rental-listings.upload-images');
         Route::put('/{rental_listing}', [RentalListingController::class, 'update'])
             ->name('rental-listings.update');
-        Route::patch('/{rental_listing}', [RentalListingController::class, 'update'])
-            ->name('rental-listings.update');
         Route::delete('/{rental_listing}', [RentalListingController::class, 'destroy'])
             ->name('rental-listings.destroy');
+        Route::patch('/{rental_listing}/toggle-status', [RentalListingController::class, 'toggleStatus'])
+            ->name('rental-listings.toggle-status');
     });
 });
 

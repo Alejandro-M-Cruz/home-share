@@ -37,6 +37,7 @@ type RentalListing = {
   imageUrls: string[]
   username: string
   userCreatedAt: string
+  status: 'active' | 'inactive'
 }
 
 type GetRentalListingsParams = Partial<{

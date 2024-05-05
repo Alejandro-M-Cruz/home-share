@@ -124,6 +124,13 @@ class RentalListingController extends Controller
      */
     public function destroy(RentalListing $rentalListing)
     {
-        //
+        $rentalListing->delete();
+        return response()->noContent();
+    }
+
+    public function toggleStatus(RentalListing $rentalListing)
+    {
+        $rentalListing->toggleStatus();
+        return response()->noContent();
     }
 }

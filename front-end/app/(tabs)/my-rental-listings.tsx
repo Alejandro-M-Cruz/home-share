@@ -2,14 +2,14 @@ import { ScrollView, View } from 'react-native'
 import { Text } from '@/components/Text'
 import { Link } from 'expo-router'
 import { Button } from '@/components/Button'
-import { useMyRentalListings } from '@/hooks/useMyRentalListings'
+import { useMyRentalListings } from '@/hooks/rental-listings/useMyRentalListings'
 import { Fragment, useMemo, useState } from 'react'
 import { RentalListing } from '@/components/RentalListing'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import { cn } from '@/helpers/cn'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select'
 import { RentalListingSortBy } from '@/types/rental-listing'
-import { sortByLabels, sortDirectionLabels } from '@/constants/labels'
+import { sortByLabels, sortDirectionLabels, statusLabels } from '@/constants/labels'
 import { Label } from '@/components/Label'
 
 export default function MyRentalListingsScreen() {
@@ -24,12 +24,6 @@ export default function MyRentalListingsScreen() {
   } = useMyRentalListings()
 
   const isEmpty = useMemo(() => !data?.pages.length || !data.pages[0].data.length, [data])
-
-  const statusLabels = useMemo(() => ({
-    all: 'All',
-    active: 'Published',
-    inactive: 'Private'
-  }), [])
 
   const [status, setStatus] = useState<'all' | 'active' | 'inactive'>('all')
   const handleStatusFilterChange = (value: 'all' | 'active' | 'inactive') => {

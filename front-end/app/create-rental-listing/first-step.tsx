@@ -1,5 +1,5 @@
 import { Platform, ScrollView, View } from 'react-native'
-import { useRentalListingStore } from '@/hooks/useRentalListingStore'
+import { useRentalListingStore } from '@/hooks/rental-listings/useRentalListingStore'
 import { Controller, useForm } from 'react-hook-form'
 import {
   CreateRentalListingRequest,

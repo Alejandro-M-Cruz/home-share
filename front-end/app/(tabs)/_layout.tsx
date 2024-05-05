@@ -28,6 +28,9 @@ export default function TabLayout() {
         headerStyle: {
           backgroundColor: '#194976',
         },
+        tabBarStyle: {
+          backgroundColor: '#194976'
+        },
         headerTitle: "",
         headerRight: () => (
           <View
@@ -57,7 +60,7 @@ export default function TabLayout() {
                 <>
                   <Link href="/login" asChild>
                     <TouchableOpacity style={styles.button}>
-                      Log in 
+                      Log in
                     </TouchableOpacity>
                   </Link>
                   <Link href="/signup" asChild>
@@ -67,18 +70,6 @@ export default function TabLayout() {
                   </Link>
                 </>
               )}
-              <Link href="/modal" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <FontAwesome
-                      name="info-circle"
-                      size={25}
-                      color={Colors.light.text}
-                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                    />
-                  )}
-                </Pressable>
-              </Link>
             </View>
           </View>
         )
@@ -88,22 +79,32 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color='#FFF' />,
+          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' },
         }}
       />
       <Tabs.Screen
         name="rental-listings"
         options={{
-          title: 'Rental listings',
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />
+          title: 'Rental Listings',
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color='#FFF' />,
+          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' },
         }}
       />
       <Tabs.Screen
         name="map"
         options={{
           title: 'Map',
-          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />
+          tabBarIcon: ({ color }) => <TabBarIcon name="map" color='#FFF' />,
+          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' },
+        }}
+      />
+            <Tabs.Screen
+        name="my-rental-listings"
+        options={{
+          title: 'My Rental Listings',
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color='#FFF' />,
+          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' },
         }}
       />
     </Tabs>

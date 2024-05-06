@@ -60,11 +60,9 @@ export default function TabLayout() {
               style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}
             >
               {user ? (
-                <Button
-                  title="Log out"
-                  onPress={() => logout()}
-                  disabled={logoutStatus === 'pending'}
-                />
+                <TouchableOpacity style={styles.button} onPress={() => logout()} disabled={logoutStatus === 'pending'}>
+                  Log out
+                </TouchableOpacity>
               ) : (
                 <>
                   <Link href="/login" asChild>

@@ -58,8 +58,8 @@ export default function RentalListingsScreen() {
   }
 
   return (
-    <View className="sm:py-4 py-2 flex-1">
-      <View className="flex flex-col sm:flex-row gap-2 mx-2 sm:mx-5 pb-2">
+    <View className="pt-3 flex-1">
+      <View className="flex flex-col sm:flex-row gap-2 mx-2 sm:mx-5 pb-3">
         <Input
           className="rounded-full"
           id="country"
@@ -118,7 +118,7 @@ export default function RentalListingsScreen() {
       )}
 
       <ScrollView className="flex-1">
-        <View className="grid grid-cols-12 gap-1 sm:gap-5 mx-2 sm:mx-5 my-4">
+        <View className="grid grid-cols-12 gap-1 sm:gap-5 mx-2 sm:mx-5">
           {data?.pages.map((page, i) => (
             <Fragment key={i}>
               {page.data.map(rentalListing => (

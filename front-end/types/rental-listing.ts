@@ -1,3 +1,5 @@
+import { Amenity } from '@/types/amenity'
+
 type RentalListingType = 'house' | 'apartment' | 'apartment_block'
 
 type RentalListingPage = {
@@ -46,11 +48,11 @@ type RentalListingDetails = {
   rules: string
   additionalInformation: string
   postalCode: number
-  door_number?: string
-  floor_number?: string
+  doorNumber?: string
+  floorNumber?: string
   latitude: number
   longitude: number
-  amenities: string[]
+  amenities: Amenity[]
 } & RentalListing
 
 type GetRentalListingsParams = Partial<{

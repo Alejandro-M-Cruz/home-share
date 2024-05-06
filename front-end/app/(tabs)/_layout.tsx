@@ -13,6 +13,7 @@ import {
 import Colors from '@/constants/colors'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
 import { useAuth } from '@/hooks/useAuth'
+import { Text } from '@/components/Text'
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -61,7 +62,7 @@ export default function TabLayout() {
             >
               {user ? (
                 <TouchableOpacity style={styles.button} onPress={() => logout()} disabled={logoutStatus === 'pending'}>
-                  Log out
+                  <Text>Log out</Text>
                 </TouchableOpacity>
               ) : (
                 <>

@@ -4,6 +4,17 @@ const statusLabels = {
   inactive: 'Private'
 }
 
+const typeLabels = {
+  apartment: 'Apartment',
+  house: 'House',
+  apartment_block: 'Apartment block'
+}
+
+const sizeUnitLabels: Record<'sq_ft' | 'sq_m', string> = {
+  sq_ft: 'ft²',
+  sq_m: 'm²'
+}
+
 const sortByLabels = {
   created_at: 'Creation date',
   updated_at: 'Recently updated',
@@ -18,4 +29,10 @@ const sortDirectionLabels = {
   desc: 'Descending'
 }
 
-export { statusLabels, sortByLabels, sortDirectionLabels }
+export {
+  statusLabels,
+  typeLabels,
+  sizeUnitLabels,
+  sortByLabels,
+  sortDirectionLabels
+}

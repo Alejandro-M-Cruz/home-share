@@ -16,7 +16,7 @@ import {
 } from '@expo/vector-icons'
 import { Badge } from '@/components/Badge'
 import { Carousel } from '@/components/Carousel'
-import { statusLabels } from '@/constants/labels'
+import { statusLabels, typeLabels } from '@/constants/labels'
 import { cn } from '@/helpers/cn'
 import { Separator } from '@/components/Separator'
 import { Button } from '@/components/Button'
@@ -27,12 +27,6 @@ import { Link } from 'expo-router'
 type RentalListingProps = {
   rentalListing: RentalListingType
   variant?: 'default' | 'my_rental_listing'
-}
-
-const displayTypes = {
-  apartment: 'Apartment',
-  house: 'House',
-  apartment_block: 'Apartment block'
 }
 
 const RentalListing = React.forwardRef<
@@ -68,7 +62,7 @@ const RentalListing = React.forwardRef<
             </CardTitle>
 
             <Badge variant="outline" className="me-2 max-sm:flex-1">
-              <Text>{displayTypes[rentalListing.type]}</Text>
+              <Text>{typeLabels[rentalListing.type]}</Text>
             </Badge>
             <MaterialIcons name="group-add" size={24} />
             <Text className="font-semibold text-lg">
@@ -82,11 +76,11 @@ const RentalListing = React.forwardRef<
           </CardTitle>
           {variant === 'default' ? (
             <Text className="text-neutral-500">
-              Member since {rentalListing.userCreatedAt.split('T')[0]}
+              Member since {new Date(rentalListing.userCreatedAt).toLocaleDateString()}
             </Text>
           ) : (
             <Text className="text-neutral-500">
-              Created on {rentalListing.createdAt.split('T')[0]}
+              Created on {new Date(rentalListing.createdAt).toLocaleDateString()}
             </Text>
           )}
         </CardHeader>

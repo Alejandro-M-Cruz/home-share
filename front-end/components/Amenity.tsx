@@ -3,16 +3,16 @@ import { Text, View } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React, { ComponentPropsWithoutRef } from 'react'
 import { ViewRef } from '@/primitives/types'
+import { cn } from '@/helpers/cn'
 
 type AmenityProps = ComponentPropsWithoutRef<typeof View> & {
   amenity: AmenityType
-  className?: string
 }
 
 const Amenity = React.forwardRef<ViewRef, AmenityProps>(
-  ({ amenity, className }, ref) => {
+  ({ amenity, className, ...props }, ref) => {
     return (
-      <View ref={ref} className="flex flex-row items-center gap-3">
+      <View ref={ref} className={cn('flex flex-row items-center gap-3', className)} {...props}>
         <View className="rounded-full bg-indigo-600 p-1.5">
           <MaterialCommunityIcons
             name={amenity.icon as any}

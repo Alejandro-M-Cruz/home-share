@@ -5,7 +5,7 @@ import { WEB_MAP } from '@/constants/map'
 import { useGoogleMapsForWeb } from '@/hooks/useGoogleMapsForWeb'
 import { MapLocation, MapProps } from './types'
 
-export function Map({ locations, initialCenter }: MapProps) {
+export function Map({ locations, initialCenter, onLocationChange, initialZoom }: MapProps) {
   const { isLoaded } = useGoogleMapsForWeb()
 
   const [map, setMap] = useState<google.maps.Map | null>(null)
@@ -16,23 +16,26 @@ export function Map({ locations, initialCenter }: MapProps) {
     setMap(map)
   }, [])
 
-  const onUnmount = useCallback((map: google.maps.Map) => {
+  const onUnmount = useCallback((_map: google.maps.Map) => {
     setMap(null)
   }, [])
 
   const handleMarkerClick = (markerLocation: MapLocation) => {
     map?.setCenter(latLng(markerLocation))
     map?.setZoom(WEB_MAP.focusZoom)
+    onLocationChange?.(markerLocation)
   }
 
-  const handleMapClick = () => {}
+  const handleMapClick = () => {
+    onLocationChange?.(undefined)
+  }
 
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={{ width: '100%', height: '100%' }}
       onLoad={onLoad}
       center={initialCenter ? latLng(initialCenter) : WEB_MAP.initialCenter}
-      zoom={WEB_MAP.initialZoom}
+      zoom={initialZoom ?? WEB_MAP.initialZoom}
       onUnmount={onUnmount}
       onClick={handleMapClick}
     >

@@ -13,8 +13,13 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::get('/amenities', [AmenityController::class, 'index']);
 
-Route::get('/locations', [LocationController::class, 'index'])
-    ->name('locations.index');
+Route::prefix('locations')->group(function () {
+    Route::get('/', [LocationController::class, 'index'])
+        ->name('locations.index');
+
+    Route::get('/{rental_listing}', [LocationController::class, 'show'])
+        ->name('locations.show');
+});
 
 Route::prefix('rental-listings')->group(function () {
     Route::get('/', [RentalListingController::class, 'index'])

@@ -59,9 +59,9 @@ const RentalListing = React.forwardRef<
         }}
         asChild
       >
-        <CardHeader className="gap-y-1 py-3 px-5">
+        <CardHeader className="gap-y-1 py-3 px-5 group">
           <View className="flex flex-row items-center justify-end gap-2">
-            <CardTitle className="flex-1 text-xl max-sm:hidden truncate">
+            <CardTitle className="flex-1 text-xl max-sm:hidden truncate web:group-hover:underline group-active:underline underline-offset-4">
               {variant === 'default'
                 ? rentalListing.username
                 : rentalListing.title}

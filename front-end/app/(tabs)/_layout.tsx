@@ -87,7 +87,7 @@ export default function TabLayout() {
         options={{
           title: 'Rental listings',
           tabBarIcon: ({ color }) => (
-            <FontAwesome6 name="house" size={20} className="text-primary-foreground -mb-[3px]" />
+            <FontAwesome6 name="house" size={20} className="text-primary-foreground " />
           ),
           tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}
@@ -107,7 +107,7 @@ export default function TabLayout() {
         options={{
           title: 'My rental listings',
           tabBarIcon: ({ color }) => (
-            <FontAwesome6 name="house-user" size={20} className="text-primary-foreground -mb-[3px]" />
+            <FontAwesome6 name="house-user" size={20} className="text-primary-foreground" />
           ),
           tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}

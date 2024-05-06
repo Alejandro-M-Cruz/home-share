@@ -19,10 +19,17 @@ import { Carousel } from '@/components/Carousel'
 import { statusLabels, typeLabels } from '@/constants/labels'
 import { cn } from '@/helpers/cn'
 import { Separator } from '@/components/Separator'
-import { Button } from '@/components/Button'
+import { Button, buttonTextVariants, buttonVariants } from '@/components/Button'
 import { useDeleteRentalListing } from '@/hooks/rental-listings/useDeleteRentalListing'
 import { useToggleRentalListingStatus } from '@/hooks/rental-listings/useToggleRentalListingStatus'
 import { Link } from 'expo-router'
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '@/components/AlertDialog'
 
 type RentalListingProps = {
   rentalListing: RentalListingType
@@ -159,30 +166,75 @@ const RentalListing = React.forwardRef<
                   {statusLabels[rentalListing.status]}
                 </Text>
               </Badge>
-              <Button
-                onPress={handleStatusToggle}
-                size="icon"
-                variant="ghost"
-                className="rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-              >
-                {rentalListing.status === 'active' ? (
-                  <FontAwesome6 name="eye-slash" size={20} />
-                ) : (
-                  <FontAwesome6 name="eye" size={20} />
-                )}
-              </Button>
-              <Button
-                onPress={handleDelete}
-                size="icon"
-                variant="ghost"
-                className="rounded-full web:hover:bg-destructive active:bg-destructive group"
-              >
-                <MaterialCommunityIcons
-                  className="group-active:text-destructive-foreground web:group-hover:text-destructive-foreground"
-                  name="delete-forever"
-                  size={28}
-                />
-              </Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                  >
+                    {rentalListing.status === 'active' ? (
+                      <FontAwesome6 name="eye-slash" size={20} />
+                    ) : (
+                      <FontAwesome6 name="eye" size={20} />
+                    )}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      The rental listing will be {rentalListing.status === 'active' ? 'made private' : 'published'}.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>
+                      <Text>Cancel</Text>
+                    </AlertDialogCancel>
+                    <AlertDialogAction onPress={handleStatusToggle}>
+                      <Text className={buttonTextVariants({ variant: 'default' })}>Confirm</Text>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="rounded-full web:hover:bg-destructive active:bg-destructive group"
+                  >
+                    <MaterialCommunityIcons
+                      className="group-active:text-destructive-foreground web:group-hover:text-destructive-foreground"
+                      name="delete-forever"
+                      size={28}
+                    />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. The rental listing will be permanently deleted.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>
+                      <Text>Cancel</Text>
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onPress={handleDelete}
+                      className={buttonVariants({ variant: 'destructive' })}
+                    >
+                      <Text className="text-destructive-foreground">
+                        Delete
+                      </Text>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </View>
           </>
         )}

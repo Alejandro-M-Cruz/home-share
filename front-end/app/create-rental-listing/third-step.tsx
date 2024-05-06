@@ -1,16 +1,16 @@
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
-import { useEffect } from 'react'
-import { ImagePicker } from '@/components/ImagePicker'
+import React, { useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'
-import { useRouter } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import { ImagePickerAsset } from 'expo-image-picker'
 import { useUploadRentalListingImages } from '@/hooks/rental-listings/useUploadRentalListingImages'
 import { handleError } from '@/helpers/errors'
 import { ErrorList } from '@/components/ErrorList'
+import { ImagePicker } from '@/components/ImagePicker'
 
 const secondStepSchema: z.ZodSchema<{ images: ImagePickerAsset[] }> = z
   .object({
@@ -62,23 +62,33 @@ export default function CreateRentalListingThirdStepScreen() {
   }, [status, error, router, setError])
 
   return (
-    <ScrollView className="flex-1 px-2 sm:px-5 py-4">
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <ImagePicker
-            className="mx-auto my-5"
-            images={value ?? []}
-            onImagesChange={onChange}
-            onSelectionDialogClose={onBlur}
-          />
-        )}
-        name="images"
-      />
-      <ErrorList errors={errors} />
-      <Button disabled={!isValid} onPress={handleSubmit(onSubmit)}>
-        <Text>Confirm</Text>
-      </Button>
+    <ScrollView className="flex-1 px-3 sm:px-8 py-4">
+      <View className="flex flex-col gap-5 w-full max-w-[800px] mx-auto">
+        <Controller
+          control={control}
+          name="images"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <ImagePicker
+              className="mx-auto my-5"
+              images={value ?? []}
+              onImagesChange={onChange}
+              onSelectionDialogClose={onBlur}
+            />
+          )}
+        />
+        <ErrorList errors={errors} />
+
+        <View className="flex flex-row justify-around items-center mt-7">
+          <Link href="/create-rental-listing/second-step">
+            <Button variant="outline">
+              <Text>Previous step</Text>
+            </Button>
+          </Link>
+          <Button disabled={!isValid} onPress={handleSubmit(onSubmit)}>
+            <Text>Confirm</Text>
+          </Button>
+        </View>
+      </View>
     </ScrollView>
   )
 }

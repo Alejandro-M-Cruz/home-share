@@ -12,8 +12,8 @@ import { Text } from '@/components/Text'
 import { z } from 'zod'
 import { useRentalListingStore } from '@/hooks/rental-listings/useRentalListingStore'
 import { useCreateRentalListing } from '@/hooks/useCreateRentalListing'
-import { useEffect, useMemo } from 'react'
-import { useRouter } from 'expo-router'
+import React, { useEffect, useMemo } from 'react'
+import { Link, useRouter } from 'expo-router'
 import { handleError } from '@/helpers/errors'
 import { ErrorList } from '@/components/ErrorList'
 import { Controller, useForm } from 'react-hook-form'
@@ -93,164 +93,171 @@ export default function CreateRentalListingSecondStepScreen() {
   }, [errors])
 
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerClassName="flex flex-col py-4 px-2 sm:px-4 space-y-6"
-    >
-      <Label nativeID="location" required>
-        Autocomplete location
-      </Label>
-      <Controller
-        control={control}
-        name="location"
-        render={({ field: { onChange } }) => (
-          <LocationAutocomplete onLocationChange={onChange} />
-        )}
-      />
+    <ScrollView className="flex-1 px-3 sm:px-8 py-4">
+      <View className="flex flex-col gap-5 w-full max-w-[800px] mx-auto">
+        <Label nativeID="location" required>
+          Autocomplete location
+        </Label>
+        <Controller
+          control={control}
+          name="location"
+          render={({ field: { onChange } }) => (
+            <LocationAutocomplete onLocationChange={onChange} />
+          )}
+        />
 
-      {location.latitude && location.longitude && (
-        <View className="w-full h-96 my-5">
-          <Map
-            locations={[
-              {
-                street: location.street || undefined,
-                longitude: location.longitude,
-                latitude: location.latitude
-              }
-            ]}
-            initialCenter={{
-              latitude: location.latitude,
-              longitude: location.longitude
-            }}
-            initialZoom={18}
-          />
+        {location.latitude && location.longitude && (
+          <View className="w-full h-96 my-5">
+            <Map
+              locations={[
+                {
+                  street: location.street || undefined,
+                  longitude: location.longitude,
+                  latitude: location.latitude
+                }
+              ]}
+              initialCenter={{
+                latitude: location.latitude,
+                longitude: location.longitude
+              }}
+              initialZoom={18}
+            />
+          </View>
+        )}
+
+        <Label nativeID="country" required>
+          Country
+        </Label>
+        <Input
+          placeholder="Select a location"
+          readOnly
+          value={location.country ?? ''}
+        />
+        {errors.location?.country && (
+          <Text className="text-red-500">{errors.location.country.message}</Text>
+        )}
+
+        <Label nativeID="state" required>
+          State / province
+        </Label>
+        <Input
+          placeholder="Select a location"
+          readOnly
+          value={location.state ?? ''}
+        />
+        {errors.location?.state && (
+          <Text className="text-red-500">{errors.location.state.message}</Text>
+        )}
+
+        <Label nativeID="city" required>
+          City
+        </Label>
+        <Input
+          placeholder="Select a location"
+          readOnly
+          value={location.city ?? ''}
+        />
+        {errors.location?.city && (
+          <Text className="text-red-500">{errors.location.city.message}</Text>
+        )}
+
+        <Label nativeID="postalCode" required>
+          Postal code
+        </Label>
+        <Input
+          placeholder="Select a location"
+          readOnly
+          value={location.postalCode ?? ''}
+        />
+        {errors.location?.postalCode && (
+          <Text className="text-red-500">
+            {errors.location.postalCode.message}
+          </Text>
+        )}
+
+        <Label nativeID="street" required>
+          Street
+        </Label>
+        <Input
+          placeholder="Select a location"
+          readOnly
+          value={location.street ?? ''}
+        />
+        {errors.location?.street && (
+          <Text className="text-red-500">{errors.location.street.message}</Text>
+        )}
+
+        <Label nativeID="streetNumber" required>
+          Street number
+        </Label>
+        <Input
+          placeholder="Street number"
+          readOnly
+          value={location.streetNumber ?? ''}
+        />
+        {errors.location?.streetNumber && (
+          <Text className="text-red-500">
+            {errors.location.streetNumber.message}
+          </Text>
+        )}
+
+        <Label nativeID="doorNumber">Door number</Label>
+        <Controller
+          control={control}
+          name="location.doorNumber"
+          render={({ field: { value, onChange } }) => (
+            <Input
+              placeholder="Door number"
+              value={value ?? ''}
+              onChangeText={text => onChange(text || undefined)}
+            />
+          )}
+        />
+        {errors.location?.doorNumber && (
+          <Text className="text-red-500">
+            {errors.location.doorNumber.message}
+          </Text>
+        )}
+
+        <Label nativeID="floorNumber">Floor number</Label>
+        <Controller
+          control={control}
+          name="location.floorNumber"
+          render={({ field: { value, onChange } }) => (
+            <Input
+              placeholder="Floor number"
+              value={value ?? ''}
+              onChangeText={text => onChange(text || undefined)}
+            />
+          )}
+        />
+        {errors.location?.floorNumber && (
+          <Text className="text-red-500">
+            {errors.location.floorNumber.message}
+          </Text>
+        )}
+
+        {(errors.location?.latitude || errors.location?.longitude) && (
+          <Text className="text-red-500">
+            Please select a location before submitting
+          </Text>
+        )}
+
+        {Object.keys(otherErrors).length > 0 && (
+          <ErrorList errors={otherErrors} />
+        )}
+
+        <View className="flex flex-row justify-around items-center mt-7">
+          <Link href="/create-rental-listing/first-step">
+            <Button variant="outline">
+              <Text>Previous step</Text>
+            </Button>
+          </Link>
+          <Button disabled={!isValid} onPress={handleSubmit(onSubmit)}>
+            <Text>Next</Text>
+          </Button>
         </View>
-      )}
-
-      <Label nativeID="country" required>
-        Country
-      </Label>
-      <Input
-        placeholder="Select a location"
-        readOnly
-        value={location.country ?? ''}
-      />
-      {errors.location?.country && (
-        <Text className="text-red-500">{errors.location.country.message}</Text>
-      )}
-
-      <Label nativeID="state" required>
-        State / province
-      </Label>
-      <Input
-        placeholder="Select a location"
-        readOnly
-        value={location.state ?? ''}
-      />
-      {errors.location?.state && (
-        <Text className="text-red-500">{errors.location.state.message}</Text>
-      )}
-
-      <Label nativeID="city" required>
-        City
-      </Label>
-      <Input
-        placeholder="Select a location"
-        readOnly
-        value={location.city ?? ''}
-      />
-      {errors.location?.city && (
-        <Text className="text-red-500">{errors.location.city.message}</Text>
-      )}
-
-      <Label nativeID="postalCode" required>
-        Postal code
-      </Label>
-      <Input
-        placeholder="Select a location"
-        readOnly
-        value={location.postalCode ?? ''}
-      />
-      {errors.location?.postalCode && (
-        <Text className="text-red-500">
-          {errors.location.postalCode.message}
-        </Text>
-      )}
-
-      <Label nativeID="street" required>
-        Street
-      </Label>
-      <Input
-        placeholder="Select a location"
-        readOnly
-        value={location.street ?? ''}
-      />
-      {errors.location?.street && (
-        <Text className="text-red-500">{errors.location.street.message}</Text>
-      )}
-
-      <Label nativeID="streetNumber" required>
-        Street number
-      </Label>
-      <Input
-        placeholder="Street number"
-        readOnly
-        value={location.streetNumber ?? ''}
-      />
-      {errors.location?.streetNumber && (
-        <Text className="text-red-500">
-          {errors.location.streetNumber.message}
-        </Text>
-      )}
-
-      <Label nativeID="doorNumber">Door number</Label>
-      <Controller
-        control={control}
-        name="location.doorNumber"
-        render={({ field: { value, onChange } }) => (
-          <Input
-            placeholder="Door number"
-            value={value ?? ''}
-            onChangeText={text => onChange(text || undefined)}
-          />
-        )}
-      />
-      {errors.location?.doorNumber && (
-        <Text className="text-red-500">
-          {errors.location.doorNumber.message}
-        </Text>
-      )}
-
-      <Label nativeID="floorNumber">Floor number</Label>
-      <Controller
-        control={control}
-        name="location.floorNumber"
-        render={({ field: { value, onChange } }) => (
-          <Input
-            placeholder="Floor number"
-            value={value ?? ''}
-            onChangeText={text => onChange(text || undefined)}
-          />
-        )}
-      />
-      {errors.location?.floorNumber && (
-        <Text className="text-red-500">
-          {errors.location.floorNumber.message}
-        </Text>
-      )}
-
-      {(errors.location?.latitude || errors.location?.longitude) && (
-        <Text className="text-red-500">
-          Please select a location before submitting
-        </Text>
-      )}
-
-      {Object.keys(otherErrors).length > 0 && (
-        <ErrorList errors={otherErrors} />
-      )}
-      <Button onPress={handleSubmit(onSubmit)} disabled={!isValid}>
-        <Text>Next</Text>
-      </Button>
+      </View>
     </ScrollView>
   )
 }

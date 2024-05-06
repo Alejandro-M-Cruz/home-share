@@ -13,11 +13,11 @@ const Amenity = React.forwardRef<ViewRef, AmenityProps>(
   ({ amenity, className, ...props }, ref) => {
     return (
       <View ref={ref} className={cn('flex flex-row items-center gap-3', className)} {...props}>
-        <View className="rounded-full bg-indigo-600 p-1.5">
+        <View className="rounded-full bg-primary p-1.5">
           <MaterialCommunityIcons
             name={amenity.icon as any}
             size={22}
-            color="white"
+            className="text-primary-foreground"
           />
         </View>
         <Text className="font-medium">{amenity.name}</Text>

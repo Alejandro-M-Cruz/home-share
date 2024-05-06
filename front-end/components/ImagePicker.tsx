@@ -14,6 +14,7 @@ import { ViewRef } from '@/primitives/types'
 import { DEFAULT_IMAGE_SELECTION_LIMIT } from '@/constants/image-picker'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { mergeAssets } from '@/helpers/image-picker'
+import { cn } from '@/helpers/cn'
 
 type ImagePickerProps = {
   images: ImagePickerAsset[]
@@ -32,6 +33,7 @@ const ImagePicker = React.forwardRef<
       onImagesChange,
       selectionLimit = DEFAULT_IMAGE_SELECTION_LIMIT,
       onSelectionDialogClose,
+      className,
       ...props
     },
     ref
@@ -65,7 +67,7 @@ const ImagePicker = React.forwardRef<
     }, [images, onImagesChange])
 
     return (
-      <View ref={ref} {...props}>
+      <View ref={ref} className={cn('p-3', className, images?.length > 0 && 'bg-background rounded-lg border-4 border-dashed border-input')} {...props}>
         {Platform.OS !== 'web' && (
           <Button onPress={takePictures}>
             <Text>Use camera</Text>

@@ -22,7 +22,15 @@ export default function RentalListingMap() {
     <View className="flex-1 relative">
       {status === 'success' && locations ? (
         <>
-          <Map locations={locations} onLocationChange={handleLocationChange} />
+          <Map
+            locations={locations}
+            onLocationChange={handleLocationChange}
+            initialCenter={{
+              latitude: 0,
+              longitude: 0
+            }}
+            initialZoom={2}
+          />
           {rentalListingStatus === 'success' && rentalListing && (
             <RentalListing className="absolute bottom-0 left-0 m-2" rentalListing={rentalListing} />
           )}

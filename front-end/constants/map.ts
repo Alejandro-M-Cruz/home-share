@@ -1,5 +1,5 @@
 const WEB_MAP = {
-  initialCenter: { lat: 20, lng: 0 },
+  initialCenter: { latitude: 20, longitude: 0 },
   initialZoom: 2.4,
   focusZoom: 18,
   endedFocusZoom: 15

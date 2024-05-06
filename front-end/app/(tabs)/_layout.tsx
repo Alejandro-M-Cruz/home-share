@@ -68,12 +68,12 @@ export default function TabLayout() {
                 <>
                   <Link href="/login" asChild>
                     <TouchableOpacity style={styles.button}>
-                      Log in
+                      <Text>Log in</Text>
                     </TouchableOpacity>
                   </Link>
                   <Link href="/signup" asChild>
                     <TouchableOpacity style={styles.button}>
-                      Sign up
+                      <Text>Sign up</Text>
                     </TouchableOpacity>
                   </Link>
                 </>

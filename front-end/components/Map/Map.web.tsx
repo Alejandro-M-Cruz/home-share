@@ -34,7 +34,7 @@ export function Map({ locations, initialCenter, onLocationChange, initialZoom }:
     <GoogleMap
       mapContainerStyle={{ width: '100%', height: '100%' }}
       onLoad={onLoad}
-      center={initialCenter ? latLng(initialCenter) : WEB_MAP.initialCenter}
+      center={latLng(initialCenter ?? WEB_MAP.initialCenter)}
       zoom={initialZoom ?? WEB_MAP.initialZoom}
       onUnmount={onUnmount}
       onClick={handleMapClick}

@@ -2,7 +2,10 @@ import { ScrollView, View } from 'react-native'
 import { Map } from '@/components/Map'
 import { LocationAutocomplete } from '@/components/LocationAutocomplete'
 import { Label } from '@/components/Label'
-import { CreateRentalListingLocation, CreateRentalListingRequest } from '@/types/rental-listing'
+import {
+  CreateRentalListingLocation,
+  CreateRentalListingRequest
+} from '@/types/rental-listing'
 import { Input } from '@/components/Input'
 import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'
@@ -16,20 +19,21 @@ import { ErrorList } from '@/components/ErrorList'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-const thirdStepSchema: z.ZodSchema<{ location: CreateRentalListingLocation }> = z.object({
-  location: z.object({
-    country: z.string(),
-    state: z.string(),
-    city: z.string(),
-    postalCode: z.string(),
-    street: z.string(),
-    streetNumber: z.string(),
-    doorNumber: z.string().optional(),
-    floorNumber: z.string().optional(),
-    longitude: z.number().min(-180).max(180),
-    latitude: z.number().min(-90).max(90)
+const thirdStepSchema: z.ZodSchema<{ location: CreateRentalListingLocation }> =
+  z.object({
+    location: z.object({
+      country: z.string(),
+      state: z.string(),
+      city: z.string(),
+      postalCode: z.string(),
+      street: z.string(),
+      streetNumber: z.string(),
+      doorNumber: z.string().optional(),
+      floorNumber: z.string().optional(),
+      longitude: z.number().min(-180).max(180),
+      latitude: z.number().min(-90).max(90)
+    })
   })
-})
 
 export default function CreateRentalListingSecondStepScreen() {
   const { rentalListing, patchRentalListing } = useRentalListingStore()
@@ -70,7 +74,11 @@ export default function CreateRentalListingSecondStepScreen() {
     }
   }, [status, error, router, setError])
 
-  const onSubmit = ({ location }: { location: CreateRentalListingLocation }) => {
+  const onSubmit = ({
+    location
+  }: {
+    location: CreateRentalListingLocation
+  }) => {
     const data = { ...rentalListing, location }
     patchRentalListing({ location })
     createRentalListing(data as CreateRentalListingRequest)
@@ -85,8 +93,13 @@ export default function CreateRentalListingSecondStepScreen() {
   }, [errors])
 
   return (
-    <ScrollView className="flex-1" contentContainerClassName="flex flex-col py-4 px-2 sm:px-4 space-y-6">
-      <Label nativeID="location" required>Autocomplete location</Label>
+    <ScrollView
+      className="flex-1"
+      contentContainerClassName="flex flex-col py-4 px-2 sm:px-4 space-y-6"
+    >
+      <Label nativeID="location" required>
+        Autocomplete location
+      </Label>
       <Controller
         control={control}
         name="location"
@@ -98,11 +111,13 @@ export default function CreateRentalListingSecondStepScreen() {
       {location.latitude && location.longitude && (
         <View className="w-full h-96 my-5">
           <Map
-            locations={[{
-              street: location.street || undefined,
-              longitude: location.longitude,
-              latitude: location.latitude
-            }]}
+            locations={[
+              {
+                street: location.street || undefined,
+                longitude: location.longitude,
+                latitude: location.latitude
+              }
+            ]}
             initialCenter={{
               latitude: location.latitude,
               longitude: location.longitude
@@ -115,7 +130,11 @@ export default function CreateRentalListingSecondStepScreen() {
       <Label nativeID="country" required>
         Country
       </Label>
-      <Input placeholder="Select a location" readOnly value={location.country ?? ''} />
+      <Input
+        placeholder="Select a location"
+        readOnly
+        value={location.country ?? ''}
+      />
       {errors.location?.country && (
         <Text className="text-red-500">{errors.location.country.message}</Text>
       )}
@@ -123,7 +142,11 @@ export default function CreateRentalListingSecondStepScreen() {
       <Label nativeID="state" required>
         State / province
       </Label>
-      <Input placeholder="Select a location" readOnly value={location.state ?? ''} />
+      <Input
+        placeholder="Select a location"
+        readOnly
+        value={location.state ?? ''}
+      />
       {errors.location?.state && (
         <Text className="text-red-500">{errors.location.state.message}</Text>
       )}
@@ -131,7 +154,11 @@ export default function CreateRentalListingSecondStepScreen() {
       <Label nativeID="city" required>
         City
       </Label>
-      <Input placeholder="Select a location" readOnly value={location.city ?? ''} />
+      <Input
+        placeholder="Select a location"
+        readOnly
+        value={location.city ?? ''}
+      />
       {errors.location?.city && (
         <Text className="text-red-500">{errors.location.city.message}</Text>
       )}
@@ -139,15 +166,25 @@ export default function CreateRentalListingSecondStepScreen() {
       <Label nativeID="postalCode" required>
         Postal code
       </Label>
-      <Input placeholder="Select a location" readOnly value={location.postalCode ?? ''} />
+      <Input
+        placeholder="Select a location"
+        readOnly
+        value={location.postalCode ?? ''}
+      />
       {errors.location?.postalCode && (
-        <Text className="text-red-500">{errors.location.postalCode.message}</Text>
+        <Text className="text-red-500">
+          {errors.location.postalCode.message}
+        </Text>
       )}
 
       <Label nativeID="street" required>
         Street
       </Label>
-      <Input placeholder="Select a location" readOnly value={location.street ?? ''} />
+      <Input
+        placeholder="Select a location"
+        readOnly
+        value={location.street ?? ''}
+      />
       {errors.location?.street && (
         <Text className="text-red-500">{errors.location.street.message}</Text>
       )}
@@ -155,14 +192,18 @@ export default function CreateRentalListingSecondStepScreen() {
       <Label nativeID="streetNumber" required>
         Street number
       </Label>
-      <Input placeholder="Street number" readOnly value={location.streetNumber ?? ''} />
+      <Input
+        placeholder="Street number"
+        readOnly
+        value={location.streetNumber ?? ''}
+      />
       {errors.location?.streetNumber && (
-        <Text className="text-red-500">{errors.location.streetNumber.message}</Text>
+        <Text className="text-red-500">
+          {errors.location.streetNumber.message}
+        </Text>
       )}
 
-      <Label nativeID="doorNumber">
-        Door number
-      </Label>
+      <Label nativeID="doorNumber">Door number</Label>
       <Controller
         control={control}
         name="location.doorNumber"
@@ -175,12 +216,12 @@ export default function CreateRentalListingSecondStepScreen() {
         )}
       />
       {errors.location?.doorNumber && (
-        <Text className="text-red-500">{errors.location.doorNumber.message}</Text>
+        <Text className="text-red-500">
+          {errors.location.doorNumber.message}
+        </Text>
       )}
 
-      <Label nativeID="floorNumber">
-        Floor number
-      </Label>
+      <Label nativeID="floorNumber">Floor number</Label>
       <Controller
         control={control}
         name="location.floorNumber"
@@ -193,11 +234,15 @@ export default function CreateRentalListingSecondStepScreen() {
         )}
       />
       {errors.location?.floorNumber && (
-        <Text className="text-red-500">{errors.location.floorNumber.message}</Text>
+        <Text className="text-red-500">
+          {errors.location.floorNumber.message}
+        </Text>
       )}
 
       {(errors.location?.latitude || errors.location?.longitude) && (
-        <Text className="text-red-500">Please select a location before submitting</Text>
+        <Text className="text-red-500">
+          Please select a location before submitting
+        </Text>
       )}
 
       {Object.keys(otherErrors).length > 0 && (

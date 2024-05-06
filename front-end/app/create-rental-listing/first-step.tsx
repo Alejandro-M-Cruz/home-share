@@ -90,7 +90,9 @@ export default function CreateRentalListingFirstStepScreen() {
       className="flex-1 px-2 sm:px-8 py-4"
       contentContainerClassName="flex flex-col space-y-4"
     >
-      <Label nativeID="title" required>Title</Label>
+      <Label nativeID="title" required>
+        Title
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -108,7 +110,9 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.title.message}</Text>
       )}
 
-      <Label nativeID="description" required>Description</Label>
+      <Label nativeID="description" required>
+        Description
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -126,7 +130,9 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.description.message}</Text>
       )}
 
-      <Label nativeID="type" required>Type of Home</Label>
+      <Label nativeID="type" required>
+        Type of Home
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -160,7 +166,9 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.type.message}</Text>
       )}
 
-      <Label nativeID="monthlyRent" required>Monthly Rent</Label>
+      <Label nativeID="monthlyRent" required>
+        Monthly Rent
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -178,7 +186,9 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.monthlyRent.message}</Text>
       )}
 
-      <Label nativeID="availableRooms" required>Available Rooms</Label>
+      <Label nativeID="availableRooms" required>
+        Available Rooms
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -198,7 +208,9 @@ export default function CreateRentalListingFirstStepScreen() {
         </Text>
       )}
 
-      <Label nativeID="size" required>Size</Label>
+      <Label nativeID="size" required>
+        Size
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -216,7 +228,9 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.size.message}</Text>
       )}
 
-      <Label nativeID="bathrooms" required>Bathrooms</Label>
+      <Label nativeID="bathrooms" required>
+        Bathrooms
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -234,7 +248,9 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.bathrooms.message}</Text>
       )}
 
-      <Label nativeID="bedrooms" required>Bedrooms</Label>
+      <Label nativeID="bedrooms" required>
+        Bedrooms
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -252,7 +268,9 @@ export default function CreateRentalListingFirstStepScreen() {
         <Text className="mb-2 text-red-500">{errors.bedrooms.message}</Text>
       )}
 
-      <Label nativeID="yearBuilt" required>Year Built</Label>
+      <Label nativeID="yearBuilt" required>
+        Year Built
+      </Label>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (

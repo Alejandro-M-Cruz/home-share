@@ -4,7 +4,13 @@ import { SignupRequest } from '@/types/auth'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Text } from '@/components/Text'
-import { Image, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native'
+import {
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  View
+} from 'react-native'
 import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
 import { handleError } from '@/helpers/errors'
@@ -66,11 +72,13 @@ export default function SignupScreen() {
   return (
     <View style={styles.container}>
       <Image
-      source={require('../../assets/images/extendedBlueLogo.png')}
-      style={styles.image}
-    />
-      <Text style={{ fontSize: 33, color: '#000', fontWeight: 'bold'}}>Register</Text>
-      <Text style={{fontSize: 20, color: 'gray'}}>
+        source={require('../../assets/images/extendedBlueLogo.png')}
+        style={styles.image}
+      />
+      <Text style={{ fontSize: 33, color: '#000', fontWeight: 'bold' }}>
+        Register
+      </Text>
+      <Text style={{ fontSize: 20, color: 'gray' }}>
         You are one step away from finding your new home
       </Text>
       <Controller
@@ -141,12 +149,14 @@ export default function SignupScreen() {
         <Text>{errors.passwordConfirmation.message}</Text>
       )}
       {errors.root && <Text>{errors.root.message}</Text>}
-      
-      <TouchableOpacity style={styles.button}
+
+      <TouchableOpacity
+        style={styles.button}
         onPress={handleSubmit(onSubmit)}
         disabled={signupStatus === 'pending'}
         activeOpacity={0.6}
-        >SIGN UP
+      >
+        SIGN UP
       </TouchableOpacity>
     </View>
   )
@@ -166,12 +176,12 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 20,
-    color: 'gray',
+    color: 'gray'
   },
   image: {
     width: 300,
     height: 300,
-    marginBottom: 20,
+    marginBottom: 20
   },
   textInput: {
     borderWidth: 1,
@@ -200,6 +210,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 33,
     color: '#000',
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
 })

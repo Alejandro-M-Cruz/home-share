@@ -41,13 +41,13 @@ type RentalListing = {
 }
 
 type RentalListingDetails = {
-  userId: number,
-  description: string,
-  rules: string,
-  additionalInformation: string,
-  postalCode: number,
-  door_number?: string,
-  floor_number?: string,
+  userId: number
+  description: string
+  rules: string
+  additionalInformation: string
+  postalCode: number
+  door_number?: string
+  floor_number?: string
   latitude: number
   longitude: number
   amenities: string[]

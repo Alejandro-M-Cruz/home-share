@@ -6,7 +6,6 @@ type RentalListingState = {
   patchRentalListing: (data: Partial<CreateRentalListingRequest>) => void
   id?: number
   setId: (id: number) => void
-
 }
 
 export const useRentalListingStore = create<RentalListingState>()(

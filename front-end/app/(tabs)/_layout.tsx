@@ -1,7 +1,14 @@
 import * as React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Link, Tabs } from 'expo-router'
-import { Image, Button, Pressable, View, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  Image,
+  Button,
+  Pressable,
+  View,
+  StyleSheet,
+  TouchableOpacity
+} from 'react-native'
 
 import Colors from '@/constants/colors'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
@@ -26,12 +33,12 @@ export default function TabLayout() {
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
         headerStyle: {
-          backgroundColor: '#194976',
+          backgroundColor: '#194976'
         },
         tabBarStyle: {
           backgroundColor: '#194976'
         },
-        headerTitle: "",
+        headerTitle: '',
         headerRight: () => (
           <View
             style={{
@@ -40,16 +47,18 @@ export default function TabLayout() {
               justifyContent: 'space-between',
               alignItems: 'center',
               paddingRight: 20, // Agrega un espacio a los lados para separar los elementos del borde de la pantalla
-              width: '100%',
+              width: '100%'
             }}
           >
             <View>
               <Image
-              source={require('../../assets/images/extendedLogo.png')}
-              style ={styles.image}
+                source={require('../../assets/images/extendedLogo.png')}
+                style={styles.image}
               />
             </View>
-            <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+            <View
+              style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}
+            >
               {user ? (
                 <Button
                   title="Log out"
@@ -79,32 +88,32 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color='#FFF' />,
-          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' },
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color="#FFF" />,
+          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}
       />
       <Tabs.Screen
         name="rental-listings"
         options={{
           title: 'Rental Listings',
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color='#FFF' />,
-          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' },
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color="#FFF" />,
+          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}
       />
       <Tabs.Screen
         name="map"
         options={{
           title: 'Map',
-          tabBarIcon: ({ color }) => <TabBarIcon name="map" color='#FFF' />,
-          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' },
+          tabBarIcon: ({ color }) => <TabBarIcon name="map" color="#FFF" />,
+          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}
       />
-            <Tabs.Screen
+      <Tabs.Screen
         name="my-rental-listings"
         options={{
           title: 'My Rental Listings',
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color='#FFF' />,
-          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' },
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color="#FFF" />,
+          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}
       />
     </Tabs>
@@ -114,10 +123,10 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   image: {
     height: 40,
-    width: 250,
+    width: 250
   },
   button: {
-    backgroundColor: "#ffffff",
+    backgroundColor: '#ffffff',
     width: 80,
     height: 35,
     borderRadius: 15,

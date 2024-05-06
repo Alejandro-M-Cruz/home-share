@@ -5,7 +5,8 @@ import {
   ImagePickerAsset,
   launchCameraAsync,
   launchImageLibraryAsync,
-  MediaTypeOptions, requestCameraPermissionsAsync
+  MediaTypeOptions,
+  requestCameraPermissionsAsync
 } from 'expo-image-picker'
 import { Button } from '@/components/Button'
 import { Text } from '@/components/Text'

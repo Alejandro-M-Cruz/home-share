@@ -28,7 +28,8 @@ function getAutocompleteLocation({
       'administrative_area_level_7'
     ),
     country: ac.get('country'),
-    postalCode: ac.get('postal_code') + (postalCodeSuffix ? `-${postalCodeSuffix}` : ''),
+    postalCode:
+      ac.get('postal_code') + (postalCodeSuffix ? `-${postalCodeSuffix}` : ''),
     state: ac.get(
       'administrative_area_level_1',
       'administrative_area_level_2',
@@ -40,7 +41,7 @@ function getAutocompleteLocation({
     ),
     latitude: geometry?.location?.lat(),
     longitude: geometry?.location?.lng(),
-    streetNumber: ac.get('street_number'),
+    streetNumber: ac.get('street_number')
   }
 }
 
@@ -48,13 +49,15 @@ function getComponent(
   addressComponents: google.maps.GeocoderAddressComponent[] | undefined,
   types: string[]
 ) {
-  return addressComponents
-    ?.find((component) => types.some(type => component.types.includes(type)))
-    ?.long_name
+  return addressComponents?.find(component =>
+    types.some(type => component.types.includes(type))
+  )?.long_name
 }
 
 class AddressComponents {
-  constructor(private addressComponents: google.maps.GeocoderAddressComponent[]) {}
+  constructor(
+    private addressComponents: google.maps.GeocoderAddressComponent[]
+  ) {}
 
   /**
    * Get the long name of the first address component that matches any of the types, or undefined if none match. It will
@@ -62,9 +65,9 @@ class AddressComponents {
    * @param types
    */
   get(...types: string[]) {
-    return this.addressComponents
-      ?.find((component) => types.some(type => component.types.includes(type)))
-      ?.long_name
+    return this.addressComponents?.find(component =>
+      types.some(type => component.types.includes(type))
+    )?.long_name
   }
 }
 

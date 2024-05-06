@@ -27,7 +27,9 @@ function handleError({
     return
   }
   errorEntries.forEach(([fieldPath, messages]) => {
-    const field = fieldPath.match(/^\w+\.\d+$/) ? fieldPath.split('.')[0] : fieldPath
+    const field = fieldPath.match(/^\w+\.\d+$/)
+      ? fieldPath.split('.')[0]
+      : fieldPath
     setError(field, {
       type: errorType,
       message: messages.join('\n')
@@ -40,7 +42,9 @@ function getErrorMessages(errors: any): string[] {
     case 'string':
       return [errors]
     case 'object':
-      return errors.message ? [errors.message] : Object.values(errors).flatMap(getErrorMessages)
+      return errors.message
+        ? [errors.message]
+        : Object.values(errors).flatMap(getErrorMessages)
     default:
       return [DEFAULT_ERROR_MESSAGE]
   }

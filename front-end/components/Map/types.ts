@@ -6,8 +6,8 @@ type MapLocation = {
 }
 
 type MapProps = {
-  locations: MapLocation[],
-  initialCenter?: { latitude: number, longitude: number }
+  locations: MapLocation[]
+  initialCenter?: { latitude: number; longitude: number }
   initialZoom?: number
 }
 

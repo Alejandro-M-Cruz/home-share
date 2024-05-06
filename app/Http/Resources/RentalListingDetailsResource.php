@@ -44,7 +44,14 @@ class RentalListingDetailsResource extends JsonResource
             'longitude' => $this->longitude,
             'username' => $this->user->name,
             'user_created_at' => $this->user->created_at,
-            //'amenities' => $this->amenities,
+            'amenities' => $this->amenities->map(fn($amenity) => [
+                'id' => $amenity->id,
+                'name' => $amenity->name,
+                'slug' => $amenity->slug,
+                'icon' => $amenity->icon,
+                'created_at' => $amenity->created_at,
+                'updated_at' => $amenity->updated_at
+            ]),
             'image_urls' => $this->images->map(fn($image) => $image->url),
         ];
     }

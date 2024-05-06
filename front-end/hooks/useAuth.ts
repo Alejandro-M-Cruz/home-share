@@ -88,7 +88,7 @@ export function useAuth() {
     status: logoutStatus
   } = useMutation({
     mutationKey: ['logout'],
-    mutationFn: logoutMutationFn,
+    mutationFn: logoutMutationFn
   })
 
   const {
@@ -97,7 +97,7 @@ export function useAuth() {
     status: forgotPasswordStatus
   } = useMutation({
     mutationKey: ['forgotPassword'],
-    mutationFn: auth.forgotPassword,
+    mutationFn: auth.forgotPassword
   })
 
   const resetPasswordMutationFn = async (passwords: {
@@ -117,7 +117,7 @@ export function useAuth() {
     status: resetPasswordStatus
   } = useMutation({
     mutationKey: ['resetPassword'],
-    mutationFn: resetPasswordMutationFn,
+    mutationFn: resetPasswordMutationFn
   })
 
   return {

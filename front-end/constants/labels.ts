@@ -18,8 +18,4 @@ const sortDirectionLabels = {
   desc: 'Descending'
 }
 
-export {
-  statusLabels,
-  sortByLabels,
-  sortDirectionLabels
-}
+export { statusLabels, sortByLabels, sortDirectionLabels }

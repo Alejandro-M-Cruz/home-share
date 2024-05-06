@@ -14,9 +14,15 @@ const ErrorList = React.forwardRef<
   const errorMessages = Array.from(new Set(getErrorMessages(errors)))
 
   return (
-    <View ref={ref} className={cn('flex flex-col space-y-3', className)} {...props}>
+    <View
+      ref={ref}
+      className={cn('flex flex-col space-y-3', className)}
+      {...props}
+    >
       {errorMessages.map((message, i) => (
-        <Text key={i} className="text-red-500 font-medium">&bull; {message}</Text>
+        <Text key={i} className="text-red-500 font-medium">
+          &bull; {message}
+        </Text>
       ))}
     </View>
   )

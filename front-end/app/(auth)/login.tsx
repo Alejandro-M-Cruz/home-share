@@ -1,6 +1,12 @@
 import { z } from 'zod'
 import { LoginRequest } from '@/types/auth'
-import { Image, TouchableOpacity, StyleSheet, TextInput, View } from 'react-native'
+import {
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  View
+} from 'react-native'
 import { useAuth } from '@/hooks/useAuth'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -51,13 +57,12 @@ export default function LoginScreen() {
     login(credentials)
   }
 
-
   return (
     <View style={styles.container}>
-    <Image
-      source={require('../../assets/images/extendedBlueLogo.png')}
-      style={styles.image}
-    />
+      <Image
+        source={require('../../assets/images/extendedBlueLogo.png')}
+        style={styles.image}
+      />
       <Text style={styles.title}>LOG IN TO ACCESS YOUR ACCOUNT</Text>
       <Controller
         control={control}
@@ -105,11 +110,13 @@ export default function LoginScreen() {
           Forgot your password?
         </Text>
       </Link>
-      <TouchableOpacity style={styles.button}
+      <TouchableOpacity
+        style={styles.button}
         onPress={handleSubmit(onSubmit)}
         disabled={loginStatus === 'pending'}
         activeOpacity={0.6}
-        >LOG IN
+      >
+        LOG IN
       </TouchableOpacity>
     </View>
   )
@@ -147,7 +154,7 @@ const styles = StyleSheet.create({
   image: {
     width: 300,
     height: 300,
-    marginBottom: 20,
+    marginBottom: 20
   },
   button: {
     backgroundColor: '#7EC8AC',

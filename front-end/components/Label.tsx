@@ -10,7 +10,16 @@ const Label = React.forwardRef<
   }
 >(
   (
-    { required = false, children, className, onPress, onLongPress, onPressIn, onPressOut, ...props },
+    {
+      required = false,
+      children,
+      className,
+      onPress,
+      onLongPress,
+      onPressIn,
+      onPressOut,
+      ...props
+    },
     ref
   ) => (
     <LabelPrimitive.Root

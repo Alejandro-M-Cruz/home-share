@@ -48,7 +48,11 @@ const LocationAutocomplete = React.forwardRef<
           />
         </Autocomplete>
       ) : (
-        <AntDesign name="loading1" size={24} className="my-3 mx-auto animate-spin" />
+        <AntDesign
+          name="loading1"
+          size={24}
+          className="my-3 mx-auto animate-spin"
+        />
       )}
     </View>
   )

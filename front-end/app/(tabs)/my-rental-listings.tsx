@@ -7,9 +7,19 @@ import { Fragment, useMemo, useState } from 'react'
 import { RentalListing } from '@/components/RentalListing'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import { cn } from '@/helpers/cn'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/Select'
 import { RentalListingSortBy } from '@/types/rental-listing'
-import { sortByLabels, sortDirectionLabels, statusLabels } from '@/constants/labels'
+import {
+  sortByLabels,
+  sortDirectionLabels,
+  statusLabels
+} from '@/constants/labels'
 import { Label } from '@/components/Label'
 import { useAuth } from '@/hooks/useAuth'
 
@@ -24,12 +34,18 @@ export default function MyRentalListingsScreen() {
     setParams
   } = useMyRentalListings()
 
-  const isEmpty = useMemo(() => !data?.pages.length || !data.pages[0].data.length, [data])
+  const isEmpty = useMemo(
+    () => !data?.pages.length || !data.pages[0].data.length,
+    [data]
+  )
 
   const [status, setStatus] = useState<'all' | 'active' | 'inactive'>('all')
   const handleStatusFilterChange = (value: 'all' | 'active' | 'inactive') => {
     setStatus(value)
-    setParams({ ...params, filters: { status: value === 'all' ? undefined : value } })
+    setParams({
+      ...params,
+      filters: { status: value === 'all' ? undefined : value }
+    })
   }
 
   const [sortBy, setSortBy] = useState<RentalListingSortBy>('created_at')
@@ -57,7 +73,11 @@ export default function MyRentalListingsScreen() {
           <Label nativeID="status">Filter by status</Label>
           <Select
             value={{ label: statusLabels[status], value: status }}
-            onValueChange={option => handleStatusFilterChange((option?.value || 'all') as 'all' | 'active' | 'inactive')}
+            onValueChange={option =>
+              handleStatusFilterChange(
+                (option?.value || 'all') as 'all' | 'active' | 'inactive'
+              )
+            }
           >
             <SelectTrigger>
               <SelectValue
@@ -80,7 +100,11 @@ export default function MyRentalListingsScreen() {
 
           <Select
             value={{ label: sortByLabels[sortBy], value: sortBy }}
-            onValueChange={option => handleSortByChange((option?.value || 'created_at') as RentalListingSortBy)}
+            onValueChange={option =>
+              handleSortByChange(
+                (option?.value || 'created_at') as RentalListingSortBy
+              )
+            }
           >
             <SelectTrigger>
               <SelectValue
@@ -98,8 +122,15 @@ export default function MyRentalListingsScreen() {
           </Select>
 
           <Select
-            value={{ label: sortDirectionLabels[sortDirection], value: sortDirection }}
-            onValueChange={option => handleSortDirectionChange((option?.value || 'desc') as 'asc' | 'desc')}
+            value={{
+              label: sortDirectionLabels[sortDirection],
+              value: sortDirection
+            }}
+            onValueChange={option =>
+              handleSortDirectionChange(
+                (option?.value || 'desc') as 'asc' | 'desc'
+              )
+            }
           >
             <SelectTrigger>
               <SelectValue
@@ -119,7 +150,11 @@ export default function MyRentalListingsScreen() {
 
         <Link href="/create-rental-listing/first-step" asChild>
           <Button className="max-sm:hidden flex flex-row items-center space-x-2">
-            <MaterialCommunityIcons name="home-plus" className="text-primary-foreground" size={24} />
+            <MaterialCommunityIcons
+              name="home-plus"
+              className="text-primary-foreground"
+              size={24}
+            />
             <Text>Create new</Text>
           </Button>
         </Link>
@@ -131,7 +166,10 @@ export default function MyRentalListingsScreen() {
             You don't have any rental listings yet.
           </Text>
           <Link href="/create-rental-listing/first-step" asChild>
-            <Button variant="outline" className="flex flex-row items-center space-x-3">
+            <Button
+              variant="outline"
+              className="flex flex-row items-center space-x-3"
+            >
               <MaterialCommunityIcons name="home-plus" size={24} />
               <Text>Create one here</Text>
             </Button>
@@ -181,8 +219,15 @@ export default function MyRentalListingsScreen() {
       )}
 
       <Link href="/create-rental-listing/first-step" asChild>
-        <Button size="icon" className="sm:hidden absolute right-5 bottom-5 rounded-full">
-          <MaterialCommunityIcons name="home-plus" className="text-primary-foreground" size={24} />
+        <Button
+          size="icon"
+          className="sm:hidden absolute right-5 bottom-5 rounded-full"
+        >
+          <MaterialCommunityIcons
+            name="home-plus"
+            className="text-primary-foreground"
+            size={24}
+          />
         </Button>
       </Link>
     </View>

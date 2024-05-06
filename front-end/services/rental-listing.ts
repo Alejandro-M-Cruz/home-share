@@ -1,8 +1,11 @@
 import { apiClient } from '@/api/api-client'
 import {
   CreateRentalListingRequest,
-  GetRentalListingsParams, MyRentalListingsParams, RentalListing,
-  RentalListingPage, RentalListingDetails
+  GetRentalListingsParams,
+  MyRentalListingsParams,
+  RentalListing,
+  RentalListingPage,
+  RentalListingDetails
 } from '@/types/rental-listing'
 
 async function getRentalListings({
@@ -36,40 +39,53 @@ async function getRentalListings({
   return data
 }
 
-async function getMyRentalListings({
-  cursor,
-  perPage,
-  sortBy,
-  sortDirection,
-  filters
-}: MyRentalListingsParams, token: string) {
-  const { data } = await apiClient.get<RentalListingPage>('/api/my-rental-listings', {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    params: {
-      cursor,
-      per_page: perPage,
-      sort: sortBy ? (sortDirection === 'desc' ? '-' : '') + sortBy : undefined,
-      filter: {
-        status: filters?.status
+async function getMyRentalListings(
+  { cursor, perPage, sortBy, sortDirection, filters }: MyRentalListingsParams,
+  token: string
+) {
+  const { data } = await apiClient.get<RentalListingPage>(
+    '/api/my-rental-listings',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+        cursor,
+        per_page: perPage,
+        sort: sortBy
+          ? (sortDirection === 'desc' ? '-' : '') + sortBy
+          : undefined,
+        filter: {
+          status: filters?.status
+        }
       }
     }
-  })
+  )
   return data
 }
 
-async function createRentalListing(rentalListing: CreateRentalListingRequest, token: string) {
-  const { data } = await apiClient.post<{ id: number }>('/api/rental-listings', rentalListing, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data'
+async function createRentalListing(
+  rentalListing: CreateRentalListingRequest,
+  token: string
+) {
+  const { data } = await apiClient.post<{ id: number }>(
+    '/api/rental-listings',
+    rentalListing,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
     }
-  })
+  )
   return data.id
 }
 
-async function uploadRentalListingImages(rentalListingId: number, images: Blob[], token: string) {
+async function uploadRentalListingImages(
+  rentalListingId: number,
+  images: Blob[],
+  token: string
+) {
   const data = new FormData()
   images.forEach(image => {
     data.append('images', image, 'image')
@@ -86,7 +102,10 @@ async function uploadRentalListingImages(rentalListingId: number, images: Blob[]
   )
 }
 
-async function deleteRentalListing(rentalListing: RentalListing, token: string) {
+async function deleteRentalListing(
+  rentalListing: RentalListing,
+  token: string
+) {
   await apiClient.delete(`/api/rental-listings/${rentalListing.id}`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -95,21 +114,33 @@ async function deleteRentalListing(rentalListing: RentalListing, token: string) 
 }
 
 async function getRentalListingDetails(id: number, token: string | null) {
-  const config = token ? {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  } : undefined
-  const { data } = await apiClient.get<RentalListingDetails>(`/api/rental-listings/${id}`, config)
-  return data
+  const config = token
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    : undefined
+  const { data } = await apiClient.get<{ data: RentalListingDetails }>(
+    `/api/rental-listings/${id}`,
+    config
+  )
+  return data.data
 }
 
-async function toggleRentalListingStatus(rentalListing: RentalListing, token: string) {
-  await apiClient.patch(`/api/rental-listings/${rentalListing.id}/toggle-status`, undefined, {
-    headers: {
-      Authorization: `Bearer ${token}`
+async function toggleRentalListingStatus(
+  rentalListing: RentalListing,
+  token: string
+) {
+  await apiClient.patch(
+    `/api/rental-listings/${rentalListing.id}/toggle-status`,
+    undefined,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     }
-  })
+  )
 }
 
 export {

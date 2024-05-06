@@ -14,7 +14,8 @@ import { ErrorList } from '@/components/ErrorList'
 
 const secondStepSchema: z.ZodSchema<{ images: ImagePickerAsset[] }> = z
   .object({
-    images: z.array(z.any())
+    images: z
+      .array(z.any())
       .min(1, 'At least one image must be selected')
       .max(10, 'Maximum of 10 images allowed')
   })

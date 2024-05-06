@@ -3,8 +3,6 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Link, Tabs } from 'expo-router'
 import {
   Image,
-  Button,
-  Pressable,
   View,
   StyleSheet,
   TouchableOpacity
@@ -14,13 +12,14 @@ import Colors from '@/constants/colors'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
 import { useAuth } from '@/hooks/useAuth'
 import { Text } from '@/components/Text'
+import { FontAwesome6 } from '@expo/vector-icons'
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name']
   color: string
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />
+  return <FontAwesome size={24} style={{ marginBottom: -3 }} {...props} />
 }
 
 export default function TabLayout() {
@@ -47,7 +46,7 @@ export default function TabLayout() {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              paddingRight: 20, // Agrega un espacio a los lados para separar los elementos del borde de la pantalla
+              paddingRight: 20,
               width: '100%'
             }}
           >
@@ -86,16 +85,10 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color="#FFF" />,
-          tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
-        }}
-      />
-      <Tabs.Screen
-        name="rental-listings"
-        options={{
-          title: 'Rental Listings',
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color="#FFF" />,
+          title: 'Rental listings',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome6 name="house" size={20} className="text-primary-foreground -mb-[3px]" />
+          ),
           tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}
       />
@@ -103,15 +96,19 @@ export default function TabLayout() {
         name="map"
         options={{
           title: 'Map',
-          tabBarIcon: ({ color }) => <TabBarIcon name="map" color="#FFF" />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome6 name="map" size={22} className="text-primary-foreground -mb-[3px]" />
+          ),
           tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}
       />
       <Tabs.Screen
         name="my-rental-listings"
         options={{
-          title: 'My Rental Listings',
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color="#FFF" />,
+          title: 'My rental listings',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome6 name="house-user" size={20} className="text-primary-foreground -mb-[3px]" />
+          ),
           tabBarLabelStyle: { color: '#FFF', fontWeight: 'bold' }
         }}
       />

@@ -86,7 +86,7 @@ const RentalListing = React.forwardRef<
         </CardHeader>
       </Link>
 
-      <CardContent className="p-0 relative group">
+      <CardContent className="p-0">
         {rentalListing.imageUrls.length > 0 ? (
           <Carousel
             imageUrls={rentalListing.imageUrls}

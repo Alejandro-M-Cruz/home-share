@@ -14,7 +14,7 @@ type CarouselProps = {
 const Carousel = React.forwardRef<
   ViewRef,
   React.ComponentPropsWithoutRef<typeof View> & CarouselProps
->(({ imageUrls, imageClassName, ...props }, ref) => {
+>(({ imageUrls, className, imageClassName, ...props }, ref) => {
   const [imageIndex, setImageIndex] = React.useState(0)
 
   const prevImage = () => {
@@ -26,32 +26,28 @@ const Carousel = React.forwardRef<
   }
 
   return (
-    <View ref={ref} {...props}>
+    <View ref={ref} className={cn('relative group', className)} {...props}>
       <Image
         source={{ uri: imageUrls[imageIndex] }}
         className={cn('w-full h-full object-cover', imageClassName)}
       />
 
-      {imageIndex > 0 && (
-        <Button
-          onPress={prevImage}
-          size="icon"
-          variant="outline"
-          className="invisible native:visible web:group-hover:visible absolute left-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7"
-        >
-          <Entypo size={16} name="chevron-left" />
-        </Button>
-      )}
-      {imageIndex < imageUrls.length - 1 && (
-        <Button
-          onPress={nextImage}
-          size="icon"
-          variant="outline"
-          className="invisible native:visible web:group-hover:visible absolute right-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7"
-        >
-          <Entypo size={16} name="chevron-right" />
-        </Button>
-      )}
+      <Button
+        onPress={prevImage}
+        size="icon"
+        variant="outline"
+        className="invisible native:visible web:group-hover:visible absolute left-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7"
+      >
+        <Entypo size={16} name="chevron-left" />
+      </Button>
+      <Button
+        onPress={nextImage}
+        size="icon"
+        variant="outline"
+        className="invisible native:visible web:group-hover:visible absolute right-3 top-1/2 -translate-y-1/2 rounded-full w-7 h-7 z-50"
+      >
+        <Entypo size={16} name="chevron-right" />
+      </Button>
       <View className="invisible native:visible web:group-hover:visible w-full flex flex-row items-center justify-center space-x-2 absolute bottom-3">
         {imageUrls.map((_, i) => (
           <Button

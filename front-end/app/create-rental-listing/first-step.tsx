@@ -69,7 +69,7 @@ export default function CreateRentalListingFirstStepScreen() {
     mode: 'onChange'
   })
 
-  const { amenities, error, status } = useAmenities()
+  const { amenities, status } = useAmenities()
 
   const onSubmit = (data: Partial<CreateRentalListingRequest>) => {
     patchRentalListing(data)
@@ -86,7 +86,7 @@ export default function CreateRentalListingFirstStepScreen() {
   )
 
   return (
-    <ScrollView className="flex-1 px-3 sm:px-8 py-4">
+    <ScrollView className="flex-1 px-3 sm:px-8 py-6">
       <View className="flex flex-col gap-5 w-full max-w-[800px] mx-auto">
         <Label nativeID="title" required>
           Title

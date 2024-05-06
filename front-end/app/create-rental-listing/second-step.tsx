@@ -93,7 +93,7 @@ export default function CreateRentalListingSecondStepScreen() {
   }, [errors])
 
   return (
-    <ScrollView className="flex-1 px-3 sm:px-8 py-4">
+    <ScrollView className="flex-1 px-3 sm:px-8 py-6">
       <View className="flex flex-col gap-5 w-full max-w-[800px] mx-auto">
         <Label nativeID="location" required>
           Autocomplete location
@@ -253,7 +253,7 @@ export default function CreateRentalListingSecondStepScreen() {
               <Text>Previous step</Text>
             </Button>
           </Link>
-          <Button disabled={!isValid} onPress={handleSubmit(onSubmit)}>
+          <Button disabled={!isValid || status === 'pending'} onPress={handleSubmit(onSubmit)}>
             <Text>Next</Text>
           </Button>
         </View>

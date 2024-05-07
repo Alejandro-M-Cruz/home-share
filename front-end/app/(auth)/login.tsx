@@ -3,9 +3,9 @@ import { LoginRequest } from '@/types/auth'
 import {
   Image,
   TouchableOpacity,
+  ScrollView,
   StyleSheet,
-  TextInput,
-  View
+  TextInput
 } from 'react-native'
 import { useAuth } from '@/hooks/useAuth'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -58,7 +58,7 @@ export default function LoginScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView className="flex-1" contentContainerStyle={styles.container}>
       <Image
         source={require('../../assets/images/extendedBlueLogo.png')}
         style={styles.image}
@@ -118,7 +118,7 @@ export default function LoginScreen() {
       >
         LOG IN
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   )
 }
 

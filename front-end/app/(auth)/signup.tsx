@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  View
+  ScrollView
 } from 'react-native'
 import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
@@ -70,7 +70,7 @@ export default function SignupScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView className="flex-1" contentContainerStyle={styles.container}>
       <Image
         source={require('../../assets/images/extendedBlueLogo.png')}
         style={styles.image}
@@ -158,7 +158,7 @@ export default function SignupScreen() {
       >
         SIGN UP
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   )
 }
 

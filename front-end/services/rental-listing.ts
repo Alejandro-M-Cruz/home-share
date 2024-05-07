@@ -1,4 +1,4 @@
-import { apiClient } from '@/api/api-client'
+import { apiJsonClient, apiFormDataClient } from '@/api/api-client'
 import {
   CreateRentalListingRequest,
   GetRentalListingsParams,
@@ -7,6 +7,7 @@ import {
   RentalListingPage,
   RentalListingDetails
 } from '@/types/rental-listing'
+import axios from 'axios'
 
 async function getRentalListings({
   cursor,
@@ -15,7 +16,7 @@ async function getRentalListings({
   sortDirection,
   filters
 }: GetRentalListingsParams): Promise<RentalListingPage> {
-  const { data } = await apiClient.get<RentalListingPage>(
+  const { data } = await apiJsonClient.get<RentalListingPage>(
     '/api/rental-listings',
     {
       params: {
@@ -43,7 +44,7 @@ async function getMyRentalListings(
   { cursor, perPage, sortBy, sortDirection, filters }: MyRentalListingsParams,
   token: string
 ) {
-  const { data } = await apiClient.get<RentalListingPage>(
+  const { data } = await apiJsonClient.get<RentalListingPage>(
     '/api/my-rental-listings',
     {
       headers: {
@@ -68,7 +69,7 @@ async function createRentalListing(
   rentalListing: CreateRentalListingRequest,
   token: string
 ) {
-  const { data } = await apiClient.post<{ id: number }>(
+  const { data } = await apiJsonClient.post<{ id: number }>(
     '/api/rental-listings',
     rentalListing,
     {
@@ -88,15 +89,14 @@ async function uploadRentalListingImages(
 ) {
   const data = new FormData()
   images.forEach(image => {
-    data.append('images', image, 'image')
+    data.append('images[]', image)
   })
-  await apiClient.post(
+  await apiFormDataClient.post(
     `/api/rental-listings/${rentalListingId}/upload-images`,
     data,
     {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data'
       }
     }
   )
@@ -106,7 +106,7 @@ async function deleteRentalListing(
   rentalListing: RentalListing,
   token: string
 ) {
-  await apiClient.delete(`/api/rental-listings/${rentalListing.id}`, {
+  await apiJsonClient.delete(`/api/rental-listings/${rentalListing.id}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -121,7 +121,7 @@ async function getRentalListingDetails(id: number, token: string | null) {
         }
       }
     : undefined
-  const { data } = await apiClient.get<{ data: RentalListingDetails }>(
+  const { data } = await apiJsonClient.get<{ data: RentalListingDetails }>(
     `/api/rental-listings/${id}`,
     config
   )
@@ -132,7 +132,7 @@ async function toggleRentalListingStatus(
   rentalListing: RentalListing,
   token: string
 ) {
-  await apiClient.patch(
+  await apiJsonClient.patch(
     `/api/rental-listings/${rentalListing.id}/toggle-status`,
     undefined,
     {

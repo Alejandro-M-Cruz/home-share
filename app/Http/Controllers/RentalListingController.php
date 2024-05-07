@@ -70,17 +70,16 @@ class RentalListingController extends Controller
 
     public function uploadImages(Request $request, RentalListing $rentalListing)
     {
-        if (! $request->hasFile('images')) {
-            throw ValidationException::withMessages(['images' => 'The images field is required.']);
-        }
+        $request->validate([
+            'images' => 'required|array|min:1|max:8',
+            'images.*' => 'required|image|max:4096',
+        ], [
+            'images.*.required' => 'Every image must be provided.',
+            'images.*.image' => 'Every file must be an image.',
+            'images.*.max' => 'Every image must be smaller than 4MB.',
+        ]);
 
         $images = $request->file('images');
-        if (! is_array($images)) {
-            $images = [$images];
-        }
-        if (count($images) === 0 || count($images) > 8) {
-            throw ValidationException::withMessages(['images' => 'You should upload between 1 and 8 images.']);
-        }
 
         foreach ($images as $image) {
             $name = $image->hashName();

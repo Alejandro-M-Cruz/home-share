@@ -1,13 +1,13 @@
-import { apiClient } from '@/api/api-client'
+import { apiJsonClient } from '@/api/api-client'
 import { PasswordReset, SignupRequest, User } from '@/types/auth'
 import { getDeviceName } from '@/helpers/device-name'
 
 export async function csrf() {
-  await apiClient.get('/sanctum/csrf-cookie')
+  await apiJsonClient.get('/sanctum/csrf-cookie')
 }
 
 async function getUser(token: string): Promise<User> {
-  const { data } = await apiClient.get<User>('/api/user', {
+  const { data } = await apiJsonClient.get<User>('/api/user', {
     headers: { Authorization: `Bearer ${token}` }
   })
   return data
@@ -15,7 +15,7 @@ async function getUser(token: string): Promise<User> {
 
 async function signup(signupData: SignupRequest) {
   await csrf()
-  await apiClient.post('/register', signupData)
+  await apiJsonClient.post('/register', signupData)
   return createToken({
     email: signupData.email,
     password: signupData.password,
@@ -31,7 +31,7 @@ type TokenRequest = {
 
 async function createToken(tokenRequest: TokenRequest) {
   await csrf()
-  const { data: token } = await apiClient.post<string>(
+  const { data: token } = await apiJsonClient.post<string>(
     '/sanctum/token',
     tokenRequest
   )
@@ -40,7 +40,7 @@ async function createToken(tokenRequest: TokenRequest) {
 
 async function revokeTokens(token: string) {
   await csrf()
-  await apiClient.delete('/sanctum/token', {
+  await apiJsonClient.delete('/sanctum/token', {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -49,12 +49,12 @@ async function revokeTokens(token: string) {
 
 async function forgotPassword({ email }: { email: string }) {
   await csrf()
-  await apiClient.post('/forgot-password', { email })
+  await apiJsonClient.post('/forgot-password', { email })
 }
 
 async function resetPassword(passwordReset: PasswordReset) {
   await csrf()
-  await apiClient.post('/reset-password', passwordReset)
+  await apiJsonClient.post('/reset-password', passwordReset)
 }
 
 export {

@@ -5,7 +5,7 @@ import {
   decamelizeRequestData
 } from '@/api/middleware'
 
-export const apiClient = axios.create({
+const apiJsonClient = axios.create({
   baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,
   headers: {
     'X-Requested-With': 'XMLHttpRequest'
@@ -14,9 +14,29 @@ export const apiClient = axios.create({
   withXSRFToken: true
 })
 
-apiClient.interceptors.request.use(decamelizeRequestData)
+apiJsonClient.interceptors.request.use(decamelizeRequestData)
 
-apiClient.interceptors.response.use(
+apiJsonClient.interceptors.response.use(
   camelizeResponseData,
   camelizeErrorResponseData
 )
+
+const apiFormDataClient = axios.create({
+  baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'multipart/form-data'
+  },
+  withCredentials: true,
+  withXSRFToken: true
+})
+
+apiFormDataClient.interceptors.response.use(
+  camelizeResponseData,
+  camelizeErrorResponseData
+)
+
+export {
+  apiJsonClient,
+  apiFormDataClient
+}

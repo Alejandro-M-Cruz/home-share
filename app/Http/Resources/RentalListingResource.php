@@ -34,7 +34,7 @@ class RentalListingResource extends JsonResource
             'updated_at' => $this->updated_at,
             'username' => $this->user->name,
             'user_created_at' => $this->user->created_at,
-            'image_urls' => $this->images->map(fn($image) => $image->url),
+            'image_urls' => $this->images->map(fn($image) => asset($image->url)),
             'status' => $this->status,
         ];
     }

@@ -87,7 +87,11 @@ De nuevo, se puede verficar ejecutando
 
    `php artisan db:seed`
 
-5. Ejecutar el servidor de Laravel:
+5. Enlazar el directorio de almacenamiento con el directorio público:
+
+   `php artisan storage:link`
+
+6. Ejecutar el servidor de Laravel:
 
    `php artisan serve`
 

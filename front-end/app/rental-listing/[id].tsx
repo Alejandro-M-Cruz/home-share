@@ -26,27 +26,31 @@ export default function RentalListingDetailsScreen() {
     <ScrollView className="flex-1">
       {rentalListingDetails && (
         <>
-          <View className="w-full flex flex-col md:flex-row items-center justify-center">
-            {rentalListingDetails.imageUrls.length === 0 ? (
-              <View className="max-md:w-full md:flex-1 h-[300px] bg-neutral-100 flex items-center justify-center">
-                <MaterialCommunityIcons name="image-broken-variant" size={64} />
+          <View className="flex flex-col gap-y-3 mx-auto px-4 md:px-12 pt-4 pb-10 w-full max-w-[1200px]">
+            <View className="w-full flex flex-col gap-3 md:flex-row items-center justify-center">
+              {rentalListingDetails.imageUrls.length === 0 ? (
+                <View className="max-md:w-full md:flex-1 h-[300px] bg-neutral-100 flex items-center justify-center">
+                  <MaterialCommunityIcons name="image-broken-variant" size={64} />
+                </View>
+              ) : (
+                <Carousel
+                  className="max-md:w-full md:flex-1 rounded-xl"
+                  imageClassName="w-full h-[300px] rounded-xl"
+                  imageUrls={rentalListingDetails.imageUrls}
+                />
+              )}
+              <View className="max-md:w-full md:flex-1 h-[300px]">
+                <Map
+                  locations={[rentalListingDetails]}
+                  initialCenter={{
+                    latitude: rentalListingDetails.latitude,
+                    longitude: rentalListingDetails.longitude
+                  }}
+                  initialZoom={15}
+                />
               </View>
-            ) : (
-              <Carousel className="max-md:w-full md:flex-1 h-[300px]" imageUrls={rentalListingDetails.imageUrls} />
-            )}
-            <View className="max-md:w-full md:flex-1 h-[300px]">
-              <Map
-                locations={[rentalListingDetails]}
-                initialCenter={{
-                  latitude: rentalListingDetails.latitude,
-                  longitude: rentalListingDetails.longitude
-                }}
-                initialZoom={15}
-              />
             </View>
-          </View>
 
-          <View className="flex flex-col gap-y-3 max-w-[800px] mx-auto px-4 pt-4 pb-10">
             <View className="flex flex-col sm:flex-row gap-3 items-center">
               <Text className="text-lg font-medium text-neutral-600">
                 Uploaded on {new Date(rentalListingDetails.createdAt).toLocaleDateString()} by {rentalListingDetails.username}
@@ -115,7 +119,7 @@ export default function RentalListingDetailsScreen() {
             </Text>
 
             <Text className="text-xl font-semibold mt-6">Amenities</Text>
-            <View className="grid sm:grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-5 mt-5">
+            <View className="grid sm:grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-6 mt-5">
               {rentalListingDetails.amenities.map((amenity) => (
                 <Amenity key={amenity.id} amenity={amenity} />
               ))}

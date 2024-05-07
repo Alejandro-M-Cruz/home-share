@@ -109,7 +109,7 @@ export default function RentalListingsScreen() {
             onPress={handleClearSearchButtonClick}
             variant="outline"
             size="sm"
-            className="flex flex-row items-center gap-3 mx-5 mt-2 rounded-full"
+            className="flex flex-row items-center gap-3 mx-5 mt-2 mb-3 rounded-full"
           >
             <AntDesign name="close" size={16} />
             <Text className="text-sm">{searchText}</Text>

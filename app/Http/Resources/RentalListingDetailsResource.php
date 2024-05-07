@@ -52,7 +52,10 @@ class RentalListingDetailsResource extends JsonResource
                 'created_at' => $amenity->created_at,
                 'updated_at' => $amenity->updated_at
             ]),
-            'image_urls' => $this->images->map(fn($image) => asset($image->url)),
+            'image_urls' => $this->images->map(function ($image) {
+                $url = $image->url;
+                return str_contains($url, 'http') ? $url : asset($url);
+            }),
         ];
     }
 }

@@ -44,6 +44,7 @@ type RentalListing = {
 
 type RentalListingDetails = {
   userId: number
+  userEmail: string
   description: string
   rules: string
   additionalInformation: string

@@ -10,6 +10,7 @@ import { Amenity } from '@/components/Amenity'
 import * as React from 'react'
 import { sizeUnitLabels, typeLabels } from '@/constants/labels'
 import { Badge } from '@/components/Badge'
+import { A } from '@expo/html-elements'
 
 export default function RentalListingDetailsScreen() {
   const params = useLocalSearchParams()
@@ -69,6 +70,13 @@ export default function RentalListingDetailsScreen() {
               </View>
             </View>
 
+            <View className="flex flex-row space-x-2 items-center justify-center">
+              <Text className="text-lg">Contact via email:</Text>
+              <A className="text-lg font-semibold underline underline-offset-4" href={`mailto:${rentalListingDetails.userEmail}`}>
+                {rentalListingDetails.userEmail}
+              </A>
+            </View>
+            
             <View className="flex flex-row items-center justify-around flex-wrap mt-2 w-full gap-7">
               <View className="flex flex-row items-center justify-center space-x-2">
                 <MaterialIcons name="shower" size={24} />

@@ -1,20 +1,31 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 import { latLng } from '@/helpers/lat-lng'
 import { WEB_MAP } from '@/constants/map'
 import { useGoogleMapsForWeb } from '@/hooks/useGoogleMapsForWeb'
 import { MapLocation, MapProps } from './types'
+import { AntDesign } from '@expo/vector-icons'
 
 export function Map({ locations, initialCenter, onLocationChange, initialZoom }: MapProps) {
   const { isLoaded } = useGoogleMapsForWeb()
 
   const [map, setMap] = useState<google.maps.Map | null>(null)
 
-  const onLoad = useCallback((map: google.maps.Map) => {
+  const onLoad = useCallback((googleMap: google.maps.Map) => {
     const bounds = new window.google.maps.LatLngBounds()
-    map.fitBounds(bounds)
-    setMap(map)
+    googleMap.fitBounds(bounds)
+    setMap(googleMap)
   }, [])
+
+  useEffect(() => {
+    if (!map) {
+      return
+    }
+    setTimeout(() => {
+      map.setCenter(latLng(initialCenter ?? WEB_MAP.initialCenter))
+      map.setZoom(initialZoom ?? WEB_MAP.initialZoom)
+    }, 500)
+  }, [map])
 
   const onUnmount = useCallback((_map: google.maps.Map) => {
     setMap(null)
@@ -32,10 +43,8 @@ export function Map({ locations, initialCenter, onLocationChange, initialZoom }:
 
   return isLoaded ? (
     <GoogleMap
-      mapContainerStyle={{ width: '100%', height: '100%' }}
+      mapContainerClassName="w-full h-full"
       onLoad={onLoad}
-      center={latLng(initialCenter ?? WEB_MAP.initialCenter)}
-      zoom={initialZoom ?? WEB_MAP.initialZoom}
       onUnmount={onUnmount}
       onClick={handleMapClick}
     >
@@ -48,6 +57,6 @@ export function Map({ locations, initialCenter, onLocationChange, initialZoom }:
       ))}
     </GoogleMap>
   ) : (
-    <></>
+    <AntDesign name="loading1" className="mx-auto my-[120px]" size={24} />
   )
 }

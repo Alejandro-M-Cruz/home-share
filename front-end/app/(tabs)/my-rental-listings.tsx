@@ -51,7 +51,7 @@ export default function MyRentalListingsScreen() {
   const [sortBy, setSortBy] = useState<RentalListingSortBy>('created_at')
   const handleSortByChange = (value: RentalListingSortBy) => {
     setSortBy(value)
-    setParams({ ...params, sortBy: value })
+    setParams({ ...params, sortBy: value, sortDirection: params.sortDirection ?? 'desc' })
   }
 
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')

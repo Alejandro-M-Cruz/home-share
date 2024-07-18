@@ -156,7 +156,9 @@ export default function SignupScreen() {
         disabled={signupStatus === 'pending'}
         activeOpacity={0.6}
       >
-        SIGN UP
+        <Text className="text-white font-bold text-xl">
+          SIGN UP
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   )

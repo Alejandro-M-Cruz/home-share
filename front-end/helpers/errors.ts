@@ -8,7 +8,6 @@ function handleError({
   error: Error
   setError: (fieldPath: any, error: any) => void
 }) {
-  console.log(error)
   if (!isAxiosError(error) || !error.response) {
     setError('root', {
       type: 'unknown',

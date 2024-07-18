@@ -116,7 +116,9 @@ export default function LoginScreen() {
         disabled={loginStatus === 'pending'}
         activeOpacity={0.6}
       >
-        LOG IN
+        <Text className="text-white font-bold text-xl">
+          LOG IN
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   )
@@ -164,8 +166,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 10,
-    fontSize: 20,
-    color: 'white',
-    fontWeight: 'bold'
   }
 })

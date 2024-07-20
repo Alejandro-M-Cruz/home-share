@@ -8,7 +8,7 @@ HomeShare is a cross-platform React Native application that allows users to uplo
 
 ![image](https://github.com/user-attachments/assets/d5734062-4ed8-4c40-8e84-2f754afcb9b0)
 
-![image](https://github.com/user-attachments/assets/4a63c01e-7038-4a44-b620-4d3714a8460b)
+![image](https://github.com/user-attachments/assets/ef33e2f4-c7ca-48fa-b1f0-5ef631111cae)
 
 ![image](https://github.com/user-attachments/assets/0622fe5f-67ce-470b-baae-2b45fd8a2d77)
 
